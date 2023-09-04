@@ -12,7 +12,7 @@
 	<artifactId>thumbsup</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>thumbsup</name>
-	<description>Thumbsup&apos;s back-end</description>
+	<description>Thumbsup's back-end</description>
 	<properties>
 		<java.version>17</java.version>
 	</properties>

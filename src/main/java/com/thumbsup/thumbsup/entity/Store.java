@@ -42,16 +42,19 @@ public class Store {
     @Column(name = "phone", length = 20)
     private String phone;
 
+    @Lob
     @Nationalized
-    @Column(name = "logo", length = 8000)
+    @Column(name = "logo")
     private String logo;
 
+    @Lob
     @Nationalized
-    @Column(name = "cover_photo", length = 8000)
+    @Column(name = "cover_photo")
     private String coverPhoto;
 
+    @Lob
     @Nationalized
-    @Column(name = "address", length = 8000)
+    @Column(name = "address")
     private String address;
 
     @Column(name = "balance")

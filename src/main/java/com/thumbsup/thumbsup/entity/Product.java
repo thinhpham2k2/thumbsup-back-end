@@ -16,8 +16,8 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity(name = "Customer")
-@Table(name = "tbl_customer")
+@Entity(name = "Product")
+@Table(name = "tbl_product")
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

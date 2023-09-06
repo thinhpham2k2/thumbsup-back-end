@@ -20,7 +20,6 @@ public interface StateDetailMapper {
     @Mapping(target = "orderStoreId", source = "orderStore.id")
     StateDetailDTO toDTO(StateDetail entity);
 
-    @Mapping(target = "status", ignore = true)
     @Mapping(target = "state", source = "stateId", qualifiedByName = "mapState")
     @Mapping(target = "orderStore", source = "orderStoreId", qualifiedByName = "mapOrderStore")
     StateDetail dtoToEntity(StateDetailDTO dto);

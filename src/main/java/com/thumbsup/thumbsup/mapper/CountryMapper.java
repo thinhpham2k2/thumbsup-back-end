@@ -13,7 +13,6 @@ public interface CountryMapper {
 
     CountryDTO toDTO(Country entity);
 
-    @Mapping(target = "status", ignore = true)
     @Mapping(target = "productList", ignore = true)
     Country dtoToEntity(CountryDTO dto);
 }

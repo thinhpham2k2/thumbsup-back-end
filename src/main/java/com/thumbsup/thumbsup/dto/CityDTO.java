@@ -16,4 +16,5 @@ public class CityDTO implements Serializable {
     private String cityName;
     private String image;
     private String description;
+    private Boolean status;
 }

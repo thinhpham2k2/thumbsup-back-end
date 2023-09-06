@@ -23,4 +23,5 @@ public class OrderDetailDTO implements Serializable {
     private Long orderStoreId;
     private Long productId;
     private String productName;
+    private Boolean status;
 }

@@ -17,4 +17,5 @@ public class ImageDTO implements Serializable {
     private Boolean isCover;
     private Long productId;
     private String productName;
+    private Boolean status;
 }

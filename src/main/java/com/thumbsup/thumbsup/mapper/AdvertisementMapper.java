@@ -17,12 +17,11 @@ public interface AdvertisementMapper {
     @Mapping(target = "storeName", source = "store.storeName")
     AdvertisementDTO toDTO(Advertisement entity);
 
-    @Mapping(target = "status", ignore = true)
     @Mapping(target = "store", source = "storeId", qualifiedByName = "mapStore")
     Advertisement dtoToEntity(AdvertisementDTO dto);
 
     @Named("mapStore")
-    default Store mapPartner(Long id) {
+    default Store mapStore(Long id) {
         Store store = new Store();
         store.setId(id);
         return store;

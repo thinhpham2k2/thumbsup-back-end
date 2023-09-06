@@ -25,4 +25,5 @@ public class OrderStoreDTO implements Serializable {
     private Long orderId;
     private List<StateDetailDTO> stateDetailList;
     private List<OrderDetailDTO> orderDetailList;
+    private Boolean status;
 }

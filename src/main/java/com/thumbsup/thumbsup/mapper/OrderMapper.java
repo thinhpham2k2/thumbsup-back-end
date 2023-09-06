@@ -25,7 +25,6 @@ public interface OrderMapper {
     @Mapping(target = "orderStoreList", source = "orderStoreList", qualifiedByName = "mapOrderStore")
     OrderDTO toDTO(Order entity);
 
-    @Mapping(target = "status", ignore = true)
     @Mapping(target = "orderStoreList", ignore = true)
     @Mapping(target = "customer", source = "customerId", qualifiedByName = "mapCustomer")
     @Mapping(target = "stateOrder", source = "stateOrderId", qualifiedByName = "mapStateOrder")

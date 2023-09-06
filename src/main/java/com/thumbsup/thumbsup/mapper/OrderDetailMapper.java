@@ -21,7 +21,6 @@ public interface OrderDetailMapper {
     @Mapping(target = "productName", source = "product.productName")
     OrderDetailDTO toDTO(OrderDetail entity);
 
-    @Mapping(target = "status", ignore = true)
     @Mapping(target = "orderStore", source = "orderStoreId", qualifiedByName = "mapOrderStore")
     @Mapping(target = "product", source = "productId", qualifiedByName = "mapProduct")
     OrderDetail dtoToEntity(OrderDetailDTO dto);

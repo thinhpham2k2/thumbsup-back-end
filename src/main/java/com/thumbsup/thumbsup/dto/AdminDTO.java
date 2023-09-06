@@ -21,4 +21,5 @@ public class AdminDTO implements Serializable {
     private String avatar;
     private LocalDate dob;
     private Boolean state;
+    private Boolean status;
 }

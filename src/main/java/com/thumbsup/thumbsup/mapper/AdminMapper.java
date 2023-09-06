@@ -14,6 +14,5 @@ public interface AdminMapper {
     AdminDTO toDTO(Admin entity);
 
     @Mapping(target = "password", ignore = true)
-    @Mapping(target = "status", ignore = true)
     Admin dtoToEntity(AdminDTO dto);
 }

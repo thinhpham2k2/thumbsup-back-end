@@ -25,4 +25,5 @@ public class AdvertisementDTO implements Serializable {
     private Long storeId;
     private String storeName;
     private Boolean state;
+    private Boolean status;
 }

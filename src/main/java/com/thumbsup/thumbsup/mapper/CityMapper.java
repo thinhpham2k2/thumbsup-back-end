@@ -13,7 +13,6 @@ public interface CityMapper {
 
     CityDTO toDTO(City entity);
 
-    @Mapping(target = "status", ignore = true)
     @Mapping(target = "storeList", ignore = true)
     @Mapping(target = "customerList", ignore = true)
     City dtoToEntity(CityDTO dto);

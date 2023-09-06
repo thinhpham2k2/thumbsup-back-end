@@ -18,4 +18,5 @@ public class StateDetailDTO implements Serializable {
     private Long stateId;
     private String stateName;
     private Long orderStoreId;
+    private Boolean status;
 }

@@ -17,4 +17,5 @@ public class WishlistProductDTO implements Serializable {
     private String customerName;
     private Long productId;
     private String productName;
+    private Boolean status;
 }

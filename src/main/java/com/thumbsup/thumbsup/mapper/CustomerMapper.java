@@ -18,7 +18,6 @@ public interface CustomerMapper {
     CustomerDTO toDTO(Customer entity);
 
     @Mapping(target = "password", ignore = true)
-    @Mapping(target = "status", ignore = true)
     @Mapping(target = "wishlistProductList", ignore = true)
     @Mapping(target = "wishlistStoreList", ignore = true)
     @Mapping(target = "reviewList", ignore = true)

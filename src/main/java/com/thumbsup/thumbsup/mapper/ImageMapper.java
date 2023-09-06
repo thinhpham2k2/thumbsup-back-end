@@ -20,7 +20,6 @@ public interface ImageMapper {
     @Mapping(target = "productName", source = "product.productName")
     ImageDTO toDTO(Image entity);
 
-    @Mapping(target = "status", ignore = true)
     @Mapping(target = "product", source = "productId", qualifiedByName = "mapProduct")
     Image dtoToEntity(ImageDTO dto);
 

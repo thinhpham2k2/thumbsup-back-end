@@ -15,4 +15,5 @@ public class CategoryDTO implements Serializable {
     private Long id;
     private String category;
     private String description;
+    private Boolean status;
 }

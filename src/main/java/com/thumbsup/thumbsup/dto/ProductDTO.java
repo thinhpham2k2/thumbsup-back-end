@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.List;
 
 @Data
 @Builder
@@ -33,4 +34,6 @@ public class ProductDTO implements Serializable {
     private String brandName;
     private Long countryId;
     private String countryName;
+    private List<ImageDTO> imageList;
+    private Boolean status;
 }

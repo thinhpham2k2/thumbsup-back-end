@@ -15,4 +15,5 @@ public class CountryDTO implements Serializable {
     private Long id;
     private String country;
     private String description;
+    private Boolean status;
 }

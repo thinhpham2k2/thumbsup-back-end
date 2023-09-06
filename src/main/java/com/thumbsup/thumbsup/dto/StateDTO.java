@@ -15,4 +15,5 @@ public class StateDTO implements Serializable {
     private Long id;
     private String state;
     private String description;
+    private Boolean status;
 }

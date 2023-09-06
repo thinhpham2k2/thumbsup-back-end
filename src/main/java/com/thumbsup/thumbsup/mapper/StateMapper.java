@@ -15,7 +15,6 @@ public interface StateMapper {
 
     StateDTO toDTO(State entity);
 
-    @Mapping(target = "status", ignore = true)
     @Mapping(target = "orderList", ignore = true)
     @Mapping(target = "stateDetailList", ignore = true)
     State dtoToEntity(StateDTO dto);

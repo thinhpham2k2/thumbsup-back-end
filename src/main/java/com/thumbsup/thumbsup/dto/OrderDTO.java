@@ -25,4 +25,5 @@ public class OrderDTO implements Serializable {
     private Long customerId;
     private String customerName;
     private List<OrderStoreDTO> orderStoreList;
+    private Boolean status;
 }

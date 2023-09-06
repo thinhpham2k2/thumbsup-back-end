@@ -22,4 +22,5 @@ public class ReviewDTO implements Serializable {
     private String customerName;
     private Long productId;
     private String productName;
+    private Boolean status;
 }

@@ -24,4 +24,5 @@ public class CustomerDTO implements Serializable {
     private Boolean state;
     private Long cityId;
     private String cityName;
+    private Boolean status;
 }

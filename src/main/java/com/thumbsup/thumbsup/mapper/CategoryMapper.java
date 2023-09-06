@@ -13,7 +13,6 @@ public interface CategoryMapper {
 
     CategoryDTO toDTO(Category entity);
 
-    @Mapping(target = "status", ignore = true)
     @Mapping(target = "productList", ignore = true)
     Category dtoToEntity(CategoryDTO dto);
 }

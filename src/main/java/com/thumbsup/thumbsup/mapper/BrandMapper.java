@@ -13,7 +13,6 @@ public interface BrandMapper {
 
     BrandDTO toDTO(Brand entity);
 
-    @Mapping(target = "status", ignore = true)
     @Mapping(target = "productList", ignore = true)
     Brand dtoToEntity(BrandDTO dto);
 }

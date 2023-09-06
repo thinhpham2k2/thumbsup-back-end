@@ -15,4 +15,5 @@ public class BrandDTO implements Serializable {
     private Long id;
     private String brand;
     private String description;
+    private Boolean status;
 }

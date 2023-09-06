@@ -31,4 +31,5 @@ public class StoreDTO implements Serializable {
     private Boolean state;
     private Long cityId;
     private String cityName;
+    private Boolean status;
 }

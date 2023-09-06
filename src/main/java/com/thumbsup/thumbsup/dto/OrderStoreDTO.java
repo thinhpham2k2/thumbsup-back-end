@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.List;
 
 @Data
 @Builder
@@ -22,4 +23,6 @@ public class OrderStoreDTO implements Serializable {
     private String address;
     private Boolean state;
     private Long orderId;
+    private List<StateDetailDTO> stateDetailList;
+    private List<OrderDetailDTO> orderDetailList;
 }

@@ -1,5 +1,6 @@
 package com.thumbsup.thumbsup.dto;
 
+import com.thumbsup.thumbsup.entity.OrderStore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -8,6 +9,7 @@ import lombok.NoArgsConstructor;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @Builder
@@ -22,4 +24,5 @@ public class OrderDTO implements Serializable {
     private String stateName;
     private Long customerId;
     private String customerName;
+    private List<OrderStoreDTO> orderStoreList;
 }

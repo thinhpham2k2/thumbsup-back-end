@@ -6,23 +6,20 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class AdvertisementDTO implements Serializable {
+public class ReviewDTO implements Serializable {
     private Long id;
-    private String adsName;
-    private BigDecimal price;
-    private Integer duration;
+    private String comment;
+    private Integer rating;
     private LocalDateTime dateCreated;
-    private LocalDateTime dateExpired;
-    private Integer clickCount;
-    private String description;
-    private Long storeId;
-    private String storeName;
     private Boolean state;
+    private Long customerId;
+    private String customerName;
+    private Long productId;
+    private String productName;
 }

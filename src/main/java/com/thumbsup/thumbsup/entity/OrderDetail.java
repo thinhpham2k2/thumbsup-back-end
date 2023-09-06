@@ -22,6 +22,15 @@ public class OrderDetail implements Serializable {
     @Column(name = "id", updatable = false)
     private Long id;
 
+    @Column(name = "original_price")
+    private BigDecimal originalPrice;
+
+    @Column(name = "discount")
+    private BigDecimal discount;
+
+    @Column(name = "sale_price")
+    private BigDecimal salePrice;
+
     @Column(name = "quantity")
     private Integer quantity;
 

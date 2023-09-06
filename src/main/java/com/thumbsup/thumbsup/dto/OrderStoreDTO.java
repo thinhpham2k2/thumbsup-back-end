@@ -1,0 +1,25 @@
+package com.thumbsup.thumbsup.dto;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.io.Serializable;
+import java.math.BigDecimal;
+
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+public class OrderStoreDTO implements Serializable {
+    private Long id;
+    private BigDecimal amount;
+    private BigDecimal shippingFee;
+    private Boolean isPaid;
+    private String note;
+    private String code;
+    private String address;
+    private Boolean state;
+    private Long orderId;
+}

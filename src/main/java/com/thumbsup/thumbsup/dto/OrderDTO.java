@@ -13,16 +13,13 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class AdvertisementDTO implements Serializable {
+public class OrderDTO implements Serializable {
     private Long id;
-    private String adsName;
-    private BigDecimal price;
-    private Integer duration;
+    private BigDecimal amount;
     private LocalDateTime dateCreated;
-    private LocalDateTime dateExpired;
-    private Integer clickCount;
-    private String description;
-    private Long storeId;
-    private String storeName;
     private Boolean state;
+    private Long stateOrderId;
+    private String stateName;
+    private Long customerId;
+    private String customerName;
 }

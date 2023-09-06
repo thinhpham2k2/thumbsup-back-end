@@ -1,20 +1,12 @@
 package com.thumbsup.thumbsup.service;
 
-import com.thumbsup.thumbsup.entity.CustomUserDetails;
 import com.thumbsup.thumbsup.service.interfaces.ICustomUserDetailsService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-
-import java.security.InvalidParameterException;
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
 
 @Service
 @Transactional

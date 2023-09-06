@@ -1,6 +1,5 @@
 package com.thumbsup.thumbsup.mapper;
 
-import com.thumbsup.thumbsup.dto.StateDTO;
 import com.thumbsup.thumbsup.dto.StateDetailDTO;
 import com.thumbsup.thumbsup.entity.OrderStore;
 import com.thumbsup.thumbsup.entity.State;

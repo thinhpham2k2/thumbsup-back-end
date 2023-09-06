@@ -1,6 +1,5 @@
 package com.thumbsup.thumbsup.dto;
 
-import com.thumbsup.thumbsup.entity.OrderStore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

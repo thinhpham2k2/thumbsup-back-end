@@ -1,8 +1,6 @@
 package com.thumbsup.thumbsup.mapper;
 
-import com.thumbsup.thumbsup.dto.AdvertisementDTO;
 import com.thumbsup.thumbsup.dto.ImageDTO;
-import com.thumbsup.thumbsup.dto.OrderDetailDTO;
 import com.thumbsup.thumbsup.dto.ProductDTO;
 import com.thumbsup.thumbsup.entity.*;
 import org.mapstruct.Mapper;

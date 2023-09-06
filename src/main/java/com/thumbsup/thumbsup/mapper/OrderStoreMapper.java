@@ -1,10 +1,12 @@
 package com.thumbsup.thumbsup.mapper;
 
-import com.thumbsup.thumbsup.dto.OrderDTO;
 import com.thumbsup.thumbsup.dto.OrderDetailDTO;
 import com.thumbsup.thumbsup.dto.OrderStoreDTO;
 import com.thumbsup.thumbsup.dto.StateDetailDTO;
-import com.thumbsup.thumbsup.entity.*;
+import com.thumbsup.thumbsup.entity.Order;
+import com.thumbsup.thumbsup.entity.OrderDetail;
+import com.thumbsup.thumbsup.entity.OrderStore;
+import com.thumbsup.thumbsup.entity.StateDetail;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;

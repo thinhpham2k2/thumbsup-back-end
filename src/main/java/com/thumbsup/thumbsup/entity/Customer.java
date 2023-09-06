@@ -9,6 +9,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Nationalized;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -18,7 +19,7 @@ import java.util.List;
 @AllArgsConstructor
 @Entity(name = "Customer")
 @Table(name = "tbl_customer", uniqueConstraints = {@UniqueConstraint(name = "customer_user_name_unique", columnNames = "user_name"), @UniqueConstraint(name = "customer_user_email_unique", columnNames = "email")})
-public class Customer {
+public class Customer implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", updatable = false)

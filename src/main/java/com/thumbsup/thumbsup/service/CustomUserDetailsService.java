@@ -32,27 +32,30 @@ public class CustomUserDetailsService implements ICustomUserDetailsService, User
 
     private final CustomerRepository customerRepository;
 
+    public static String role;
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Optional<Admin> admin = adminRepository.findAdminByUserNameAndStatus(username, true);
-        Optional<Store> store = storeRepository.findStoreByUserNameAndStatus(username, true);
-        Optional<Customer> customer = customerRepository.findCustomerByUserNameAndStatus(username, true);
-        String role;
-
-        if (customer.isPresent()) {
-            role = "Customer";
-        } else if (store.isPresent()) {
-            role = "Store";
-        } else if (admin.isPresent()) {
-            role = "Admin";
-        } else {
-            return null;
-        }
 
         Set<GrantedAuthority> authoritySet = new HashSet<>();
-        authoritySet.add(new SimpleGrantedAuthority("ROLE_" + role));
-
-        return new CustomUserDetails(role.equals("Admin") ? admin.get() : null, role.equals("Store") ? store.get() : null, role.equals("Customer") ? customer.get() : null, authoritySet, role);
+        if (!role.isBlank()) {
+            authoritySet.add(new SimpleGrantedAuthority("ROLE_" + role));
+            switch (role) {
+                case "Admin" -> {
+                    Optional<Admin> admin = adminRepository.findAdminByUserNameAndStatus(username, true);
+                    return new CustomUserDetails(admin.orElse(null), null, null, authoritySet, role);
+                }
+                case "Store" -> {
+                    Optional<Store> store = storeRepository.findStoreByUserNameAndStatus(username, true);
+                    return new CustomUserDetails(null, store.orElse(null), null, authoritySet, role);
+                }
+                case "Customer" -> {
+                    Optional<Customer> customer = customerRepository.findCustomerByUserNameAndStatus(username, true);
+                    return new CustomUserDetails(null, null, customer.orElse(null), authoritySet, role);
+                }
+            }
+        }
+        return null;
     }
 
     @Override

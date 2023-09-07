@@ -19,13 +19,21 @@ public class JwtTokenProvider {
         Date expiryDate = new Date(now.getTime() + jwtExpiration);
         //Tạo subject cho JWT
         subject = userDetails.getUsername();
+        //Tạo claims cho JWT
+        Claims claims = Jwts.claims();
+        claims.put("role", userDetails.getRole()); // Thêm vai trò vào payload
         // Tạo chuỗi json web token từ user name của user.
-        return Jwts.builder().setSubject(subject).setIssuedAt(now).setExpiration(expiryDate).signWith(SignatureAlgorithm.HS512, JWT_SECRET).compact();
+        return Jwts.builder().setClaims(claims).setSubject(subject).setIssuedAt(now).setExpiration(expiryDate).signWith(SignatureAlgorithm.HS512, JWT_SECRET).compact();
     }
 
     public String getUserNameFromJWT(String token) {
         Claims claims = Jwts.parser().setSigningKey(JWT_SECRET).parseClaimsJws(token).getBody();
         return claims.getSubject();
+    }
+
+    public String getRoleFromJWT(String token) {
+        Claims claims = Jwts.parser().setSigningKey(JWT_SECRET).parseClaimsJws(token).getBody();
+        return (String) claims.get("role");
     }
 
     public boolean validateToken(String authToken) {

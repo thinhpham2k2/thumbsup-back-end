@@ -4,6 +4,7 @@ import com.thumbsup.thumbsup.dto.JwtResponseDTO;
 import com.thumbsup.thumbsup.dto.LoginFormDTO;
 import com.thumbsup.thumbsup.entity.CustomUserDetails;
 import com.thumbsup.thumbsup.jwt.JwtTokenProvider;
+import com.thumbsup.thumbsup.service.CustomUserDetailsService;
 import com.thumbsup.thumbsup.service.interfaces.IJwtService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -51,6 +52,7 @@ public class AuthenticationController {
     }
 
     private ResponseEntity<?> accountAuthentication(LoginFormDTO loginFormDTO, String role) {
+        CustomUserDetailsService.role = role;
         String userName = loginFormDTO.getUserName();
         String pass = loginFormDTO.getPassword();
 

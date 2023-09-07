@@ -18,15 +18,7 @@ public class JwtTokenProvider {
         String subject;
         Date expiryDate = new Date(now.getTime() + jwtExpiration);
         //Tạo subject cho JWT
-//        if (userDetails.getPartner() != null) {
-//            subject = userDetails.getPartner().getUserName();
-//
-//        } else if (userDetails.getAdmin() != null) {
-//            subject = userDetails.getAdmin().getUserName();
-//        } else {
-//            return null;
-//        }
-        subject = null;
+        subject = userDetails.getUsername();
         // Tạo chuỗi json web token từ user name của user.
         return Jwts.builder().setSubject(subject).setIssuedAt(now).setExpiration(expiryDate).signWith(SignatureAlgorithm.HS512, JWT_SECRET).compact();
     }

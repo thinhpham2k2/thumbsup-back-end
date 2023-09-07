@@ -1,6 +1,6 @@
 package com.thumbsup.thumbsup.jwt;
 
-import com.thumbsup.thumbsup.service.interfaces.ICustomUserDetailsService;
+import com.thumbsup.thumbsup.service.CustomUserDetailsService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -22,7 +22,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private JwtTokenProvider tokenProvider;
 
     @Autowired
-    private ICustomUserDetailsService customUserDetailsService;
+    private CustomUserDetailsService customUserDetailsService;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
@@ -35,8 +35,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 // Lấy id user từ chuỗi jwt
                 String userName = tokenProvider.getUserNameFromJWT(jwt);
                 // Lấy thông tin người dùng từ id
-//                UserDetails userDetails = customUserDetailsService.loadUserByUsername(userName);
-                UserDetails userDetails = null;
+                UserDetails userDetails = customUserDetailsService.loadUserByUsername(userName);
                 if (userDetails != null) {
                     // Nếu người dùng hợp lệ, set thông tin cho Seturity Context
                     UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());

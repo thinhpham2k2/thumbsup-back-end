@@ -30,7 +30,7 @@ public class Store implements Serializable {
     @Column(name = "user_name", updatable = false, length = 50)
     private String userName;
 
-    @Column(name = "password", length = 50)
+    @Column(name = "password")
     private String password;
 
     @Nationalized

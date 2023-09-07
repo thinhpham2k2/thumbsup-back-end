@@ -4,7 +4,6 @@ import com.thumbsup.thumbsup.jwt.JwtAuthenticationFilter;
 import com.thumbsup.thumbsup.service.CustomUserDetailsService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.access.AccessDeniedException;

@@ -7,23 +7,20 @@ import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.List;
+import java.time.LocalDateTime;
 
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class OrderStoreDTO implements Serializable {
+public class TransactionOrderDTO implements Serializable {
     private Long id;
+    private String zpTransToken;
     private BigDecimal amount;
-    private BigDecimal shippingFee;
-    private Boolean isPaid;
-    private String note;
-    private String code;
-    private String address;
+    private LocalDateTime dateCreated;
     private Boolean state;
-    private Long orderId;
-    private List<StateDetailDTO> stateDetailList;
-    private List<OrderDetailDTO> orderDetailList;
     private Boolean status;
+    private Long orderId;
+    private Long storeId;
+    private String storeName;
 }

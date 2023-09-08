@@ -35,10 +35,6 @@ public class State implements Serializable {
     @Column(name = "status")
     private Boolean status;
 
-    @OneToMany(mappedBy = "stateOrder", fetch = FetchType.LAZY)
-    @JsonBackReference
-    private List<Order> orderList;
-
     @OneToMany(mappedBy = "state", fetch = FetchType.LAZY)
     @JsonBackReference
     private List<StateDetail> stateDetailList;

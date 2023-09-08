@@ -6,17 +6,20 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class StateDetailDTO implements Serializable {
+public class PaymentAccountDTO implements Serializable {
     private Long id;
-    private LocalDateTime date;
-    private Long stateId;
-    private String stateName;
-    private Long orderId;
+    private String zpTransToken;
+    private BigDecimal amount;
+    private LocalDateTime dateCreated;
+    private Boolean state;
     private Boolean status;
+    private Long storeId;
+    private String storeName;
 }

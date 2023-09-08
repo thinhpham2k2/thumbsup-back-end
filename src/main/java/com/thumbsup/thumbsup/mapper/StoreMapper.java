@@ -21,6 +21,8 @@ public interface StoreMapper {
     @Mapping(target = "adsList", ignore = true)
     @Mapping(target = "productList", ignore = true)
     @Mapping(target = "wishlistStoreList", ignore = true)
+    @Mapping(target = "transactionOrderList", ignore = true)
+    @Mapping(target = "paymentAccountList", ignore = true)
     @Mapping(target = "city", source = "cityId", qualifiedByName = "mapCity")
     Store dtoToEntity(StoreDTO dto);
 

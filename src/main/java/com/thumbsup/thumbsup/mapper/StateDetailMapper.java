@@ -1,7 +1,7 @@
 package com.thumbsup.thumbsup.mapper;
 
 import com.thumbsup.thumbsup.dto.StateDetailDTO;
-import com.thumbsup.thumbsup.entity.OrderStore;
+import com.thumbsup.thumbsup.entity.Order;
 import com.thumbsup.thumbsup.entity.State;
 import com.thumbsup.thumbsup.entity.StateDetail;
 import org.mapstruct.Mapper;
@@ -16,11 +16,11 @@ public interface StateDetailMapper {
 
     @Mapping(target = "stateId", source = "state.id")
     @Mapping(target = "stateName", source = "state.state")
-    @Mapping(target = "orderStoreId", source = "orderStore.id")
+    @Mapping(target = "orderId", source = "order.id")
     StateDetailDTO toDTO(StateDetail entity);
 
     @Mapping(target = "state", source = "stateId", qualifiedByName = "mapState")
-    @Mapping(target = "orderStore", source = "orderStoreId", qualifiedByName = "mapOrderStore")
+    @Mapping(target = "order", source = "orderId", qualifiedByName = "mapOrder")
     StateDetail dtoToEntity(StateDetailDTO dto);
 
     @Named("mapState")
@@ -30,10 +30,10 @@ public interface StateDetailMapper {
         return state;
     }
 
-    @Named("mapOrderStore")
-    default OrderStore mapOrderStore(Long id) {
-        OrderStore orderStore = new OrderStore();
-        orderStore.setId(id);
-        return orderStore;
+    @Named("mapOrder")
+    default Order mapOrder(Long id) {
+        Order order = new Order();
+        order.setId(id);
+        return order;
     }
 }

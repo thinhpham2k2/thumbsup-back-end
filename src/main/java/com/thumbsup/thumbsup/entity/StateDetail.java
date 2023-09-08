@@ -36,5 +36,5 @@ public class StateDetail implements Serializable {
     @ManyToOne
     @JsonManagedReference
     @JoinColumn(name = "order_store_id")
-    private OrderStore orderStore;
+    private Order order;
 }

@@ -18,11 +18,10 @@ public class OrderDTO implements Serializable {
     private Long id;
     private BigDecimal amount;
     private LocalDateTime dateCreated;
-    private Boolean state;
-    private Long stateOrderId;
-    private String stateName;
     private Long customerId;
     private String customerName;
-    private List<OrderStoreDTO> orderStoreList;
+    private Boolean state;
     private Boolean status;
+    private List<OrderDetailDTO> orderDetailList;
+    private List<StateDetailDTO> stateDetailList;
 }

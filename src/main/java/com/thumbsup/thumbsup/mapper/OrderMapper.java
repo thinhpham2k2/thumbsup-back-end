@@ -1,11 +1,12 @@
 package com.thumbsup.thumbsup.mapper;
 
 import com.thumbsup.thumbsup.dto.OrderDTO;
-import com.thumbsup.thumbsup.dto.OrderStoreDTO;
+import com.thumbsup.thumbsup.dto.OrderDetailDTO;
+import com.thumbsup.thumbsup.dto.StateDetailDTO;
 import com.thumbsup.thumbsup.entity.Customer;
 import com.thumbsup.thumbsup.entity.Order;
-import com.thumbsup.thumbsup.entity.OrderStore;
-import com.thumbsup.thumbsup.entity.State;
+import com.thumbsup.thumbsup.entity.OrderDetail;
+import com.thumbsup.thumbsup.entity.StateDetail;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
@@ -18,24 +19,17 @@ public interface OrderMapper {
 
     OrderMapper INSTANCE = Mappers.getMapper(OrderMapper.class);
 
-    @Mapping(target = "stateOrderId", source = "stateOrder.id")
-    @Mapping(target = "stateName", source = "stateOrder.state")
     @Mapping(target = "customerId", source = "customer.id")
     @Mapping(target = "customerName", source = "customer.fullName")
-    @Mapping(target = "orderStoreList", source = "orderStoreList", qualifiedByName = "mapOrderStore")
+    @Mapping(target = "orderDetailList", source = "orderDetailList", qualifiedByName = "mapOrderDetail")
+    @Mapping(target = "stateDetailList", source = "stateDetailList", qualifiedByName = "mapStateDetail")
     OrderDTO toDTO(Order entity);
 
-    @Mapping(target = "orderStoreList", ignore = true)
+    @Mapping(target = "stateDetailList", ignore = true)
+    @Mapping(target = "orderDetailList", ignore = true)
+    @Mapping(target = "transactionOrderList", ignore = true)
     @Mapping(target = "customer", source = "customerId", qualifiedByName = "mapCustomer")
-    @Mapping(target = "stateOrder", source = "stateOrderId", qualifiedByName = "mapStateOrder")
     Order dtoToEntity(OrderDTO dto);
-
-    @Named("mapStateOrder")
-    default State mapStateOrder(Long id) {
-        State state = new State();
-        state.setId(id);
-        return state;
-    }
 
     @Named("mapCustomer")
     default Customer mapCustomer(Long id) {
@@ -44,8 +38,13 @@ public interface OrderMapper {
         return customer;
     }
 
-    @Named("mapOrderStore")
-    default List<OrderStoreDTO> mapOrderStore(List<OrderStore> orderStoreList) {
-        return orderStoreList.stream().map(OrderStoreMapper.INSTANCE::toDTO).toList();
+    @Named("mapOrderDetail")
+    default List<OrderDetailDTO> mapOrderDetail(List<OrderDetail> orderDetailList) {
+        return orderDetailList.stream().map(OrderDetailMapper.INSTANCE::toDTO).toList();
+    }
+
+    @Named("mapStateDetail")
+    default List<StateDetailDTO> mapStateDetail(List<StateDetail> stateDetailList) {
+        return stateDetailList.stream().map(StateDetailMapper.INSTANCE::toDTO).toList();
     }
 }

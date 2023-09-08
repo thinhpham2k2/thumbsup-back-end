@@ -45,8 +45,8 @@ public class OrderDetail implements Serializable {
 
     @ManyToOne
     @JsonManagedReference
-    @JoinColumn(name = "order_store_id")
-    private OrderStore orderStore;
+    @JoinColumn(name = "order_id")
+    private Order order;
 
     @ManyToOne
     @JsonManagedReference

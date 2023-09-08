@@ -52,19 +52,19 @@ public class AuthenticationController {
     }
 
     private ResponseEntity<?> accountAuthentication(LoginFormDTO loginFormDTO, String role) {
-        CustomUserDetailsService.role = role;
         String userName = loginFormDTO.getUserName();
-        String pass = loginFormDTO.getPassword();
+        String password = loginFormDTO.getPassword();
 
         if (userName == null || userName.isEmpty()) {
             return ResponseEntity.badRequest().body("Missing UserName");
         }
 
-        if (pass == null || pass.isEmpty()) {
+        if (password == null || password.isEmpty()) {
             return ResponseEntity.badRequest().body("Missing password");
         }
         try {
-            Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginFormDTO.getUserName(), loginFormDTO.getPassword()));
+            CustomUserDetailsService.role = role;
+            Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(userName, password));
             SecurityContextHolder.getContext().setAuthentication(authentication);
             CustomUserDetails user = (CustomUserDetails) authentication.getPrincipal();
             String token = jwtTokenProvider.generateToken(user, 17280000000L);

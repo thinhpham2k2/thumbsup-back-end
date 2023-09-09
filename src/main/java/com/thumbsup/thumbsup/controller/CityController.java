@@ -35,7 +35,7 @@ public class CityController {
     public ResponseEntity<?> getAllCustomer(@RequestParam(defaultValue = "0") Optional<Integer> page,
                                             @RequestParam(defaultValue = "cityName,desc") String sort,
                                             @RequestParam(defaultValue = "100") Optional<Integer> limit) throws MethodArgumentTypeMismatchException {
-        Page<CityDTO> customerList = cityService.getCityList(true, sort, page.orElse(0), limit.orElse(10));
+        Page<CityDTO> customerList = cityService.getCityList(true, sort, page.orElse(0), limit.orElse(100));
         if (!customerList.getContent().isEmpty()) {
             return ResponseEntity.status(HttpStatus.OK).body(customerList);
         } else {

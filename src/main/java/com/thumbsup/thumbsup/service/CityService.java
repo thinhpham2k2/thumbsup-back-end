@@ -34,8 +34,10 @@ public class CityService implements ICityService {
         List<Sort.Order> order = new ArrayList<>();
         Set<String> sourceFieldList = pagingService.getAllFields(City.class);
         String[] subSort = sort.split(",");
-        if (!pagingService.checkPropertPresent(sourceFieldList, subSort[0])) {
-            throw new InvalidParameterException(subSort[0] + " is not a propertied of Customer!");
+        if (pagingService.checkPropertPresent(sourceFieldList, subSort[0])) {
+            order.add(new Sort.Order(pagingService.getSortDirection(subSort[1]), subSort[0]));
+        } else {
+            throw new InvalidParameterException(subSort[0] + " is not a propertied of City!");
         }
 
         Pageable pageable = PageRequest.of(page, limit).withSort(Sort.by(order));

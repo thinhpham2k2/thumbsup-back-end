@@ -24,7 +24,7 @@ public class CityController {
 
     public static final String ADMIN = "ROLE_Admin";
 
-    public static final String PARTNER = "ROLE_Partner";
+    public static final String STORE = "ROLE_Store";
 
     public static final String CUSTOMER = "ROLE_Customer";
 
@@ -32,8 +32,8 @@ public class CityController {
 
     @GetMapping("")
     @Operation(summary = "Get city list")
-    public ResponseEntity<?> getAllCustomer(@RequestParam(defaultValue = "0") Optional<Integer> page,
-                                            @RequestParam(defaultValue = "cityName,desc") String sort,
+    public ResponseEntity<?> getCityList(@RequestParam(defaultValue = "0") Optional<Integer> page,
+                                            @RequestParam(defaultValue = "cityName,asc") String sort,
                                             @RequestParam(defaultValue = "100") Optional<Integer> limit) throws MethodArgumentTypeMismatchException {
         Page<CityDTO> customerList = cityService.getCityList(true, sort, page.orElse(0), limit.orElse(100));
         if (!customerList.getContent().isEmpty()) {

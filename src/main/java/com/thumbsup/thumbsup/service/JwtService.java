@@ -9,9 +9,11 @@ import com.thumbsup.thumbsup.mapper.AdminMapper;
 import com.thumbsup.thumbsup.mapper.CustomerMapper;
 import com.thumbsup.thumbsup.mapper.StoreMapper;
 import com.thumbsup.thumbsup.service.interfaces.IJwtService;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 @Service
 @Transactional
@@ -29,6 +31,15 @@ public class JwtService implements IJwtService {
         } else if (userDetails.getAdmin() != null) {
             AdminDTO adminDTO = AdminMapper.INSTANCE.toDTO(userDetails.getAdmin());
             return new JwtResponseDTO(jwt, adminDTO, "Admin");
+        }
+        return null;
+    }
+
+    @Override
+    public String getJwtFromRequest(HttpServletRequest request) {
+        String bearerToken = request.getHeader("Authorization");
+        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
+            return bearerToken.substring(7);
         }
         return null;
     }

@@ -29,7 +29,10 @@ jobs:
         with:
           name: java-app
           path: '${{ github.workspace }}/target/*.jar'
-
+          
+      - name: Run tests
+        run: mvn test
+        
   deploy:
     runs-on: ubuntu-latest
     needs: build

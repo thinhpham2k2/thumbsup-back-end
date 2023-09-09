@@ -25,6 +25,7 @@ public class ProductDTO implements Serializable {
     private Integer quantity;
     private Integer numOfRating;
     private String description;
+    private Boolean favor;
     private Boolean state;
     private Long storeId;
     private String storeName;

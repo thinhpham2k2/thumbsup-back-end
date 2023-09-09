@@ -16,7 +16,7 @@ public class ImageController {
 
     public static final String ADMIN = "ROLE_Admin";
 
-    public static final String PARTNER = "ROLE_Partner";
+    public static final String STORE = "ROLE_Store";
 
     public static final String CUSTOMER = "ROLE_Customer";
 

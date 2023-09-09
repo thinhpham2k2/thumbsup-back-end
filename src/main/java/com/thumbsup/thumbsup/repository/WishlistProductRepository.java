@@ -6,4 +6,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface WishlistProductRepository extends JpaRepository<WishlistProduct, Long> {
+
+    Boolean existsByStatusAndCustomerIdAndProductId(boolean status, Long customerId, Long productId);
 }

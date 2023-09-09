@@ -15,6 +15,7 @@ public interface ProductMapper {
 
     ProductMapper INSTANCE = Mappers.getMapper(ProductMapper.class);
 
+    @Mapping(target = "favor", ignore = true)
     @Mapping(target = "storeId", source = "store.id")
     @Mapping(target = "storeName", source = "store.storeName")
     @Mapping(target = "categoryId", source = "category.id")

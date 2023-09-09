@@ -29,7 +29,7 @@ public class CustomerController {
 
     public static final String ADMIN = "ROLE_Admin";
 
-    public static final String PARTNER = "ROLE_Partner";
+    public static final String STORE = "ROLE_Store";
 
     public static final String CUSTOMER = "ROLE_Customer";
 
@@ -38,7 +38,7 @@ public class CustomerController {
     @GetMapping("")
     @Secured({ADMIN})
     @Operation(summary = "Get customer list")
-    public ResponseEntity<?> getAllCustomer(@RequestParam(defaultValue = "") String search,
+    public ResponseEntity<?> getCustomerList(@RequestParam(defaultValue = "") String search,
                                             @RequestParam(defaultValue = "0") Optional<Integer> page,
                                             @RequestParam(defaultValue = "fullName,desc") String sort,
                                             @RequestParam(defaultValue = "10") Optional<Integer> limit,

@@ -59,20 +59,22 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.cors(AbstractHttpConfigurer::disable).csrf(AbstractHttpConfigurer::disable);
-        http.authorizeHttpRequests(authorize -> authorize.requestMatchers("/api/v1/auth/**", "/swagger-ui/**", "/v3/api-docs/**", "/api/v1/auth/google/**").permitAll().anyRequest().authenticated());
+        http.authorizeHttpRequests(authorize -> authorize.requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/api/v1/cities/**", "/api/v1/auth/**").permitAll().anyRequest().authenticated());
 
-        http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class).exceptionHandling(exceptionHandling -> exceptionHandling.authenticationEntryPoint((request, response, authException) -> {
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            response.setHeader("message", "Unauthorized");
-            response.getWriter().write("Unauthorized");
-        }).accessDeniedHandler(new AccessDeniedHandler() {
-            @Override
-            public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException accessDeniedException) throws IOException {
-                response.setStatus(HttpServletResponse.SC_FORBIDDEN);
-                response.setHeader("message", "Access Denied!");
-                response.getWriter().write("Access Denied!");
-            }
-        }));
+        http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
+                .exceptionHandling(exceptionHandling -> exceptionHandling
+                        .authenticationEntryPoint((request, response, authException) -> {
+                            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                            response.setHeader("message", "Unauthorized");
+                            response.getWriter().write("Unauthorized");
+                        }).accessDeniedHandler(new AccessDeniedHandler() {
+                            @Override
+                            public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException accessDeniedException) throws IOException {
+                                response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+                                response.setHeader("message", "Access Denied!");
+                                response.getWriter().write("Access Denied!");
+                            }
+                        }));
 
         return http.build();
     }

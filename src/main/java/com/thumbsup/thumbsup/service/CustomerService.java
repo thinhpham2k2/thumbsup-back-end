@@ -41,7 +41,7 @@ public class CustomerService implements ICustomerService {
         }
 
         Pageable pageable = PageRequest.of(page, limit).withSort(Sort.by(order));
-        Page<Customer> pageResult = customerRepository.getCustomerList(true, cityIds, search, pageable);
+        Page<Customer> pageResult = customerRepository.getCustomerList(status, cityIds, search, pageable);
 
         return new PageImpl<>(pageResult.getContent().stream()
                 .map(CustomerMapper.INSTANCE::toDTO)

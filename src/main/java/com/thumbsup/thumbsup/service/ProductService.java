@@ -48,15 +48,16 @@ public class ProductService implements IProductService {
         List<Sort.Order> order = new ArrayList<>();
 
         String userName;
+        try {
+            JwtTokenProvider jwtTokenProvider = new JwtTokenProvider();
+            userName = jwtTokenProvider.getUserNameFromJWT(token);
+        } catch (ExpiredJwtException e) {
+            throw new InvalidParameterException("Expired JWT token");
+        }
+
         if (CustomUserDetailsService.role.equals("Store")) {
-            try {
-                JwtTokenProvider jwtTokenProvider = new JwtTokenProvider();
-                userName = jwtTokenProvider.getUserNameFromJWT(token);
-            } catch (ExpiredJwtException e) {
-                throw new InvalidParameterException("Expired JWT token");
-            }
-            storeIds.clear();
             Optional<Store> store = storeRepository.findStoreByUserNameAndStatus(userName, true);
+            storeIds.clear();
             store.ifPresent(value -> storeIds.add(value.getId()));
         }
 
@@ -69,27 +70,22 @@ public class ProductService implements IProductService {
         }
 
         Pageable pageable = PageRequest.of(page, limit).withSort(Sort.by(order));
-        Page<Product> pageResult = productRepository.getProductList(true, storeIds, cateIds, brandIds, countryIds, search, pageable);
+        Page<Product> pageResult = productRepository.getProductList(status, storeIds, cateIds, brandIds, countryIds, search, pageable);
 
         if (CustomUserDetailsService.role.equals("Customer")) {
-            try {
-                JwtTokenProvider jwtTokenProvider = new JwtTokenProvider();
-                userName = jwtTokenProvider.getUserNameFromJWT(token);
-            } catch (ExpiredJwtException e) {
-                throw new InvalidParameterException("Expired JWT token");
-            }
             Optional<Customer> customer = customerRepository.findCustomerByUserNameAndStatus(userName, true);
-            List<ProductDTO> productList = pageResult.stream().map(ProductMapper.INSTANCE::toDTO)
-                    .peek(p -> p.setFavor(wishlistProductRepository
-                            .existsByStatusAndCustomerIdAndProductId(true, customer.isPresent() ? customer.get().getId() : 1L, p.getId()))).toList();
-            return new PageImpl<>(productList, pageResult.getPageable(), pageResult.getTotalElements());
+            if (customer.isPresent()) {
+                List<ProductDTO> productList = pageResult.stream().map(ProductMapper.INSTANCE::toDTO)
+                        .peek(p -> p.setFavor(wishlistProductRepository
+                                .existsByStatusAndCustomerIdAndProductId(true, customer.get().getId(), p.getId()))).toList();
+                return new PageImpl<>(productList, pageResult.getPageable(), pageResult.getTotalElements());
+            }
         }
 
         return new PageImpl<>(pageResult.getContent().stream()
                 .map(ProductMapper.INSTANCE::toDTO)
                 .collect(Collectors.toList()), pageResult.getPageable(), pageResult.getTotalElements());
     }
-
 
     private static String transferProperty(String property) {
         return switch (property) {

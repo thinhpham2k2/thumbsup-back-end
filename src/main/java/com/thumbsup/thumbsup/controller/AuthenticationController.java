@@ -1,10 +1,10 @@
 package com.thumbsup.thumbsup.controller;
 
+import com.thumbsup.thumbsup.common.Common;
 import com.thumbsup.thumbsup.dto.JwtResponseDTO;
 import com.thumbsup.thumbsup.dto.LoginFormDTO;
 import com.thumbsup.thumbsup.entity.CustomUserDetails;
 import com.thumbsup.thumbsup.jwt.JwtTokenProvider;
-import com.thumbsup.thumbsup.service.CustomUserDetailsService;
 import com.thumbsup.thumbsup.service.interfaces.IJwtService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -63,7 +63,7 @@ public class AuthenticationController {
             return ResponseEntity.badRequest().body("Missing password");
         }
         try {
-            CustomUserDetailsService.role = role;
+            Common.role = role;
             Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(userName, password));
             SecurityContextHolder.getContext().setAuthentication(authentication);
             CustomUserDetails user = (CustomUserDetails) authentication.getPrincipal();

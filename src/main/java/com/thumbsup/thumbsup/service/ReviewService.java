@@ -1,5 +1,6 @@
 package com.thumbsup.thumbsup.service;
 
+import com.thumbsup.thumbsup.common.Common;
 import com.thumbsup.thumbsup.dto.ReviewDTO;
 import com.thumbsup.thumbsup.entity.Review;
 import com.thumbsup.thumbsup.mapper.ReviewMapper;
@@ -31,7 +32,7 @@ public class ReviewService implements IReviewService {
         Pageable pageable = getPageable(sort, page, limit);
         Page<Review> pageResult = reviewRepository.getReviewListByProductId(status, productId, search, pageable);
 
-        if (CustomUserDetailsService.role.equals("Customer")) {
+        if (Common.role.equals("Customer")) {
             List<ReviewDTO> reviewList = pageResult.stream().filter(r -> r.getState().equals(true)).map(ReviewMapper.INSTANCE::toDTO).toList();
             return new PageImpl<>(reviewList, pageResult.getPageable(), pageResult.getTotalElements());
         }

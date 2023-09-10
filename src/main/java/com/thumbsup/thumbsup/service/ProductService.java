@@ -1,5 +1,6 @@
 package com.thumbsup.thumbsup.service;
 
+import com.thumbsup.thumbsup.common.Common;
 import com.thumbsup.thumbsup.dto.ProductDTO;
 import com.thumbsup.thumbsup.entity.Customer;
 import com.thumbsup.thumbsup.entity.Product;
@@ -45,9 +46,9 @@ public class ProductService implements IProductService {
 
         List<Sort.Order> order = new ArrayList<>();
 
-        String userName = CustomUserDetailsService.userName;
+        String userName = Common.userName;
 
-        if (CustomUserDetailsService.role.equals("Store")) {
+        if (Common.role.equals("Store")) {
             Optional<Store> store = storeRepository.findStoreByUserNameAndStatus(userName, true);
             storeIds.clear();
             store.ifPresent(value -> storeIds.add(value.getId()));
@@ -64,7 +65,7 @@ public class ProductService implements IProductService {
         Pageable pageable = PageRequest.of(page, limit).withSort(Sort.by(order));
         Page<Product> pageResult = productRepository.getProductList(status, storeIds, cateIds, brandIds, countryIds, search, pageable);
 
-        if (CustomUserDetailsService.role.equals("Customer")) {
+        if (Common.role.equals("Customer")) {
             Optional<Customer> customer = customerRepository.findCustomerByUserNameAndStatus(userName, true);
             if (customer.isPresent()) {
                 List<ProductDTO> productList = pageResult.stream().map(ProductMapper.INSTANCE::toDTO)

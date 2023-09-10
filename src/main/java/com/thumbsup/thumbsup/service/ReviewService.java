@@ -28,6 +28,20 @@ public class ReviewService implements IReviewService {
 
     @Override
     public Page<ReviewDTO> getReviewListByProductId(boolean status, Long productId, String search, String sort, int page, int limit) {
+        Pageable pageable = getPageable(sort, page, limit);
+        Page<Review> pageResult = reviewRepository.getReviewListByProductId(status, productId, search, pageable);
+
+        if (CustomUserDetailsService.role.equals("Customer")) {
+            List<ReviewDTO> reviewList = pageResult.stream().filter(r -> r.getState().equals(true)).map(ReviewMapper.INSTANCE::toDTO).toList();
+            return new PageImpl<>(reviewList, pageResult.getPageable(), pageResult.getTotalElements());
+        }
+
+        return new PageImpl<>(pageResult.getContent().stream()
+                .map(ReviewMapper.INSTANCE::toDTO)
+                .collect(Collectors.toList()), pageResult.getPageable(), pageResult.getTotalElements());
+    }
+
+    private Pageable getPageable(String sort, int page, int limit) {
         if (page < 0) throw new InvalidParameterException("Page number must not be less than zero!");
         if (limit < 1) throw new InvalidParameterException("Page size must not be less than one!");
 
@@ -39,18 +53,7 @@ public class ReviewService implements IReviewService {
         } else {
             throw new InvalidParameterException(subSort[0] + " is not a propertied of Review!");
         }
-
-        Pageable pageable = PageRequest.of(page, limit).withSort(Sort.by(order));
-        Page<Review> pageResult = reviewRepository.getReviewListByProductId(status, productId, search, pageable);
-
-        if (CustomUserDetailsService.role.equals("Customer")) {
-            List<ReviewDTO> reviewList = pageResult.stream().filter(r -> r.getState().equals(true)).map(ReviewMapper.INSTANCE::toDTO).toList();
-            return new PageImpl<>(reviewList, pageResult.getPageable(), pageResult.getTotalElements());
-        }
-
-        return new PageImpl<>(pageResult.getContent().stream()
-                .map(ReviewMapper.INSTANCE::toDTO)
-                .collect(Collectors.toList()), pageResult.getPageable(), pageResult.getTotalElements());
+        return PageRequest.of(page, limit).withSort(Sort.by(order));
     }
 
     private static String transferProperty(String property) {

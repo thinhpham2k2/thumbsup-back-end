@@ -25,4 +25,6 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
             "OR p.productName LIKE %?6% " +
             "OR p.description LIKE %?6%)")
     Page<Product> getProductList(boolean status, List<Long> storeIds, List<Long> cateIds, List<Long> brandIds, List<Long> countryIds, String search, Pageable pageable);
+
+    boolean existsByStatusAndIdAndStoreId(boolean status, Long productId, Long storeId);
 }

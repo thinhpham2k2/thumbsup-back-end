@@ -4,7 +4,6 @@ import com.thumbsup.thumbsup.dto.ProductDTO;
 import com.thumbsup.thumbsup.entity.Customer;
 import com.thumbsup.thumbsup.entity.Product;
 import com.thumbsup.thumbsup.entity.Store;
-import com.thumbsup.thumbsup.jwt.JwtTokenProvider;
 import com.thumbsup.thumbsup.mapper.ProductMapper;
 import com.thumbsup.thumbsup.repository.CustomerRepository;
 import com.thumbsup.thumbsup.repository.ProductRepository;
@@ -12,7 +11,6 @@ import com.thumbsup.thumbsup.repository.StoreRepository;
 import com.thumbsup.thumbsup.repository.WishlistProductRepository;
 import com.thumbsup.thumbsup.service.interfaces.IPagingService;
 import com.thumbsup.thumbsup.service.interfaces.IProductService;
-import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.*;
@@ -41,19 +39,13 @@ public class ProductService implements IProductService {
     private final WishlistProductRepository wishlistProductRepository;
 
     @Override
-    public Page<ProductDTO> getProductList(boolean status, List<Long> storeIds, List<Long> cateIds, List<Long> brandIds, List<Long> countryIds, String search, String sort, int page, int limit, String token) {
+    public Page<ProductDTO> getProductList(boolean status, List<Long> storeIds, List<Long> cateIds, List<Long> brandIds, List<Long> countryIds, String search, String sort, int page, int limit) {
         if (page < 0) throw new InvalidParameterException("Page number must not be less than zero!");
         if (limit < 1) throw new InvalidParameterException("Page size must not be less than one!");
 
         List<Sort.Order> order = new ArrayList<>();
 
-        String userName;
-        try {
-            JwtTokenProvider jwtTokenProvider = new JwtTokenProvider();
-            userName = jwtTokenProvider.getUserNameFromJWT(token);
-        } catch (ExpiredJwtException e) {
-            throw new InvalidParameterException("Expired JWT token");
-        }
+        String userName = CustomUserDetailsService.userName;
 
         if (CustomUserDetailsService.role.equals("Store")) {
             Optional<Store> store = storeRepository.findStoreByUserNameAndStatus(userName, true);

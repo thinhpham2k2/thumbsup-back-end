@@ -34,6 +34,8 @@ public class CustomUserDetailsService implements ICustomUserDetailsService, User
 
     public static String role;
 
+    public static String userName;
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 

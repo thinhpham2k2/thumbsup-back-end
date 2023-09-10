@@ -9,7 +9,6 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -50,18 +49,13 @@ public class ProductController {
                                             @RequestParam(defaultValue = "") @Parameter(description = "<b>Filter by store ID<b>") List<Long> storeIds,
                                             @RequestParam(defaultValue = "") @Parameter(description = "<b>Filter by category ID<b>") List<Long> categoryIds,
                                             @RequestParam(defaultValue = "") @Parameter(description = "<b>Filter by brand ID<b>") List<Long> brandIds,
-                                            @RequestParam(defaultValue = "") @Parameter(description = "<b>Filter by country ID<b>") List<Long> countryIds,
-                                            HttpServletRequest request) throws MethodArgumentTypeMismatchException {
-        String jwt = jwtService.getJwtFromRequest(request);
-        if (jwt != null) {
-            Page<ProductDTO> productList = productService.getProductList(true, storeIds, categoryIds, brandIds, countryIds, search, sort, page.orElse(0), limit.orElse(10), jwt);
-            if (!productList.getContent().isEmpty()) {
-                return ResponseEntity.status(HttpStatus.OK).body(productList);
-            } else {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Not found product list !");
-            }
+                                            @RequestParam(defaultValue = "") @Parameter(description = "<b>Filter by country ID<b>") List<Long> countryIds) throws MethodArgumentTypeMismatchException {
+        Page<ProductDTO> productList = productService.getProductList(true, storeIds, categoryIds, brandIds, countryIds, search, sort, page.orElse(0), limit.orElse(10));
+        if (!productList.getContent().isEmpty()) {
+            return ResponseEntity.status(HttpStatus.OK).body(productList);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Not found product list !");
         }
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Not found jwt token !");
     }
 
     @GetMapping("/{id}/reviews")

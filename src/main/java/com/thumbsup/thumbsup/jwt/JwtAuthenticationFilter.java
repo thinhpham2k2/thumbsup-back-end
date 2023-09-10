@@ -36,6 +36,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 String userName = tokenProvider.getUserNameFromJWT(jwt);
                 //Lấy role từ chuỗi jwt
                 CustomUserDetailsService.role = tokenProvider.getRoleFromJWT(jwt);
+                CustomUserDetailsService.userName = tokenProvider.getUserNameFromJWT(jwt);
                 // Lấy thông tin người dùng từ id
                 UserDetails userDetails = customUserDetailsService.loadUserByUsername(userName);
                 if (userDetails != null) {

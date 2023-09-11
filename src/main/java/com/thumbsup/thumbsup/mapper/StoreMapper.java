@@ -1,6 +1,7 @@
 package com.thumbsup.thumbsup.mapper;
 
 import com.thumbsup.thumbsup.dto.StoreDTO;
+import com.thumbsup.thumbsup.dto.StoreExtraDTO;
 import com.thumbsup.thumbsup.entity.City;
 import com.thumbsup.thumbsup.entity.Store;
 import org.mapstruct.Mapper;
@@ -16,6 +17,15 @@ public interface StoreMapper {
     @Mapping(target = "cityId", source = "city.id")
     @Mapping(target = "cityName", source = "city.cityName")
     StoreDTO toDTO(Store entity);
+
+    @Mapping(target = "favor", ignore = true)
+    @Mapping(target = "rating", ignore = true)
+    @Mapping(target = "cateList", ignore = true)
+    @Mapping(target = "numOfRating", ignore = true)
+    @Mapping(target = "numOfFollowing", ignore = true)
+    @Mapping(target = "cityId", source = "city.id")
+    @Mapping(target = "cityName", source = "city.cityName")
+    StoreExtraDTO toExtraDTO(Store entity);
 
     @Mapping(target = "password", ignore = true)
     @Mapping(target = "adsList", ignore = true)

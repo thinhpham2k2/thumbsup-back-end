@@ -1,6 +1,7 @@
 package com.thumbsup.thumbsup.controller;
 
 import com.thumbsup.thumbsup.dto.StoreDTO;
+import com.thumbsup.thumbsup.dto.StoreExtraDTO;
 import com.thumbsup.thumbsup.service.interfaces.IStoreService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -11,10 +12,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import java.util.List;
@@ -48,6 +46,18 @@ public class StoreController {
             return ResponseEntity.status(HttpStatus.OK).body(storeList);
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Not found store list !");
+        }
+    }
+
+    @GetMapping("/{id}")
+    @Secured({ADMIN, STORE, CUSTOMER})
+    @Operation(summary = "Get store by id")
+    public ResponseEntity<?> getStoreById(@PathVariable(value = "id") Long storeId) {
+        StoreExtraDTO store = storeService.getStoreById(true, storeId);
+        if (store != null) {
+            return ResponseEntity.status(HttpStatus.OK).body(store);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Not found store !");
         }
     }
 }

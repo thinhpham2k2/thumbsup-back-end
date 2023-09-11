@@ -62,7 +62,7 @@ public class ProductController {
     @GetMapping("/{id}/reviews")
     @Secured({ADMIN, STORE, CUSTOMER})
     @Operation(summary = "Get reviews by product id")
-    public ResponseEntity<?> getReviewListByProductId(@PathVariable(value = "id", required = false) Long productId,
+    public ResponseEntity<?> getReviewListByProductId(@PathVariable(value = "id") Long productId,
                                                       @RequestParam(defaultValue = "") String search,
                                                       @RequestParam(defaultValue = "0") Optional<Integer> page,
                                                       @RequestParam(defaultValue = "product,desc") String sort,
@@ -78,7 +78,7 @@ public class ProductController {
     @GetMapping("/{id}")
     @Secured({ADMIN, STORE, CUSTOMER})
     @Operation(summary = "Get product by id")
-    public ResponseEntity<?> getProductById(@PathVariable(value = "id", required = false) Long productId) {
+    public ResponseEntity<?> getProductById(@PathVariable(value = "id") Long productId) {
         ProductExtraDTO product = productService.getProductById(true, productId);
         if (product != null) {
             return ResponseEntity.status(HttpStatus.OK).body(product);

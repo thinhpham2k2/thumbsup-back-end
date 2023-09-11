@@ -14,10 +14,17 @@ public interface WishlistStoreMapper {
 
     WishlistStoreMapper INSTANCE = Mappers.getMapper(WishlistStoreMapper.class);
 
+    @Mapping(target = "favor", ignore = true)
+    @Mapping(target = "rating", ignore = true)
+    @Mapping(target = "numOfFollowing", ignore = true)
+    @Mapping(target = "numOfRating", ignore = true)
+    @Mapping(target = "cateList", ignore = true)
     @Mapping(target = "customerId", source = "customer.id")
     @Mapping(target = "customerName", source = "customer.fullName")
     @Mapping(target = "storeId", source = "store.id")
     @Mapping(target = "storeName", source = "store.storeName")
+    @Mapping(target = "storeImageCover", source = "store.coverPhoto")
+    @Mapping(target = "storeImageLogo", source = "store.logo")
     WishlistStoreDTO toDTO(WishlistStore entity);
 
     @Mapping(target = "customer", source = "customerId", qualifiedByName = "mapCustomer")

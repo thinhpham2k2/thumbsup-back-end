@@ -11,10 +11,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import java.util.List;
@@ -48,6 +45,18 @@ public class CustomerController {
             return ResponseEntity.status(HttpStatus.OK).body(customerList);
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Not found customer list !");
+        }
+    }
+
+    @GetMapping("/{id}")
+    @Secured({ADMIN, STORE, CUSTOMER})
+    @Operation(summary = "Get customer by id")
+    public ResponseEntity<?> getCustomerById(@PathVariable(value = "id") Long productId) throws MethodArgumentTypeMismatchException {
+        CustomerDTO customer = customerService.getCustomerById(productId, true);
+        if (customer != null) {
+            return ResponseEntity.status(HttpStatus.OK).body(customer);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Not found customer !");
         }
     }
 }

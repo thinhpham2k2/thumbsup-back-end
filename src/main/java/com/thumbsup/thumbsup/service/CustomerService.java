@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -46,6 +47,12 @@ public class CustomerService implements ICustomerService {
         return new PageImpl<>(pageResult.getContent().stream()
                 .map(CustomerMapper.INSTANCE::toDTO)
                 .collect(Collectors.toList()), pageResult.getPageable(), pageResult.getTotalElements());
+    }
+
+    @Override
+    public CustomerDTO getCustomerById(long customerId, boolean status) {
+        Optional<Customer> customer = customerRepository.findCustomerByIdAndStatus(customerId, status);
+        return customer.map(CustomerMapper.INSTANCE::toDTO).orElse(null);
     }
 
     private static String transferProperty(String property) {

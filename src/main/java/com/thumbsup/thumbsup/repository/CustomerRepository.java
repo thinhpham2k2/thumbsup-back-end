@@ -15,6 +15,8 @@ public interface CustomerRepository extends JpaRepository<Customer, Long> {
 
     Optional<Customer> findCustomerByUserNameAndStatus(String userName, boolean status);
 
+    Optional<Customer> findCustomerByIdAndStatus(long customerId, boolean status);
+
     @Query("SELECT c FROM Customer c " +
             "WHERE c.status = ?1 " +
             "AND (:#{#cityIds.size()} = 0 OR c.city.id IN ?2) " +

@@ -33,7 +33,7 @@ public class CountryController {
     @GetMapping("")
     @Operation(summary = "Get country list")
     public ResponseEntity<?> getCountryList(@RequestParam(defaultValue = "0") Optional<Integer> page,
-                                          @RequestParam(defaultValue = "country,asc") String sort,
+                                          @RequestParam(defaultValue = "id,asc") String sort,
                                           @RequestParam(defaultValue = "100") Optional<Integer> limit) throws MethodArgumentTypeMismatchException {
         Page<CountryDTO> countryList = countryService.getCountryList(true, sort, page.orElse(0), limit.orElse(100));
         if (!countryList.getContent().isEmpty()) {

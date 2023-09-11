@@ -32,6 +32,7 @@ public interface ProductMapper {
     @Mapping(target = "favor", ignore = true)
     @Mapping(target = "numOfSold", ignore = true)
     @Mapping(target = "storeId", source = "store.id")
+    @Mapping(target = "storeLogo", source = "store.logo")
     @Mapping(target = "storeName", source = "store.storeName")
     @Mapping(target = "storeAddress", source = "store.address")
     @Mapping(target = "categoryId", source = "category.id")

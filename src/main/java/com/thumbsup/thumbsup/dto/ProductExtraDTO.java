@@ -29,6 +29,7 @@ public class ProductExtraDTO implements Serializable {
     private Boolean favor;
     private Boolean state;
     private Long storeId;
+    private String storeLogo;
     private String storeName;
     private String storeAddress;
     private Long categoryId;

@@ -20,6 +20,7 @@ import java.util.function.Predicate;
 @Transactional
 @RequiredArgsConstructor
 public class WishlistProductService implements IWishlistProductService {
+
     private final WishlistProductRepository wishlistProductRepository;
 
     @Override
@@ -29,9 +30,8 @@ public class WishlistProductService implements IWishlistProductService {
                 .peek(w -> w.setFavor(true)).distinct().toList();
     }
 
-    private static <Product> Predicate<Product> distinctByKey(Function<? super Product, ?> keyExtractor) {
+    private static <T> Predicate<T> distinctByKey(Function<? super T, ?> keyExtractor) {
         Set<Object> seen = ConcurrentHashMap.newKeySet();
         return t -> seen.add(keyExtractor.apply(t));
     }
-
 }

@@ -13,8 +13,11 @@ import java.util.Optional;
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Long> {
 
+    Optional<Product> getProductByStatusAndId(boolean status, long productId);
+
     @Query("SELECT p FROM Product p " +
             "WHERE p.status = ?1 " +
+            "AND p.store.status = ?1 " +
             "AND (:#{#storeIds.size()} = 0 OR p.store.id IN ?2) " +
             "AND (:#{#cateIds.size()} = 0 OR p.category.id IN ?3) " +
             "AND (:#{#brandIds.size()} = 0 OR p.brand.id IN ?4) " +
@@ -26,6 +29,4 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
             "OR p.productName LIKE %?6% " +
             "OR p.description LIKE %?6%)")
     Page<Product> getProductList(boolean status, List<Long> storeIds, List<Long> cateIds, List<Long> brandIds, List<Long> countryIds, String search, Pageable pageable);
-
-    Optional<Product> getProductByStatusAndId(boolean status, long productId);
 }

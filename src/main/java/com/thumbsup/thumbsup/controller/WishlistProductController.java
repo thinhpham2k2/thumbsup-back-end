@@ -1,11 +1,19 @@
 package com.thumbsup.thumbsup.controller;
 
+import com.thumbsup.thumbsup.dto.WishlistProductDTO;
 import com.thumbsup.thumbsup.service.interfaces.IWishlistProductService;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -21,4 +29,16 @@ public class WishlistProductController {
     public static final String CUSTOMER = "ROLE_Customer";
 
     private final IWishlistProductService wishlistProductService;
+
+    @GetMapping("")
+    @Secured({CUSTOMER})
+    @Operation(summary = "Get wishlist product")
+    public ResponseEntity<?> getWishlistProduct(){
+        List<WishlistProductDTO> wishlistProductList = wishlistProductService.getWishlistProduct(true);
+        if (!wishlistProductList.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.OK).body(wishlistProductList);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Not found wishlist product !");
+        }
+    }
 }

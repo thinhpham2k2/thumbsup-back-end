@@ -3,7 +3,6 @@ package com.thumbsup.thumbsup.controller;
 import com.thumbsup.thumbsup.dto.ProductDTO;
 import com.thumbsup.thumbsup.dto.ProductExtraDTO;
 import com.thumbsup.thumbsup.dto.ReviewDTO;
-import com.thumbsup.thumbsup.service.interfaces.IJwtService;
 import com.thumbsup.thumbsup.service.interfaces.IProductService;
 import com.thumbsup.thumbsup.service.interfaces.IReviewService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -35,8 +34,6 @@ public class ProductController {
     public static final String CUSTOMER = "ROLE_Customer";
 
     private final IProductService productService;
-
-    private final IJwtService jwtService;
 
     private final IReviewService reviewService;
 
@@ -78,7 +75,7 @@ public class ProductController {
     @GetMapping("/{id}")
     @Secured({ADMIN, STORE, CUSTOMER})
     @Operation(summary = "Get product by id")
-    public ResponseEntity<?> getProductById(@PathVariable(value = "id") Long productId) {
+    public ResponseEntity<?> getProductById(@PathVariable(value = "id") Long productId) throws MethodArgumentTypeMismatchException {
         ProductExtraDTO product = productService.getProductById(true, productId);
         if (product != null) {
             return ResponseEntity.status(HttpStatus.OK).body(product);

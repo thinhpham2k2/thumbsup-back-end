@@ -8,4 +8,6 @@ import java.util.List;
 public interface ICustomerService {
 
     Page<CustomerDTO> getCustomerList(boolean status, List<Long> cityIds, String search, String sort, int page, int limit);
+
+    CustomerDTO getCustomerById(long customerId, boolean status);
 }

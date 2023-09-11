@@ -52,7 +52,7 @@ public class StoreController {
     @GetMapping("/{id}")
     @Secured({ADMIN, STORE, CUSTOMER})
     @Operation(summary = "Get store by id")
-    public ResponseEntity<?> getStoreById(@PathVariable(value = "id") Long storeId) {
+    public ResponseEntity<?> getStoreById(@PathVariable(value = "id") Long storeId) throws MethodArgumentTypeMismatchException {
         StoreExtraDTO store = storeService.getStoreById(true, storeId);
         if (store != null) {
             return ResponseEntity.status(HttpStatus.OK).body(store);

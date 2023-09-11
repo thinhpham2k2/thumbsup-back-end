@@ -1,5 +1,6 @@
 package com.thumbsup.thumbsup.jwt;
 
+import com.thumbsup.thumbsup.common.Common;
 import com.thumbsup.thumbsup.service.CustomUserDetailsService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -35,7 +36,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 // Lấy username từ chuỗi jwt
                 String userName = tokenProvider.getUserNameFromJWT(jwt);
                 //Lấy role từ chuỗi jwt
-                CustomUserDetailsService.role = tokenProvider.getRoleFromJWT(jwt);
+                Common.role = tokenProvider.getRoleFromJWT(jwt);
+                Common.userName = tokenProvider.getUserNameFromJWT(jwt);
                 // Lấy thông tin người dùng từ id
                 UserDetails userDetails = customUserDetailsService.loadUserByUsername(userName);
                 if (userDetails != null) {

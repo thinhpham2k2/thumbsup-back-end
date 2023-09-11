@@ -1,5 +1,6 @@
 package com.thumbsup.thumbsup.service;
 
+import com.thumbsup.thumbsup.common.Common;
 import com.thumbsup.thumbsup.entity.Admin;
 import com.thumbsup.thumbsup.entity.CustomUserDetails;
 import com.thumbsup.thumbsup.entity.Customer;
@@ -32,26 +33,24 @@ public class CustomUserDetailsService implements ICustomUserDetailsService, User
 
     private final CustomerRepository customerRepository;
 
-    public static String role;
-
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
         Set<GrantedAuthority> authoritySet = new HashSet<>();
-        if (!role.isBlank()) {
-            authoritySet.add(new SimpleGrantedAuthority("ROLE_" + role));
-            switch (role) {
+        if (!Common.role.isBlank()) {
+            authoritySet.add(new SimpleGrantedAuthority("ROLE_" + Common.role));
+            switch (Common.role) {
                 case "Admin" -> {
                     Optional<Admin> admin = adminRepository.findAdminByUserNameAndStatus(username, true);
-                    return new CustomUserDetails(admin.orElse(null), null, null, authoritySet, role);
+                    return new CustomUserDetails(admin.orElse(null), null, null, authoritySet, Common.role);
                 }
                 case "Store" -> {
                     Optional<Store> store = storeRepository.findStoreByUserNameAndStatus(username, true);
-                    return new CustomUserDetails(null, store.orElse(null), null, authoritySet, role);
+                    return new CustomUserDetails(null, store.orElse(null), null, authoritySet, Common.role);
                 }
                 case "Customer" -> {
                     Optional<Customer> customer = customerRepository.findCustomerByUserNameAndStatus(username, true);
-                    return new CustomUserDetails(null, null, customer.orElse(null), authoritySet, role);
+                    return new CustomUserDetails(null, null, customer.orElse(null), authoritySet, Common.role);
                 }
             }
         }

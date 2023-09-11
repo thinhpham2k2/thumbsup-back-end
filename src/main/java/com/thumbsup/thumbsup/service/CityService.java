@@ -41,7 +41,7 @@ public class CityService implements ICityService {
         }
 
         Pageable pageable = PageRequest.of(page, limit).withSort(Sort.by(order));
-        Page<City> pageResult = cityRepository.getCitiesByStatus(true, pageable);
+        Page<City> pageResult = cityRepository.getCitiesByStatus(status, pageable);
 
         return new PageImpl<>(pageResult.getContent().stream()
                 .map(CityMapper.INSTANCE::toDTO)

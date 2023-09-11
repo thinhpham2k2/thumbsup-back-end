@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Long> {
@@ -26,5 +27,5 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
             "OR p.description LIKE %?6%)")
     Page<Product> getProductList(boolean status, List<Long> storeIds, List<Long> cateIds, List<Long> brandIds, List<Long> countryIds, String search, Pageable pageable);
 
-    boolean existsByStatusAndIdAndStoreId(boolean status, Long productId, Long storeId);
+    Optional<Product> getProductByStatusAndId(boolean status, long productId);
 }

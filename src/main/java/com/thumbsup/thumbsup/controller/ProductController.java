@@ -1,6 +1,7 @@
 package com.thumbsup.thumbsup.controller;
 
 import com.thumbsup.thumbsup.dto.ProductDTO;
+import com.thumbsup.thumbsup.dto.ProductExtraDTO;
 import com.thumbsup.thumbsup.dto.ReviewDTO;
 import com.thumbsup.thumbsup.service.interfaces.IJwtService;
 import com.thumbsup.thumbsup.service.interfaces.IProductService;
@@ -60,7 +61,7 @@ public class ProductController {
 
     @GetMapping("/{id}/reviews")
     @Secured({ADMIN, STORE, CUSTOMER})
-    @Operation(summary = "Get review list by product id")
+    @Operation(summary = "Get reviews by product id")
     public ResponseEntity<?> getReviewListByProductId(@PathVariable(value = "id", required = false) Long productId,
                                                       @RequestParam(defaultValue = "") String search,
                                                       @RequestParam(defaultValue = "0") Optional<Integer> page,
@@ -71,6 +72,18 @@ public class ProductController {
             return ResponseEntity.status(HttpStatus.OK).body(reviewList);
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Not found review list !");
+        }
+    }
+
+    @GetMapping("/{id}")
+    @Secured({ADMIN, STORE, CUSTOMER})
+    @Operation(summary = "Get product by id")
+    public ResponseEntity<?> getProductById(@PathVariable(value = "id", required = false) Long productId) {
+        ProductExtraDTO product = productService.getProductById(true, productId);
+        if (product != null) {
+            return ResponseEntity.status(HttpStatus.OK).body(product);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Not found product !");
         }
     }
 }

@@ -2,14 +2,12 @@ package com.thumbsup.thumbsup.service;
 
 import com.thumbsup.thumbsup.common.Common;
 import com.thumbsup.thumbsup.dto.ProductDTO;
+import com.thumbsup.thumbsup.dto.ProductExtraDTO;
 import com.thumbsup.thumbsup.entity.Customer;
 import com.thumbsup.thumbsup.entity.Product;
 import com.thumbsup.thumbsup.entity.Store;
 import com.thumbsup.thumbsup.mapper.ProductMapper;
-import com.thumbsup.thumbsup.repository.CustomerRepository;
-import com.thumbsup.thumbsup.repository.ProductRepository;
-import com.thumbsup.thumbsup.repository.StoreRepository;
-import com.thumbsup.thumbsup.repository.WishlistProductRepository;
+import com.thumbsup.thumbsup.repository.*;
 import com.thumbsup.thumbsup.service.interfaces.IPagingService;
 import com.thumbsup.thumbsup.service.interfaces.IProductService;
 import jakarta.transaction.Transactional;
@@ -31,13 +29,15 @@ public class ProductService implements IProductService {
 
     private final IPagingService pagingService;
 
-    private final ProductRepository productRepository;
-
     private final StoreRepository storeRepository;
+
+    private final ProductRepository productRepository;
 
     private final CustomerRepository customerRepository;
 
     private final WishlistProductRepository wishlistProductRepository;
+
+    private final OrderDetailRepository detailRepository;
 
     @Override
     public Page<ProductDTO> getProductList(boolean status, List<Long> storeIds, List<Long> cateIds, List<Long> brandIds, List<Long> countryIds, String search, String sort, int page, int limit) {
@@ -78,6 +78,23 @@ public class ProductService implements IProductService {
         return new PageImpl<>(pageResult.getContent().stream()
                 .map(ProductMapper.INSTANCE::toDTO)
                 .collect(Collectors.toList()), pageResult.getPageable(), pageResult.getTotalElements());
+    }
+
+    @Override
+    public ProductExtraDTO getProductById(boolean status, long productId) {
+        Optional<Product> product = productRepository.getProductByStatusAndId(status, productId);
+        if(product.isPresent()){
+            ProductExtraDTO productExtraDTO = ProductMapper.INSTANCE.toExtraDTO(product.get());
+
+            if (Common.role.equals("Customer")) {
+                Optional<Customer> customer = customerRepository.findCustomerByUserNameAndStatus(Common.userName, true);
+                customer.ifPresent(value -> productExtraDTO.setFavor(wishlistProductRepository.existsByStatusAndCustomerIdAndProductId(true, value.getId(), productExtraDTO.getId())));
+            }
+
+            productExtraDTO.setNumOfSold(detailRepository.getNumberOfSoldProduct(true, productExtraDTO.getId()).orElse(0));
+            return productExtraDTO;
+        }
+        return null;
     }
 
     private static String transferProperty(String property) {

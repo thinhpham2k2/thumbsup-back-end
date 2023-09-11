@@ -2,12 +2,14 @@ package com.thumbsup.thumbsup.mapper;
 
 import com.thumbsup.thumbsup.dto.ImageDTO;
 import com.thumbsup.thumbsup.dto.ProductDTO;
+import com.thumbsup.thumbsup.dto.ProductExtraDTO;
 import com.thumbsup.thumbsup.entity.*;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
 import org.mapstruct.factory.Mappers;
 
+import java.util.Comparator;
 import java.util.List;
 
 @Mapper(componentModel = "spring")
@@ -24,8 +26,22 @@ public interface ProductMapper {
     @Mapping(target = "brandName", source = "brand.brand")
     @Mapping(target = "countryId", source = "country.id")
     @Mapping(target = "countryName", source = "country.country")
-    @Mapping(target = "imageList", source = "imageList", qualifiedByName = "mapImage")
+    @Mapping(target = "imageCover", source = "imageList", qualifiedByName = "mapImage")
     ProductDTO toDTO(Product entity);
+
+    @Mapping(target = "favor", ignore = true)
+    @Mapping(target = "numOfSold", ignore = true)
+    @Mapping(target = "storeId", source = "store.id")
+    @Mapping(target = "storeName", source = "store.storeName")
+    @Mapping(target = "storeAddress", source = "store.address")
+    @Mapping(target = "categoryId", source = "category.id")
+    @Mapping(target = "categoryName", source = "category.category")
+    @Mapping(target = "brandId", source = "brand.id")
+    @Mapping(target = "brandName", source = "brand.brand")
+    @Mapping(target = "countryId", source = "country.id")
+    @Mapping(target = "countryName", source = "country.country")
+    @Mapping(target = "imageList", source = "imageList", qualifiedByName = "mapImageList")
+    ProductExtraDTO toExtraDTO(Product entity);
 
     @Mapping(target = "wishlistProductList", ignore = true)
     @Mapping(target = "reviewList", ignore = true)
@@ -38,8 +54,16 @@ public interface ProductMapper {
     Product dtoToEntity(ProductDTO dto);
 
     @Named("mapImage")
-    default List<ImageDTO> mapImage(List<Image> imageList) {
-        return imageList.stream().map(ImageMapper.INSTANCE::toDTO).toList();
+    default String mapImage(List<Image> imageList) {
+        return imageList.stream().filter(i -> i.getIsCover().equals(true)).findFirst()
+                .map(Image::getUrl).orElse("");
+    }
+
+    @Named("mapImageList")
+    default List<String> mapImageList(List<Image> imageList) {
+        return imageList.stream().map(ImageMapper.INSTANCE::toDTO)
+                .sorted(Comparator.comparing(ImageDTO::getIsCover).reversed())
+                .map(ImageDTO::getUrl).toList();
     }
 
     @Named("mapStore")

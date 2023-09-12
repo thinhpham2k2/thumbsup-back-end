@@ -10,5 +10,7 @@ public interface IProductService {
 
     Page<ProductDTO> getProductList(boolean status, List<Long> storeIds, List<Long> cateIds, List<Long> brandIds, List<Long> countryIds, String search, String sort, int page, int limit);
 
+    Page<ProductDTO> getProductListByStoreId(boolean status, long storeId, List<Long> cateIds, List<Long> brandIds, List<Long> countryIds, String search, String sort, int page, int limit);
+
     ProductExtraDTO getProductById(boolean status, long productId);
 }

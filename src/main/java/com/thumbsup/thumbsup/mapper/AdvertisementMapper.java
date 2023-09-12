@@ -15,6 +15,8 @@ public interface AdvertisementMapper {
 
     @Mapping(target = "storeId", source = "store.id")
     @Mapping(target = "storeName", source = "store.storeName")
+    @Mapping(target = "storeLogo", source = "store.logo")
+    @Mapping(target = "storeImageCover", source = "store.coverPhoto")
     AdvertisementDTO toDTO(Advertisement entity);
 
     @Mapping(target = "store", source = "storeId", qualifiedByName = "mapStore")

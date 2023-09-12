@@ -1,5 +1,6 @@
 package com.thumbsup.thumbsup.controller;
 
+import com.thumbsup.thumbsup.dto.AdvertisementDTO;
 import com.thumbsup.thumbsup.dto.StoreExtraDTO;
 import com.thumbsup.thumbsup.service.interfaces.IAdvertisementService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -49,6 +50,22 @@ public class AdvertisementController {
             return ResponseEntity.status(HttpStatus.OK).body(storeExtraList);
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Not found advertisement store list !");
+        }
+    }
+
+    @GetMapping("")
+    @Secured({ADMIN})
+    @Operation(summary = "Get advertisement list")
+    public ResponseEntity<?> getAdvertisementList(@RequestParam(defaultValue = "") String search,
+                                                       @RequestParam(defaultValue = "0") Optional<Integer> page,
+                                                       @RequestParam(defaultValue = "id,desc") String sort,
+                                                       @RequestParam(defaultValue = "10") Optional<Integer> limit,
+                                                       @RequestParam(defaultValue = "") @Parameter(description = "<b>Filter by store ID<b>") List<Long> storeIds) throws MethodArgumentTypeMismatchException {
+        Page<AdvertisementDTO> advertisementList = advertisementService.getAdvertisementList(true, storeIds, LocalDateTime.now(), search, sort, page.orElse(0), limit.orElse(10));
+        if (!advertisementList.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.OK).body(advertisementList);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Not found advertisement list !");
         }
     }
 }

@@ -24,6 +24,8 @@ public class AdvertisementDTO implements Serializable {
     private String description;
     private Long storeId;
     private String storeName;
+    private String storeLogo;
+    private String storeImageCover;
     private Boolean state;
     private Boolean status;
 }

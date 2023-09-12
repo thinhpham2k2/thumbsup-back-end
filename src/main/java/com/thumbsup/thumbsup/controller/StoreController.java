@@ -38,7 +38,7 @@ public class StoreController {
     @Operation(summary = "Get store list")
     public ResponseEntity<?> getStoreList(@RequestParam(defaultValue = "") String search,
                                           @RequestParam(defaultValue = "0") Optional<Integer> page,
-                                          @RequestParam(defaultValue = "storeName,desc") String sort,
+                                          @RequestParam(defaultValue = "id,desc") String sort,
                                           @RequestParam(defaultValue = "10") Optional<Integer> limit,
                                           @RequestParam(defaultValue = "") @Parameter(description = "<b>Filter by city ID<b>") List<Long> cityIds) throws MethodArgumentTypeMismatchException {
         Page<StoreDTO> storeList = storeService.getStoreList(true, cityIds, search, sort, page.orElse(0), limit.orElse(10));

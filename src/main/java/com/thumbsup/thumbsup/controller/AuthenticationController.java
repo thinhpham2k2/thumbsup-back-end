@@ -24,7 +24,7 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 @RestController
 @RequiredArgsConstructor
 @Tag(name = "Authentication API")
-@RequestMapping("/api/v1/auths")
+@RequestMapping("/api/v1/auth")
 public class AuthenticationController {
 
     private final IJwtService jwtService;
@@ -33,25 +33,25 @@ public class AuthenticationController {
 
     private final JwtTokenProvider jwtTokenProvider;
 
-    @PostMapping("/admins/login")
+    @PostMapping("/admin/login")
     @Operation(summary = "Admin login to system")
     public ResponseEntity<?> loginAdminAccount(@RequestBody LoginFormDTO loginFormDTO) throws MethodArgumentTypeMismatchException {
         return accountAuthentication(loginFormDTO, "Admin");
     }
 
-    @PostMapping("/stores/login")
+    @PostMapping("/store/login")
     @Operation(summary = "Store login to system")
     public ResponseEntity<?> loginStoreAccount(@RequestBody LoginFormDTO loginFormDTO) throws MethodArgumentTypeMismatchException {
         return accountAuthentication(loginFormDTO, "Store");
     }
 
-    @PostMapping("/customers/login")
+    @PostMapping("/customer/login")
     @Operation(summary = "Customer login to system")
     public ResponseEntity<?> loginCustomerAccount(@RequestBody LoginFormDTO loginFormDTO) throws MethodArgumentTypeMismatchException {
         return accountAuthentication(loginFormDTO, "Customer");
     }
 
-    @PostMapping("/mobiles/login")
+    @PostMapping("/mobile/login")
     @Operation(summary = "Customer or Store login to system")
     public ResponseEntity<?> loginMobileAccount(@RequestBody LoginFormDTO loginFormDTO) throws MethodArgumentTypeMismatchException {
         return accountAuthentication(loginFormDTO, "Mobile");

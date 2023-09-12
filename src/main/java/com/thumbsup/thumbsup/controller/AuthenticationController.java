@@ -33,22 +33,28 @@ public class AuthenticationController {
 
     private final JwtTokenProvider jwtTokenProvider;
 
-    @PostMapping("/admin/sign-in")
+    @PostMapping("/admin/login")
     @Operation(summary = "Admin login to system")
     public ResponseEntity<?> loginAdminAccount(@RequestBody LoginFormDTO loginFormDTO) throws MethodArgumentTypeMismatchException {
         return accountAuthentication(loginFormDTO, "Admin");
     }
 
-    @PostMapping("/store/sign-in")
+    @PostMapping("/store/login")
     @Operation(summary = "Store login to system")
     public ResponseEntity<?> loginStoreAccount(@RequestBody LoginFormDTO loginFormDTO) throws MethodArgumentTypeMismatchException {
         return accountAuthentication(loginFormDTO, "Store");
     }
 
-    @PostMapping("/customer/sign-in")
+    @PostMapping("/customer/login")
     @Operation(summary = "Customer login to system")
     public ResponseEntity<?> loginCustomerAccount(@RequestBody LoginFormDTO loginFormDTO) throws MethodArgumentTypeMismatchException {
         return accountAuthentication(loginFormDTO, "Customer");
+    }
+
+    @PostMapping("/mobile/login")
+    @Operation(summary = "Customer or Store login to system")
+    public ResponseEntity<?> loginMobileAccount(@RequestBody LoginFormDTO loginFormDTO) throws MethodArgumentTypeMismatchException {
+        return accountAuthentication(loginFormDTO, "Mobile");
     }
 
     private ResponseEntity<?> accountAuthentication(LoginFormDTO loginFormDTO, String role) {
@@ -69,7 +75,7 @@ public class AuthenticationController {
             CustomUserDetails user = (CustomUserDetails) authentication.getPrincipal();
             String token = jwtTokenProvider.generateToken(user, 17280000000L);
             JwtResponseDTO jwtResponseDTO = jwtService.validJwtResponse(token, user);
-            if (jwtResponseDTO != null && jwtResponseDTO.getRole().equals(role)) {
+            if (jwtResponseDTO != null) {
                 return ResponseEntity.status(HttpStatus.OK).body(jwtResponseDTO);
             } else {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid user name or password");

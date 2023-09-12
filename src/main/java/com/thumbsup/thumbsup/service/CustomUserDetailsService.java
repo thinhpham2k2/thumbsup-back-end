@@ -38,17 +38,34 @@ public class CustomUserDetailsService implements ICustomUserDetailsService, User
 
         Set<GrantedAuthority> authoritySet = new HashSet<>();
         if (!Common.role.isBlank()) {
-            authoritySet.add(new SimpleGrantedAuthority("ROLE_" + Common.role));
             switch (Common.role) {
+                case "Mobile" -> {
+                    Optional<Customer> customer = customerRepository.findCustomerByUserNameAndStatus(username, true);
+                    if (customer.isPresent()) {
+                        Common.role = "Customer";
+                        authoritySet.add(new SimpleGrantedAuthority("ROLE_" + Common.role));
+                        return new CustomUserDetails(null, null, customer.get(), authoritySet, Common.role);
+                    } else {
+                        Optional<Store> store = storeRepository.findStoreByUserNameAndStatus(username, true);
+                        if (store.isPresent()) {
+                            Common.role = "Store";
+                            authoritySet.add(new SimpleGrantedAuthority("ROLE_" + Common.role));
+                            return new CustomUserDetails(null, store.get(), null, authoritySet, Common.role);
+                        }
+                    }
+                }
                 case "Admin" -> {
+                    authoritySet.add(new SimpleGrantedAuthority("ROLE_" + Common.role));
                     Optional<Admin> admin = adminRepository.findAdminByUserNameAndStatus(username, true);
                     return new CustomUserDetails(admin.orElse(null), null, null, authoritySet, Common.role);
                 }
                 case "Store" -> {
+                    authoritySet.add(new SimpleGrantedAuthority("ROLE_" + Common.role));
                     Optional<Store> store = storeRepository.findStoreByUserNameAndStatus(username, true);
                     return new CustomUserDetails(null, store.orElse(null), null, authoritySet, Common.role);
                 }
                 case "Customer" -> {
+                    authoritySet.add(new SimpleGrantedAuthority("ROLE_" + Common.role));
                     Optional<Customer> customer = customerRepository.findCustomerByUserNameAndStatus(username, true);
                     return new CustomUserDetails(null, null, customer.orElse(null), authoritySet, Common.role);
                 }

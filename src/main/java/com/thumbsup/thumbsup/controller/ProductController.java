@@ -42,7 +42,7 @@ public class ProductController {
     @Operation(summary = "Get product list")
     public ResponseEntity<?> getProductList(@RequestParam(defaultValue = "") String search,
                                             @RequestParam(defaultValue = "0") Optional<Integer> page,
-                                            @RequestParam(defaultValue = "productName,desc") String sort,
+                                            @RequestParam(defaultValue = "id,desc") String sort,
                                             @RequestParam(defaultValue = "10") Optional<Integer> limit,
                                             @RequestParam(defaultValue = "") @Parameter(description = "<b>Filter by store ID<b>") List<Long> storeIds,
                                             @RequestParam(defaultValue = "") @Parameter(description = "<b>Filter by category ID<b>") List<Long> categoryIds,
@@ -62,7 +62,7 @@ public class ProductController {
     public ResponseEntity<?> getReviewListByProductId(@PathVariable(value = "id") Long productId,
                                                       @RequestParam(defaultValue = "") String search,
                                                       @RequestParam(defaultValue = "0") Optional<Integer> page,
-                                                      @RequestParam(defaultValue = "product,desc") String sort,
+                                                      @RequestParam(defaultValue = "id,desc") String sort,
                                                       @RequestParam(defaultValue = "10") Optional<Integer> limit) throws MethodArgumentTypeMismatchException {
         Page<ReviewDTO> reviewList = reviewService.getReviewListByProductId(true, productId, search, sort, page.orElse(0), limit.orElse(10));
         if (!reviewList.getContent().isEmpty()) {

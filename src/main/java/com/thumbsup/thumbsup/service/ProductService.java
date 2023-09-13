@@ -82,15 +82,14 @@ public class ProductService implements IProductService {
         List<Sort.Order> order = new ArrayList<>();
 
         String userName = Common.userName;
-        if (Common.role.equals("Store")) {
-            Optional<Store> store = storeRepository.findStoreByIdAndStatus(storeId, true);
-            if (store.isPresent()) {
-                if (!store.get().getUserName().equals(userName)) {
-                    throw new InvalidParameterException("The store's id is invalid!");
-                }
-            } else {
-                throw new InvalidParameterException("Not found store's id!");
+        Optional<Store> store = storeRepository.findStoreByIdAndStatus(storeId, true);
+        if (store.isPresent()) {
+            if (Common.role.equals("Store")) {
+                Optional<Store> storeOptional = storeRepository.findStoreByUserNameAndStatus(userName, true);
+                storeId = storeOptional.isPresent() ? storeOptional.get().getId() : storeId;
             }
+        } else {
+            throw new InvalidParameterException("Not found store's id!");
         }
 
         Set<String> sourceFieldList = pagingService.getAllFields(Product.class);

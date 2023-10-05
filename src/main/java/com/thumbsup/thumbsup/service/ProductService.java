@@ -48,12 +48,6 @@ public class ProductService implements IProductService {
 
         String userName = Common.userName;
 
-        if (Common.role.equals("Store")) {
-            Optional<Store> store = storeRepository.findStoreByUserNameAndStatus(userName, true);
-            storeIds.clear();
-            store.ifPresent(value -> storeIds.add(value.getId()));
-        }
-
         Set<String> sourceFieldList = pagingService.getAllFields(Product.class);
         String[] subSort = sort.split(",");
         if (pagingService.checkPropertPresent(sourceFieldList, subSort[0])) {
@@ -81,9 +75,43 @@ public class ProductService implements IProductService {
     }
 
     @Override
+    public Page<ProductDTO> getProductListByStoreId(boolean status, long storeId, List<Long> cateIds, List<Long> brandIds, List<Long> countryIds, String search, String sort, int page, int limit) {
+        if (page < 0) throw new InvalidParameterException("Page number must not be less than zero!");
+        if (limit < 1) throw new InvalidParameterException("Page size must not be less than one!");
+
+        List<Sort.Order> order = new ArrayList<>();
+
+        String userName = Common.userName;
+        Optional<Store> store = storeRepository.findStoreByIdAndStatus(storeId, true);
+        if (store.isPresent()) {
+            if (Common.role.equals("Store")) {
+                Optional<Store> storeOptional = storeRepository.findStoreByUserNameAndStatus(userName, true);
+                storeId = storeOptional.isPresent() ? storeOptional.get().getId() : storeId;
+            }
+        } else {
+            throw new InvalidParameterException("Not found store's id!");
+        }
+
+        Set<String> sourceFieldList = pagingService.getAllFields(Product.class);
+        String[] subSort = sort.split(",");
+        if (pagingService.checkPropertPresent(sourceFieldList, subSort[0])) {
+            order.add(new Sort.Order(pagingService.getSortDirection(subSort[1]), transferProperty(subSort[0])));
+        } else {
+            throw new InvalidParameterException(subSort[0] + " is not a propertied of Product!");
+        }
+
+        Pageable pageable = PageRequest.of(page, limit).withSort(Sort.by(order));
+        Page<Product> pageResult = productRepository.getProductListByStoreId(status, storeId, cateIds, brandIds, countryIds, search, pageable);
+
+        return new PageImpl<>(pageResult.getContent().stream()
+                .map(ProductMapper.INSTANCE::toDTO)
+                .collect(Collectors.toList()), pageResult.getPageable(), pageResult.getTotalElements());
+    }
+
+    @Override
     public ProductExtraDTO getProductById(boolean status, long productId) {
         Optional<Product> product = productRepository.getProductByStatusAndId(status, productId);
-        if(product.isPresent()){
+        if (product.isPresent()) {
             ProductExtraDTO productExtraDTO = ProductMapper.INSTANCE.toExtraDTO(product.get());
 
             if (Common.role.equals("Customer")) {

@@ -1,7 +1,9 @@
 package com.thumbsup.thumbsup.controller;
 
+import com.thumbsup.thumbsup.dto.ProductDTO;
 import com.thumbsup.thumbsup.dto.StoreDTO;
 import com.thumbsup.thumbsup.dto.StoreExtraDTO;
+import com.thumbsup.thumbsup.service.interfaces.IProductService;
 import com.thumbsup.thumbsup.service.interfaces.IStoreService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -33,6 +35,8 @@ public class StoreController {
 
     private final IStoreService storeService;
 
+    private final IProductService productService;
+
     @GetMapping("")
     @Secured({ADMIN})
     @Operation(summary = "Get store list")
@@ -58,6 +62,25 @@ public class StoreController {
             return ResponseEntity.status(HttpStatus.OK).body(store);
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Not found store !");
+        }
+    }
+
+    @GetMapping("/{id}/products")
+    @Secured({ADMIN, STORE})
+    @Operation(summary = "Get product list by store id")
+    public ResponseEntity<?> getProductListByStoreId(@PathVariable(value = "id") Long storeId,
+                                                     @RequestParam(defaultValue = "") String search,
+                                                     @RequestParam(defaultValue = "0") Optional<Integer> page,
+                                                     @RequestParam(defaultValue = "id,desc") String sort,
+                                                     @RequestParam(defaultValue = "10") Optional<Integer> limit,
+                                                     @RequestParam(defaultValue = "") @Parameter(description = "<b>Filter by category ID<b>") List<Long> categoryIds,
+                                                     @RequestParam(defaultValue = "") @Parameter(description = "<b>Filter by brand ID<b>") List<Long> brandIds,
+                                                     @RequestParam(defaultValue = "") @Parameter(description = "<b>Filter by country ID<b>") List<Long> countryIds) throws MethodArgumentTypeMismatchException {
+        Page<ProductDTO> productList = productService.getProductListByStoreId(true, storeId, categoryIds, brandIds, countryIds, search, sort, page.orElse(0), limit.orElse(10));
+        if (!productList.getContent().isEmpty()) {
+            return ResponseEntity.status(HttpStatus.OK).body(productList);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Not found product list !");
         }
     }
 }

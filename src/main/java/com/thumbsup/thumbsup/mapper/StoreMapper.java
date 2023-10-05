@@ -33,6 +33,7 @@ public interface StoreMapper {
     @Mapping(target = "wishlistStoreList", ignore = true)
     @Mapping(target = "transactionOrderList", ignore = true)
     @Mapping(target = "paymentAccountList", ignore = true)
+    @Mapping(target = "requestList", ignore = true)
     @Mapping(target = "city", source = "cityId", qualifiedByName = "mapCity")
     Store dtoToEntity(StoreDTO dto);
 

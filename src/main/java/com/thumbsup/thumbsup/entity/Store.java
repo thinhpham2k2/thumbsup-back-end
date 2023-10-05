@@ -105,4 +105,8 @@ public class Store implements Serializable {
     @OneToMany(mappedBy = "store", fetch = FetchType.LAZY)
     @JsonBackReference
     private List<PaymentAccount> paymentAccountList;
+
+    @OneToMany(mappedBy = "store", fetch = FetchType.LAZY)
+    @JsonBackReference
+    private List<Request> requestList;
 }

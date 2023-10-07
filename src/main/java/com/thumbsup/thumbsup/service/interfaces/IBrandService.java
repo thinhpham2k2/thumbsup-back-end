@@ -1,6 +1,6 @@
 package com.thumbsup.thumbsup.service.interfaces;
 
-import com.thumbsup.thumbsup.dto.BrandDTO;
+import com.thumbsup.thumbsup.dto.brand.BrandDTO;
 import org.springframework.data.domain.Page;
 
 public interface IBrandService {

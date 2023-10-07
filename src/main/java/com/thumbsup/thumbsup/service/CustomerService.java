@@ -1,6 +1,6 @@
 package com.thumbsup.thumbsup.service;
 
-import com.thumbsup.thumbsup.dto.CustomerDTO;
+import com.thumbsup.thumbsup.dto.customer.CustomerDTO;
 import com.thumbsup.thumbsup.entity.Customer;
 import com.thumbsup.thumbsup.mapper.CustomerMapper;
 import com.thumbsup.thumbsup.repository.CustomerRepository;

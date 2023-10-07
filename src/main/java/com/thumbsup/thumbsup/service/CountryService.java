@@ -1,6 +1,6 @@
 package com.thumbsup.thumbsup.service;
 
-import com.thumbsup.thumbsup.dto.CountryDTO;
+import com.thumbsup.thumbsup.dto.country.CountryDTO;
 import com.thumbsup.thumbsup.entity.Country;
 import com.thumbsup.thumbsup.mapper.CountryMapper;
 import com.thumbsup.thumbsup.repository.CountryRepository;

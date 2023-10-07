@@ -1,6 +1,6 @@
 package com.thumbsup.thumbsup.mapper;
 
-import com.thumbsup.thumbsup.dto.WishlistProductDTO;
+import com.thumbsup.thumbsup.dto.wishlist.WishlistProductDTO;
 import com.thumbsup.thumbsup.entity.Customer;
 import com.thumbsup.thumbsup.entity.Image;
 import com.thumbsup.thumbsup.entity.Product;

@@ -1,6 +1,6 @@
 package com.thumbsup.thumbsup.mapper;
 
-import com.thumbsup.thumbsup.dto.AdminDTO;
+import com.thumbsup.thumbsup.dto.admin.AdminDTO;
 import com.thumbsup.thumbsup.entity.Admin;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

@@ -1,6 +1,6 @@
 package com.thumbsup.thumbsup.service.interfaces;
 
-import com.thumbsup.thumbsup.dto.WishlistProductDTO;
+import com.thumbsup.thumbsup.dto.wishlist.WishlistProductDTO;
 
 import java.util.List;
 

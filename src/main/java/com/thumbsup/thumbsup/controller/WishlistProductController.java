@@ -1,6 +1,6 @@
 package com.thumbsup.thumbsup.controller;
 
-import com.thumbsup.thumbsup.dto.WishlistProductDTO;
+import com.thumbsup.thumbsup.dto.wishlist.WishlistProductDTO;
 import com.thumbsup.thumbsup.service.interfaces.IWishlistProductService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;

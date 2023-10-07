@@ -1,7 +1,7 @@
 package com.thumbsup.thumbsup.service;
 
 import com.thumbsup.thumbsup.common.Common;
-import com.thumbsup.thumbsup.dto.ReviewDTO;
+import com.thumbsup.thumbsup.dto.review.ReviewDTO;
 import com.thumbsup.thumbsup.entity.Review;
 import com.thumbsup.thumbsup.mapper.ReviewMapper;
 import com.thumbsup.thumbsup.repository.ReviewRepository;

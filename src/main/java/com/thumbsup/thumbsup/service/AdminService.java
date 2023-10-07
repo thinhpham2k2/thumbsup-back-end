@@ -1,6 +1,6 @@
 package com.thumbsup.thumbsup.service;
 
-import com.thumbsup.thumbsup.dto.AdminDTO;
+import com.thumbsup.thumbsup.dto.admin.AdminDTO;
 import com.thumbsup.thumbsup.entity.Admin;
 import com.thumbsup.thumbsup.mapper.AdminMapper;
 import com.thumbsup.thumbsup.repository.AdminRepository;

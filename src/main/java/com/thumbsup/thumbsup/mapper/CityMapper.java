@@ -1,6 +1,6 @@
 package com.thumbsup.thumbsup.mapper;
 
-import com.thumbsup.thumbsup.dto.CityDTO;
+import com.thumbsup.thumbsup.dto.city.CityDTO;
 import com.thumbsup.thumbsup.entity.City;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

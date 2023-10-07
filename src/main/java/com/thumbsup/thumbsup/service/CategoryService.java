@@ -1,6 +1,6 @@
 package com.thumbsup.thumbsup.service;
 
-import com.thumbsup.thumbsup.dto.CategoryDTO;
+import com.thumbsup.thumbsup.dto.category.CategoryDTO;
 import com.thumbsup.thumbsup.entity.Category;
 import com.thumbsup.thumbsup.mapper.CategoryMapper;
 import com.thumbsup.thumbsup.repository.CategoryRepository;

@@ -1,7 +1,7 @@
 package com.thumbsup.thumbsup.service;
 
 import com.thumbsup.thumbsup.common.Common;
-import com.thumbsup.thumbsup.dto.WishlistProductDTO;
+import com.thumbsup.thumbsup.dto.wishlist.WishlistProductDTO;
 import com.thumbsup.thumbsup.entity.WishlistProduct;
 import com.thumbsup.thumbsup.mapper.WishlistProductMapper;
 import com.thumbsup.thumbsup.repository.WishlistProductRepository;

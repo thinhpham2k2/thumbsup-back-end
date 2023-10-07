@@ -1,6 +1,6 @@
 package com.thumbsup.thumbsup.mapper;
 
-import com.thumbsup.thumbsup.dto.RequestDTO;
+import com.thumbsup.thumbsup.dto.request.RequestDTO;
 import com.thumbsup.thumbsup.entity.Request;
 import com.thumbsup.thumbsup.entity.Store;
 import org.mapstruct.Mapper;

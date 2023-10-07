@@ -1,7 +1,7 @@
 package com.thumbsup.thumbsup.controller;
 
-import com.thumbsup.thumbsup.dto.AdvertisementDTO;
-import com.thumbsup.thumbsup.dto.StoreExtraDTO;
+import com.thumbsup.thumbsup.dto.ads.AdvertisementDTO;
+import com.thumbsup.thumbsup.dto.store.StoreExtraDTO;
 import com.thumbsup.thumbsup.service.interfaces.IAdvertisementService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;

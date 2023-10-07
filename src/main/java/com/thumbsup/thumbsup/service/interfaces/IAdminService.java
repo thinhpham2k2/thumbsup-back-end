@@ -1,6 +1,6 @@
 package com.thumbsup.thumbsup.service.interfaces;
 
-import com.thumbsup.thumbsup.dto.AdminDTO;
+import com.thumbsup.thumbsup.dto.admin.AdminDTO;
 import org.springframework.data.domain.Page;
 
 public interface IAdminService {

@@ -1,7 +1,7 @@
 package com.thumbsup.thumbsup.mapper;
 
-import com.thumbsup.thumbsup.dto.StoreDTO;
-import com.thumbsup.thumbsup.dto.StoreExtraDTO;
+import com.thumbsup.thumbsup.dto.store.StoreDTO;
+import com.thumbsup.thumbsup.dto.store.StoreExtraDTO;
 import com.thumbsup.thumbsup.entity.City;
 import com.thumbsup.thumbsup.entity.Store;
 import org.mapstruct.Mapper;

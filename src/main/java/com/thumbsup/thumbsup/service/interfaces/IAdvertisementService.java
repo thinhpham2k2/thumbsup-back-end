@@ -1,7 +1,7 @@
 package com.thumbsup.thumbsup.service.interfaces;
 
-import com.thumbsup.thumbsup.dto.AdvertisementDTO;
-import com.thumbsup.thumbsup.dto.StoreExtraDTO;
+import com.thumbsup.thumbsup.dto.ads.AdvertisementDTO;
+import com.thumbsup.thumbsup.dto.store.StoreExtraDTO;
 import org.springframework.data.domain.Page;
 
 import java.time.LocalDateTime;

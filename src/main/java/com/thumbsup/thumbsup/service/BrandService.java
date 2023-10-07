@@ -1,6 +1,6 @@
 package com.thumbsup.thumbsup.service;
 
-import com.thumbsup.thumbsup.dto.BrandDTO;
+import com.thumbsup.thumbsup.dto.brand.BrandDTO;
 import com.thumbsup.thumbsup.entity.Brand;
 import com.thumbsup.thumbsup.mapper.BrandMapper;
 import com.thumbsup.thumbsup.repository.BrandRepository;

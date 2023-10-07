@@ -27,6 +27,18 @@ public class Request {
     @Column(name = "amount")
     private BigDecimal amount;
 
+    @Column(name = "method")
+    @Nationalized
+    private String method;
+
+    @Column(name = "account_number")
+    @Nationalized
+    private String accountNumber;
+
+    @Column(name = "bank_name")
+    @Nationalized
+    private String bankName;
+
     @Column(
             name = "note",
             length = 8000)

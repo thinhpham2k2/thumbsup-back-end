@@ -1,6 +1,6 @@
 package com.thumbsup.thumbsup.mapper;
 
-import com.thumbsup.thumbsup.dto.TransactionOrderDTO;
+import com.thumbsup.thumbsup.dto.transaction.TransactionOrderDTO;
 import com.thumbsup.thumbsup.entity.Order;
 import com.thumbsup.thumbsup.entity.Store;
 import com.thumbsup.thumbsup.entity.TransactionOrder;

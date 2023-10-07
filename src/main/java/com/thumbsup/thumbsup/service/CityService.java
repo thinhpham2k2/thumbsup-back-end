@@ -1,6 +1,6 @@
 package com.thumbsup.thumbsup.service;
 
-import com.thumbsup.thumbsup.dto.CityDTO;
+import com.thumbsup.thumbsup.dto.city.CityDTO;
 import com.thumbsup.thumbsup.entity.City;
 import com.thumbsup.thumbsup.mapper.CityMapper;
 import com.thumbsup.thumbsup.repository.CityRepository;

@@ -1,6 +1,6 @@
 package com.thumbsup.thumbsup.controller;
 
-import com.thumbsup.thumbsup.dto.CustomerDTO;
+import com.thumbsup.thumbsup.dto.customer.CustomerDTO;
 import com.thumbsup.thumbsup.service.interfaces.ICustomerService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;

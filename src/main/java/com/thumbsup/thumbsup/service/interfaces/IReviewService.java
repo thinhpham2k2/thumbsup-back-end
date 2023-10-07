@@ -1,6 +1,6 @@
 package com.thumbsup.thumbsup.service.interfaces;
 
-import com.thumbsup.thumbsup.dto.ReviewDTO;
+import com.thumbsup.thumbsup.dto.review.ReviewDTO;
 import org.springframework.data.domain.Page;
 
 public interface IReviewService {

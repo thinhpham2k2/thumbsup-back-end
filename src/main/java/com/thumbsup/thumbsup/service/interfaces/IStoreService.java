@@ -1,7 +1,7 @@
 package com.thumbsup.thumbsup.service.interfaces;
 
-import com.thumbsup.thumbsup.dto.StoreDTO;
-import com.thumbsup.thumbsup.dto.StoreExtraDTO;
+import com.thumbsup.thumbsup.dto.store.StoreDTO;
+import com.thumbsup.thumbsup.dto.store.StoreExtraDTO;
 import org.springframework.data.domain.Page;
 
 import java.util.List;

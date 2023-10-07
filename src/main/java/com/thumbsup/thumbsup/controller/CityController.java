@@ -1,6 +1,6 @@
 package com.thumbsup.thumbsup.controller;
 
-import com.thumbsup.thumbsup.dto.CityDTO;
+import com.thumbsup.thumbsup.dto.city.CityDTO;
 import com.thumbsup.thumbsup.service.interfaces.ICityService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;

@@ -1,6 +1,6 @@
 package com.thumbsup.thumbsup.controller;
 
-import com.thumbsup.thumbsup.dto.CountryDTO;
+import com.thumbsup.thumbsup.dto.country.CountryDTO;
 import com.thumbsup.thumbsup.service.interfaces.ICountryService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;

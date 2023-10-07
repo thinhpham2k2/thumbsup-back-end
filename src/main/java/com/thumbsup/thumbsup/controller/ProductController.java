@@ -1,8 +1,8 @@
 package com.thumbsup.thumbsup.controller;
 
-import com.thumbsup.thumbsup.dto.ProductDTO;
-import com.thumbsup.thumbsup.dto.ProductExtraDTO;
-import com.thumbsup.thumbsup.dto.ReviewDTO;
+import com.thumbsup.thumbsup.dto.product.ProductDTO;
+import com.thumbsup.thumbsup.dto.product.ProductExtraDTO;
+import com.thumbsup.thumbsup.dto.review.ReviewDTO;
 import com.thumbsup.thumbsup.service.interfaces.IProductService;
 import com.thumbsup.thumbsup.service.interfaces.IReviewService;
 import io.swagger.v3.oas.annotations.Operation;

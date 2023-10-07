@@ -1,8 +1,8 @@
 package com.thumbsup.thumbsup.service;
 
 import com.thumbsup.thumbsup.common.Common;
-import com.thumbsup.thumbsup.dto.ProductDTO;
-import com.thumbsup.thumbsup.dto.ProductExtraDTO;
+import com.thumbsup.thumbsup.dto.product.ProductDTO;
+import com.thumbsup.thumbsup.dto.product.ProductExtraDTO;
 import com.thumbsup.thumbsup.entity.Customer;
 import com.thumbsup.thumbsup.entity.Product;
 import com.thumbsup.thumbsup.entity.Store;

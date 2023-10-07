@@ -1,6 +1,6 @@
 package com.thumbsup.thumbsup.controller;
 
-import com.thumbsup.thumbsup.dto.BrandDTO;
+import com.thumbsup.thumbsup.dto.brand.BrandDTO;
 import com.thumbsup.thumbsup.service.interfaces.IBrandService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;

@@ -1,6 +1,6 @@
 package com.thumbsup.thumbsup.controller;
 
-import com.thumbsup.thumbsup.dto.CategoryDTO;
+import com.thumbsup.thumbsup.dto.category.CategoryDTO;
 import com.thumbsup.thumbsup.service.interfaces.ICategoryService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;

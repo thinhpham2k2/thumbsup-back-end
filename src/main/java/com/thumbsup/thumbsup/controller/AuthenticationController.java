@@ -1,8 +1,8 @@
 package com.thumbsup.thumbsup.controller;
 
 import com.thumbsup.thumbsup.common.Common;
-import com.thumbsup.thumbsup.dto.JwtResponseDTO;
-import com.thumbsup.thumbsup.dto.LoginFormDTO;
+import com.thumbsup.thumbsup.dto.jwt.JwtResponseDTO;
+import com.thumbsup.thumbsup.dto.jwt.LoginFormDTO;
 import com.thumbsup.thumbsup.entity.CustomUserDetails;
 import com.thumbsup.thumbsup.jwt.JwtTokenProvider;
 import com.thumbsup.thumbsup.service.interfaces.IJwtService;

@@ -1,9 +1,9 @@
 package com.thumbsup.thumbsup.service;
 
-import com.thumbsup.thumbsup.dto.AdminDTO;
-import com.thumbsup.thumbsup.dto.CustomerDTO;
-import com.thumbsup.thumbsup.dto.JwtResponseDTO;
-import com.thumbsup.thumbsup.dto.StoreDTO;
+import com.thumbsup.thumbsup.dto.admin.AdminDTO;
+import com.thumbsup.thumbsup.dto.customer.CustomerDTO;
+import com.thumbsup.thumbsup.dto.jwt.JwtResponseDTO;
+import com.thumbsup.thumbsup.dto.store.StoreDTO;
 import com.thumbsup.thumbsup.entity.CustomUserDetails;
 import com.thumbsup.thumbsup.mapper.AdminMapper;
 import com.thumbsup.thumbsup.mapper.CustomerMapper;

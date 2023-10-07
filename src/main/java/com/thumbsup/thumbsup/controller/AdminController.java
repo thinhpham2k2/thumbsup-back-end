@@ -1,6 +1,6 @@
 package com.thumbsup.thumbsup.controller;
 
-import com.thumbsup.thumbsup.dto.AdminDTO;
+import com.thumbsup.thumbsup.dto.admin.AdminDTO;
 import com.thumbsup.thumbsup.service.interfaces.IAdminService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;

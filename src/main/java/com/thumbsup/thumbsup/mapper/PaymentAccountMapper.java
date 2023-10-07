@@ -1,6 +1,6 @@
 package com.thumbsup.thumbsup.mapper;
 
-import com.thumbsup.thumbsup.dto.PaymentAccountDTO;
+import com.thumbsup.thumbsup.dto.payment.PaymentAccountDTO;
 import com.thumbsup.thumbsup.entity.PaymentAccount;
 import com.thumbsup.thumbsup.entity.Store;
 import org.mapstruct.Mapper;

@@ -3,6 +3,11 @@ package com.thumbsup.thumbsup.controller;
 import com.thumbsup.thumbsup.dto.wishlist.WishlistProductDTO;
 import com.thumbsup.thumbsup.service.interfaces.IWishlistProductService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -33,6 +38,11 @@ public class WishlistProductController {
     @GetMapping("")
     @Secured({CUSTOMER})
     @Operation(summary = "Get wishlist product")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Success", content =
+                    {@Content(mediaType = "application/json", array =
+                    @ArraySchema(schema = @Schema(implementation = WishlistProductDTO.class)))}),
+    })
     public ResponseEntity<?> getWishlistProduct(){
         List<WishlistProductDTO> wishlistProductList = wishlistProductService.getWishlistProduct(true);
         if (!wishlistProductList.isEmpty()) {

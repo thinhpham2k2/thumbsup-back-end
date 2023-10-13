@@ -4,6 +4,10 @@ import com.thumbsup.thumbsup.dto.customer.CustomerDTO;
 import com.thumbsup.thumbsup.service.interfaces.ICustomerService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -35,6 +39,11 @@ public class CustomerController {
     @GetMapping("")
     @Secured({ADMIN})
     @Operation(summary = "Get customer list")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Success", content =
+                    { @Content(mediaType = "application/json", schema =
+                    @Schema(implementation = Page.class)) }),
+    })
     public ResponseEntity<?> getCustomerList(@RequestParam(defaultValue = "") String search,
                                             @RequestParam(defaultValue = "0") Optional<Integer> page,
                                             @RequestParam(defaultValue = "id,desc") String sort,
@@ -51,6 +60,11 @@ public class CustomerController {
     @GetMapping("/{id}")
     @Secured({ADMIN, STORE, CUSTOMER})
     @Operation(summary = "Get customer by id")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Success", content =
+                    { @Content(mediaType = "application/json", schema =
+                    @Schema(implementation = CustomerDTO.class)) }),
+    })
     public ResponseEntity<?> getCustomerById(@PathVariable(value = "id") Long productId) throws MethodArgumentTypeMismatchException {
         CustomerDTO customer = customerService.getCustomerById(productId, true);
         if (customer != null) {

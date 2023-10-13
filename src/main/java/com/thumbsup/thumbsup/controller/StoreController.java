@@ -7,6 +7,10 @@ import com.thumbsup.thumbsup.service.interfaces.IProductService;
 import com.thumbsup.thumbsup.service.interfaces.IStoreService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -40,6 +44,11 @@ public class StoreController {
     @GetMapping("")
     @Secured({ADMIN})
     @Operation(summary = "Get store list")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Success", content =
+                    { @Content(mediaType = "application/json", schema =
+                    @Schema(implementation = Page.class)) }),
+    })
     public ResponseEntity<?> getStoreList(@RequestParam(defaultValue = "") String search,
                                           @RequestParam(defaultValue = "0") Optional<Integer> page,
                                           @RequestParam(defaultValue = "id,desc") String sort,
@@ -56,6 +65,11 @@ public class StoreController {
     @GetMapping("/{id}")
     @Secured({ADMIN, STORE, CUSTOMER})
     @Operation(summary = "Get store by id")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Success", content =
+                    { @Content(mediaType = "application/json", schema =
+                    @Schema(implementation = StoreExtraDTO.class)) }),
+    })
     public ResponseEntity<?> getStoreById(@PathVariable(value = "id") Long storeId) throws MethodArgumentTypeMismatchException {
         StoreExtraDTO store = storeService.getStoreById(true, storeId);
         if (store != null) {
@@ -68,6 +82,11 @@ public class StoreController {
     @GetMapping("/{id}/products")
     @Secured({ADMIN, STORE})
     @Operation(summary = "Get product list by store id")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Success", content =
+                    { @Content(mediaType = "application/json", schema =
+                    @Schema(implementation = Page.class)) }),
+    })
     public ResponseEntity<?> getProductListByStoreId(@PathVariable(value = "id") Long storeId,
                                                      @RequestParam(defaultValue = "") String search,
                                                      @RequestParam(defaultValue = "0") Optional<Integer> page,

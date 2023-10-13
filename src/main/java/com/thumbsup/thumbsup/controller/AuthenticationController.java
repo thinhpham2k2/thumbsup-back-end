@@ -7,6 +7,10 @@ import com.thumbsup.thumbsup.entity.CustomUserDetails;
 import com.thumbsup.thumbsup.jwt.JwtTokenProvider;
 import com.thumbsup.thumbsup.service.interfaces.IJwtService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -35,24 +39,44 @@ public class AuthenticationController {
 
     @PostMapping("/admin/login")
     @Operation(summary = "Admin login to system")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Success", content =
+                    { @Content(mediaType = "application/json", schema =
+                    @Schema(implementation = JwtResponseDTO.class)) }),
+    })
     public ResponseEntity<?> loginAdminAccount(@RequestBody LoginFormDTO loginFormDTO) throws MethodArgumentTypeMismatchException {
         return accountAuthentication(loginFormDTO, "Admin");
     }
 
     @PostMapping("/store/login")
     @Operation(summary = "Store login to system")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Success", content =
+                    { @Content(mediaType = "application/json", schema =
+                    @Schema(implementation = JwtResponseDTO.class)) }),
+    })
     public ResponseEntity<?> loginStoreAccount(@RequestBody LoginFormDTO loginFormDTO) throws MethodArgumentTypeMismatchException {
         return accountAuthentication(loginFormDTO, "Store");
     }
 
     @PostMapping("/customer/login")
     @Operation(summary = "Customer login to system")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Success", content =
+                    { @Content(mediaType = "application/json", schema =
+                    @Schema(implementation = JwtResponseDTO.class)) }),
+    })
     public ResponseEntity<?> loginCustomerAccount(@RequestBody LoginFormDTO loginFormDTO) throws MethodArgumentTypeMismatchException {
         return accountAuthentication(loginFormDTO, "Customer");
     }
 
     @PostMapping("/mobile/login")
     @Operation(summary = "Customer or Store login to system")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Success", content =
+                    { @Content(mediaType = "application/json", schema =
+                    @Schema(implementation = JwtResponseDTO.class)) }),
+    })
     public ResponseEntity<?> loginMobileAccount(@RequestBody LoginFormDTO loginFormDTO) throws MethodArgumentTypeMismatchException {
         return accountAuthentication(loginFormDTO, "Mobile");
     }

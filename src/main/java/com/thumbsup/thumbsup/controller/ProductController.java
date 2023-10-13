@@ -7,6 +7,10 @@ import com.thumbsup.thumbsup.service.interfaces.IProductService;
 import com.thumbsup.thumbsup.service.interfaces.IReviewService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -40,6 +44,11 @@ public class ProductController {
     @GetMapping("")
     @Secured({ADMIN, STORE, CUSTOMER})
     @Operation(summary = "Get product list")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Success", content =
+                    { @Content(mediaType = "application/json", schema =
+                    @Schema(implementation = Page.class)) }),
+    })
     public ResponseEntity<?> getProductList(@RequestParam(defaultValue = "") String search,
                                             @RequestParam(defaultValue = "0") Optional<Integer> page,
                                             @RequestParam(defaultValue = "id,desc") String sort,
@@ -59,6 +68,11 @@ public class ProductController {
     @GetMapping("/{id}/reviews")
     @Secured({ADMIN, STORE, CUSTOMER})
     @Operation(summary = "Get reviews by product id")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Success", content =
+                    { @Content(mediaType = "application/json", schema =
+                    @Schema(implementation = Page.class)) }),
+    })
     public ResponseEntity<?> getReviewListByProductId(@PathVariable(value = "id") Long productId,
                                                       @RequestParam(defaultValue = "") String search,
                                                       @RequestParam(defaultValue = "0") Optional<Integer> page,
@@ -75,6 +89,11 @@ public class ProductController {
     @GetMapping("/{id}")
     @Secured({ADMIN, STORE, CUSTOMER})
     @Operation(summary = "Get product by id")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Success", content =
+                    { @Content(mediaType = "application/json", schema =
+                    @Schema(implementation = ProductExtraDTO.class)) }),
+    })
     public ResponseEntity<?> getProductById(@PathVariable(value = "id") Long productId) throws MethodArgumentTypeMismatchException {
         ProductExtraDTO product = productService.getProductById(true, productId);
         if (product != null) {

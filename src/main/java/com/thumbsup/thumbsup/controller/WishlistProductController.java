@@ -42,8 +42,10 @@ public class WishlistProductController {
             @ApiResponse(responseCode = "200", description = "Success", content =
                     {@Content(mediaType = "application/json", array =
                     @ArraySchema(schema = @Schema(implementation = WishlistProductDTO.class)))}),
+            @ApiResponse(responseCode = "400", description = "Fail", content =
+                    {@Content(mediaType = "text/plain", schema = @Schema(implementation = String.class))}),
     })
-    public ResponseEntity<?> getWishlistProduct(){
+    public ResponseEntity<?> getWishlistProduct() {
         List<WishlistProductDTO> wishlistProductList = wishlistProductService.getWishlistProduct(true);
         if (!wishlistProductList.isEmpty()) {
             return ResponseEntity.status(HttpStatus.OK).body(wishlistProductList);

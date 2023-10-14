@@ -38,12 +38,14 @@ public class CategoryController {
     @Operation(summary = "Get category list")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Success", content =
-                    { @Content(mediaType = "application/json", schema =
-                    @Schema(implementation = Page.class)) }),
+                    {@Content(mediaType = "application/json", schema =
+                    @Schema(implementation = Page.class))}),
+            @ApiResponse(responseCode = "400", description = "Fail", content =
+                    {@Content(mediaType = "text/plain", schema = @Schema(implementation = String.class))}),
     })
     public ResponseEntity<?> getCategoryList(@RequestParam(defaultValue = "0") Optional<Integer> page,
-                                          @RequestParam(defaultValue = "id,asc") String sort,
-                                          @RequestParam(defaultValue = "100") Optional<Integer> limit) throws MethodArgumentTypeMismatchException {
+                                             @RequestParam(defaultValue = "id,asc") String sort,
+                                             @RequestParam(defaultValue = "100") Optional<Integer> limit) throws MethodArgumentTypeMismatchException {
         Page<CategoryDTO> categoryList = categoryService.getCategoryList(true, sort, page.orElse(0), limit.orElse(100));
         if (!categoryList.getContent().isEmpty()) {
             return ResponseEntity.status(HttpStatus.OK).body(categoryList);

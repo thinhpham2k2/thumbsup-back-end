@@ -41,14 +41,16 @@ public class CustomerController {
     @Operation(summary = "Get customer list")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Success", content =
-                    { @Content(mediaType = "application/json", schema =
-                    @Schema(implementation = Page.class)) }),
+                    {@Content(mediaType = "application/json", schema =
+                    @Schema(implementation = Page.class))}),
+            @ApiResponse(responseCode = "400", description = "Fail", content =
+                    {@Content(mediaType = "text/plain", schema = @Schema(implementation = String.class))}),
     })
     public ResponseEntity<?> getCustomerList(@RequestParam(defaultValue = "") String search,
-                                            @RequestParam(defaultValue = "0") Optional<Integer> page,
-                                            @RequestParam(defaultValue = "id,desc") String sort,
-                                            @RequestParam(defaultValue = "10") Optional<Integer> limit,
-                                            @RequestParam(defaultValue = "") @Parameter(description = "<b>Filter by city ID<b>") List<Long> cityIds) throws MethodArgumentTypeMismatchException {
+                                             @RequestParam(defaultValue = "0") Optional<Integer> page,
+                                             @RequestParam(defaultValue = "id,desc") String sort,
+                                             @RequestParam(defaultValue = "10") Optional<Integer> limit,
+                                             @RequestParam(defaultValue = "") @Parameter(description = "<b>Filter by city ID<b>") List<Long> cityIds) throws MethodArgumentTypeMismatchException {
         Page<CustomerDTO> customerList = customerService.getCustomerList(true, cityIds, search, sort, page.orElse(0), limit.orElse(10));
         if (!customerList.getContent().isEmpty()) {
             return ResponseEntity.status(HttpStatus.OK).body(customerList);
@@ -62,8 +64,10 @@ public class CustomerController {
     @Operation(summary = "Get customer by id")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Success", content =
-                    { @Content(mediaType = "application/json", schema =
-                    @Schema(implementation = CustomerDTO.class)) }),
+                    {@Content(mediaType = "application/json", schema =
+                    @Schema(implementation = CustomerDTO.class))}),
+            @ApiResponse(responseCode = "400", description = "Fail", content =
+                    {@Content(mediaType = "text/plain", schema = @Schema(implementation = String.class))}),
     })
     public ResponseEntity<?> getCustomerById(@PathVariable(value = "id") Long productId) throws MethodArgumentTypeMismatchException {
         CustomerDTO customer = customerService.getCustomerById(productId, true);

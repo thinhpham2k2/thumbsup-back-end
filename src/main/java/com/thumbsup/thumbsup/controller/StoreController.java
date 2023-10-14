@@ -46,8 +46,8 @@ public class StoreController {
     @Operation(summary = "Get store list")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Success", content =
-                    { @Content(mediaType = "application/json", schema =
-                    @Schema(implementation = Page.class)) }),
+                    {@Content(mediaType = "application/json", schema =
+                    @Schema(implementation = Page.class))}),
     })
     public ResponseEntity<?> getStoreList(@RequestParam(defaultValue = "") String search,
                                           @RequestParam(defaultValue = "0") Optional<Integer> page,
@@ -67,8 +67,10 @@ public class StoreController {
     @Operation(summary = "Get store by id")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Success", content =
-                    { @Content(mediaType = "application/json", schema =
-                    @Schema(implementation = StoreExtraDTO.class)) }),
+                    {@Content(mediaType = "application/json", schema =
+                    @Schema(implementation = StoreExtraDTO.class))}),
+            @ApiResponse(responseCode = "400", description = "Fail", content =
+                    {@Content(mediaType = "text/plain", schema = @Schema(implementation = String.class))}),
     })
     public ResponseEntity<?> getStoreById(@PathVariable(value = "id") Long storeId) throws MethodArgumentTypeMismatchException {
         StoreExtraDTO store = storeService.getStoreById(true, storeId);
@@ -84,8 +86,10 @@ public class StoreController {
     @Operation(summary = "Get product list by store id")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Success", content =
-                    { @Content(mediaType = "application/json", schema =
-                    @Schema(implementation = Page.class)) }),
+                    {@Content(mediaType = "application/json", schema =
+                    @Schema(implementation = Page.class))}),
+            @ApiResponse(responseCode = "400", description = "Fail", content =
+                    {@Content(mediaType = "text/plain", schema = @Schema(implementation = String.class))}),
     })
     public ResponseEntity<?> getProductListByStoreId(@PathVariable(value = "id") Long storeId,
                                                      @RequestParam(defaultValue = "") String search,

@@ -42,6 +42,8 @@ public class WishlistStoreController {
             @ApiResponse(responseCode = "200", description = "Success", content =
                     {@Content(mediaType = "application/json", array =
                     @ArraySchema(schema = @Schema(implementation = WishlistStoreDTO.class)))}),
+            @ApiResponse(responseCode = "400", description = "Fail", content =
+                    {@Content(mediaType = "text/plain", schema = @Schema(implementation = String.class))}),
     })
     public ResponseEntity<?> getWishlistStore() {
         List<WishlistStoreDTO> wishlistStoreList = wishlistStoreService.getWishlistStore(true);

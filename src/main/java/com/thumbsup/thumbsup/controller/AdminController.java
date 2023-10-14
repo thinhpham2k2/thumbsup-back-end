@@ -35,8 +35,10 @@ public class AdminController {
     @Operation(summary = "Get admin by id")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Success", content =
-                    { @Content(mediaType = "application/json", schema =
-                    @Schema(implementation = AdminDTO.class)) }),
+                    {@Content(mediaType = "application/json", schema =
+                    @Schema(implementation = AdminDTO.class))}),
+            @ApiResponse(responseCode = "400", description = "Fail", content =
+                    {@Content(mediaType = "text/plain", schema = @Schema(implementation = String.class))}),
     })
     public ResponseEntity<?> getAdminById(@PathVariable(value = "id") Long productId) throws MethodArgumentTypeMismatchException {
         AdminDTO admin = adminService.getAdminById(productId, true);
@@ -52,8 +54,10 @@ public class AdminController {
     @Operation(summary = "Get admin list")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Success", content =
-                    { @Content(mediaType = "application/json", schema =
-                    @Schema(implementation = Page.class)) }),
+                    {@Content(mediaType = "application/json", schema =
+                    @Schema(implementation = Page.class))}),
+            @ApiResponse(responseCode = "400", description = "Fail", content =
+                    {@Content(mediaType = "text/plain", schema = @Schema(implementation = String.class))}),
     })
     public ResponseEntity<?> getAdminList(@RequestParam(defaultValue = "") String search,
                                           @RequestParam(defaultValue = "0") Optional<Integer> page,

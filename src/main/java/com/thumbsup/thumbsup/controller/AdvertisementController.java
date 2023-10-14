@@ -46,8 +46,10 @@ public class AdvertisementController {
     @Operation(summary = "Get advertisement store list")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Success", content =
-                    { @Content(mediaType = "application/json", schema =
-                    @Schema(implementation = Page.class)) }),
+                    {@Content(mediaType = "application/json", schema =
+                    @Schema(implementation = Page.class))}),
+            @ApiResponse(responseCode = "400", description = "Fail", content =
+                    {@Content(mediaType = "text/plain", schema = @Schema(implementation = String.class))}),
     })
     public ResponseEntity<?> getAdvertisementStoreList(@RequestParam(defaultValue = "") String search,
                                                        @RequestParam(defaultValue = "0") Optional<Integer> page,
@@ -67,14 +69,16 @@ public class AdvertisementController {
     @Operation(summary = "Get advertisement list")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Success", content =
-                    { @Content(mediaType = "application/json", schema =
-                    @Schema(implementation = Page.class)) }),
+                    {@Content(mediaType = "application/json", schema =
+                    @Schema(implementation = Page.class))}),
+            @ApiResponse(responseCode = "400", description = "Fail", content =
+                    {@Content(mediaType = "text/plain", schema = @Schema(implementation = String.class))}),
     })
     public ResponseEntity<?> getAdvertisementList(@RequestParam(defaultValue = "") String search,
-                                                       @RequestParam(defaultValue = "0") Optional<Integer> page,
-                                                       @RequestParam(defaultValue = "id,desc") String sort,
-                                                       @RequestParam(defaultValue = "10") Optional<Integer> limit,
-                                                       @RequestParam(defaultValue = "") @Parameter(description = "<b>Filter by store ID<b>") List<Long> storeIds) throws MethodArgumentTypeMismatchException {
+                                                  @RequestParam(defaultValue = "0") Optional<Integer> page,
+                                                  @RequestParam(defaultValue = "id,desc") String sort,
+                                                  @RequestParam(defaultValue = "10") Optional<Integer> limit,
+                                                  @RequestParam(defaultValue = "") @Parameter(description = "<b>Filter by store ID<b>") List<Long> storeIds) throws MethodArgumentTypeMismatchException {
         Page<AdvertisementDTO> advertisementList = advertisementService.getAdvertisementList(true, storeIds, LocalDateTime.now(), search, sort, page.orElse(0), limit.orElse(10));
         if (!advertisementList.isEmpty()) {
             return ResponseEntity.status(HttpStatus.OK).body(advertisementList);

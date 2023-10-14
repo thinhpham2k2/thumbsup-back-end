@@ -45,7 +45,8 @@ public class BrandController {
     })
     public ResponseEntity<?> getBrandList(@RequestParam(defaultValue = "0") Optional<Integer> page,
                                           @RequestParam(defaultValue = "brand,asc") String sort,
-                                          @RequestParam(defaultValue = "100") Optional<Integer> limit) throws MethodArgumentTypeMismatchException {
+                                          @RequestParam(defaultValue = "100") Optional<Integer> limit)
+            throws MethodArgumentTypeMismatchException {
         Page<BrandDTO> brandList = brandService.getBrandList(true, sort, page.orElse(0), limit.orElse(100));
         if (!brandList.getContent().isEmpty()) {
             return ResponseEntity.status(HttpStatus.OK).body(brandList);

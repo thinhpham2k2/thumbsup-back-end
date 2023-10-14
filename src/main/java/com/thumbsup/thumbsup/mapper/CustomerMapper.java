@@ -17,7 +17,7 @@ public interface CustomerMapper {
     @Mapping(target = "cityName", source = "city.cityName")
     CustomerDTO toDTO(Customer entity);
 
-    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "id", expression = "java(null)")
     @Mapping(target = "wishlistProductList", ignore = true)
     @Mapping(target = "wishlistStoreList", ignore = true)
     @Mapping(target = "reviewList", ignore = true)
@@ -30,10 +30,10 @@ public interface CustomerMapper {
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "userName", ignore = true)
     @Mapping(target = "password", ignore = true)
-    @Mapping(target = "email", ignore = true)
     @Mapping(target = "state", ignore = true)
     @Mapping(target = "status", ignore = true)
     @Mapping(target = "avatar", ignore = true)
+    @Mapping(target = "email", source = "updateDTO.email")
     @Mapping(target = "fullName", source = "updateDTO.fullName")
     @Mapping(target = "phone", source = "updateDTO.phone")
     @Mapping(target = "dob", source = "updateDTO.dob")

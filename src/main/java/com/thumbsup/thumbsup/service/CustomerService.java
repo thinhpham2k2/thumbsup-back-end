@@ -1,6 +1,8 @@
 package com.thumbsup.thumbsup.service;
 
+import com.thumbsup.thumbsup.dto.customer.CreateCustomerDTO;
 import com.thumbsup.thumbsup.dto.customer.CustomerDTO;
+import com.thumbsup.thumbsup.dto.customer.UpdateCustomerDTO;
 import com.thumbsup.thumbsup.entity.Customer;
 import com.thumbsup.thumbsup.mapper.CustomerMapper;
 import com.thumbsup.thumbsup.repository.CustomerRepository;
@@ -26,6 +28,44 @@ public class CustomerService implements ICustomerService {
     private final IPagingService pagingService;
 
     private final CustomerRepository customerRepository;
+
+    @Override
+    public CustomerDTO createCustomer(CreateCustomerDTO create) {
+        Customer customer = customerRepository.save(CustomerMapper.INSTANCE.createToEntity(create));
+        return CustomerMapper.INSTANCE.toDTO(customer);
+    }
+
+    @Override
+    public CustomerDTO updateCustomer(UpdateCustomerDTO update, Long id) {
+        Optional<Customer> customer = customerRepository.findCustomerByIdAndStatus(id, true);
+        if (customer.isPresent()) {
+            Customer cus = customerRepository.save(CustomerMapper.INSTANCE.updateToEntity(update, customer.get()));
+            return CustomerMapper.INSTANCE.toDTO(cus);
+        } else {
+            throw new InvalidParameterException("Not found customer");
+        }
+    }
+
+    @Override
+    public void deleteCustomer(Long id) {
+        Optional<Customer> customer = customerRepository.findCustomerByIdAndStatus(id, true);
+        if (customer.isPresent()) {
+            customer.get().setStatus(false);
+            customerRepository.save(customer.get());
+        } else {
+            throw new InvalidParameterException("Not found customer");
+        }
+    }
+
+    @Override
+    public boolean checkByEmail(String email) {
+        return customerRepository.findCustomerByEmailAndStatus(email, true).isEmpty();
+    }
+
+    @Override
+    public boolean checkByUsername(String userName) {
+        return customerRepository.findCustomerByUserNameAndStatus(userName, true).isEmpty();
+    }
 
     @Override
     public Page<CustomerDTO> getCustomerList(boolean status, List<Long> cityIds, String search, String sort, int page, int limit) {

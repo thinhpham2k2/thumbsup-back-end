@@ -42,6 +42,16 @@ public class StoreService implements IStoreService {
     private final WishlistStoreRepository wishlistStoreRepository;
 
     @Override
+    public boolean checkByEmail(String email) {
+        return storeRepository.findStoreByEmailAndStatus(email, true).isEmpty();
+    }
+
+    @Override
+    public boolean checkByUsername(String userName) {
+        return storeRepository.findStoreByUserNameAndStatus(userName, true).isEmpty();
+    }
+
+    @Override
     public Page<StoreDTO> getStoreList(boolean status, List<Long> cityIds, String search, String sort, int page, int limit) {
         if (page < 0) throw new InvalidParameterException("Page number must not be less than zero!");
         if (limit < 1) throw new InvalidParameterException("Page size must not be less than one!");

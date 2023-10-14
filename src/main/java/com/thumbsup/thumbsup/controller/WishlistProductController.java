@@ -17,6 +17,7 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import java.util.List;
 
@@ -45,7 +46,7 @@ public class WishlistProductController {
             @ApiResponse(responseCode = "400", description = "Fail", content =
                     {@Content(mediaType = "text/plain", schema = @Schema(implementation = String.class))}),
     })
-    public ResponseEntity<?> getWishlistProduct() {
+    public ResponseEntity<?> getWishlistProduct() throws MethodArgumentTypeMismatchException {
         List<WishlistProductDTO> wishlistProductList = wishlistProductService.getWishlistProduct(true);
         if (!wishlistProductList.isEmpty()) {
             return ResponseEntity.status(HttpStatus.OK).body(wishlistProductList);

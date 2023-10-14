@@ -46,7 +46,8 @@ public class AuthenticationController {
             @ApiResponse(responseCode = "400", description = "Fail", content =
                     {@Content(mediaType = "text/plain", schema = @Schema(implementation = String.class))}),
     })
-    public ResponseEntity<?> loginAdminAccount(@RequestBody LoginFormDTO loginFormDTO) throws MethodArgumentTypeMismatchException {
+    public ResponseEntity<?> loginAdminAccount(@RequestBody LoginFormDTO loginFormDTO)
+            throws MethodArgumentTypeMismatchException {
         return accountAuthentication(loginFormDTO, "Admin");
     }
 
@@ -59,7 +60,8 @@ public class AuthenticationController {
             @ApiResponse(responseCode = "400", description = "Fail", content =
                     {@Content(mediaType = "text/plain", schema = @Schema(implementation = String.class))}),
     })
-    public ResponseEntity<?> loginStoreAccount(@RequestBody LoginFormDTO loginFormDTO) throws MethodArgumentTypeMismatchException {
+    public ResponseEntity<?> loginStoreAccount(@RequestBody LoginFormDTO loginFormDTO)
+            throws MethodArgumentTypeMismatchException {
         return accountAuthentication(loginFormDTO, "Store");
     }
 
@@ -72,7 +74,8 @@ public class AuthenticationController {
             @ApiResponse(responseCode = "400", description = "Fail", content =
                     {@Content(mediaType = "text/plain", schema = @Schema(implementation = String.class))}),
     })
-    public ResponseEntity<?> loginCustomerAccount(@RequestBody LoginFormDTO loginFormDTO) throws MethodArgumentTypeMismatchException {
+    public ResponseEntity<?> loginCustomerAccount(@RequestBody LoginFormDTO loginFormDTO)
+            throws MethodArgumentTypeMismatchException {
         return accountAuthentication(loginFormDTO, "Customer");
     }
 
@@ -85,7 +88,8 @@ public class AuthenticationController {
             @ApiResponse(responseCode = "400", description = "Fail", content =
                     {@Content(mediaType = "text/plain", schema = @Schema(implementation = String.class))}),
     })
-    public ResponseEntity<?> loginMobileAccount(@RequestBody LoginFormDTO loginFormDTO) throws MethodArgumentTypeMismatchException {
+    public ResponseEntity<?> loginMobileAccount(@RequestBody LoginFormDTO loginFormDTO)
+            throws MethodArgumentTypeMismatchException {
         return accountAuthentication(loginFormDTO, "Mobile");
     }
 

@@ -15,6 +15,8 @@ public interface StoreRepository extends JpaRepository<Store, Long> {
 
     Optional<Store> findStoreByUserNameAndStatus(String userName, boolean status);
 
+    Optional<Store> findStoreByEmailAndStatus(String email, boolean status);
+
     Optional<Store> findStoreByIdAndStatus(long storeId, boolean status);
 
     @Query("SELECT s FROM Store s " +

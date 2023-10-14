@@ -53,7 +53,8 @@ public class StoreController {
                                           @RequestParam(defaultValue = "0") Optional<Integer> page,
                                           @RequestParam(defaultValue = "id,desc") String sort,
                                           @RequestParam(defaultValue = "10") Optional<Integer> limit,
-                                          @RequestParam(defaultValue = "") @Parameter(description = "<b>Filter by city ID<b>") List<Long> cityIds) throws MethodArgumentTypeMismatchException {
+                                          @RequestParam(defaultValue = "") @Parameter(description = "<b>Filter by city ID<b>") List<Long> cityIds)
+            throws MethodArgumentTypeMismatchException {
         Page<StoreDTO> storeList = storeService.getStoreList(true, cityIds, search, sort, page.orElse(0), limit.orElse(10));
         if (!storeList.getContent().isEmpty()) {
             return ResponseEntity.status(HttpStatus.OK).body(storeList);
@@ -98,7 +99,8 @@ public class StoreController {
                                                      @RequestParam(defaultValue = "10") Optional<Integer> limit,
                                                      @RequestParam(defaultValue = "") @Parameter(description = "<b>Filter by category ID<b>") List<Long> categoryIds,
                                                      @RequestParam(defaultValue = "") @Parameter(description = "<b>Filter by brand ID<b>") List<Long> brandIds,
-                                                     @RequestParam(defaultValue = "") @Parameter(description = "<b>Filter by country ID<b>") List<Long> countryIds) throws MethodArgumentTypeMismatchException {
+                                                     @RequestParam(defaultValue = "") @Parameter(description = "<b>Filter by country ID<b>") List<Long> countryIds)
+            throws MethodArgumentTypeMismatchException {
         Page<ProductDTO> productList = productService.getProductListByStoreId(true, storeId, categoryIds, brandIds, countryIds, search, sort, page.orElse(0), limit.orElse(10));
         if (!productList.getContent().isEmpty()) {
             return ResponseEntity.status(HttpStatus.OK).body(productList);

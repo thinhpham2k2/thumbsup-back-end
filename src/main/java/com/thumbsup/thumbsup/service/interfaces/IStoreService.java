@@ -11,4 +11,8 @@ public interface IStoreService {
     Page<StoreDTO> getStoreList(boolean status, List<Long> cityIds, String search, String sort, int page, int limit);
 
     StoreExtraDTO getStoreById(boolean status, long storeId);
+
+    boolean checkByUsername(String userName);
+
+    boolean checkByEmail(String email);
 }

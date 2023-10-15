@@ -35,10 +35,13 @@ public class AdminController {
     @Operation(summary = "Get admin by id")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Success", content =
-                    { @Content(mediaType = "application/json", schema =
-                    @Schema(implementation = AdminDTO.class)) }),
+                    {@Content(mediaType = "application/json", schema =
+                    @Schema(implementation = AdminDTO.class))}),
+            @ApiResponse(responseCode = "400", description = "Fail", content =
+                    {@Content(mediaType = "text/plain", schema = @Schema(implementation = String.class))}),
     })
-    public ResponseEntity<?> getAdminById(@PathVariable(value = "id") Long productId) throws MethodArgumentTypeMismatchException {
+    public ResponseEntity<?> getAdminById(@PathVariable(value = "id") Long productId)
+            throws MethodArgumentTypeMismatchException {
         AdminDTO admin = adminService.getAdminById(productId, true);
         if (admin != null) {
             return ResponseEntity.status(HttpStatus.OK).body(admin);
@@ -52,13 +55,16 @@ public class AdminController {
     @Operation(summary = "Get admin list")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Success", content =
-                    { @Content(mediaType = "application/json", schema =
-                    @Schema(implementation = Page.class)) }),
+                    {@Content(mediaType = "application/json", schema =
+                    @Schema(implementation = Page.class))}),
+            @ApiResponse(responseCode = "400", description = "Fail", content =
+                    {@Content(mediaType = "text/plain", schema = @Schema(implementation = String.class))}),
     })
     public ResponseEntity<?> getAdminList(@RequestParam(defaultValue = "") String search,
                                           @RequestParam(defaultValue = "0") Optional<Integer> page,
                                           @RequestParam(defaultValue = "fullName,desc") String sort,
-                                          @RequestParam(defaultValue = "10") Optional<Integer> limit) throws MethodArgumentTypeMismatchException {
+                                          @RequestParam(defaultValue = "10") Optional<Integer> limit)
+            throws MethodArgumentTypeMismatchException {
         Page<AdminDTO> adminList = adminService.getAdminList(true, search, sort, page.orElse(0), limit.orElse(10));
         if (!adminList.isEmpty()) {
             return ResponseEntity.status(HttpStatus.OK).body(adminList);

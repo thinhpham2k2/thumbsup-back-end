@@ -46,8 +46,10 @@ public class ProductController {
     @Operation(summary = "Get product list")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Success", content =
-                    { @Content(mediaType = "application/json", schema =
-                    @Schema(implementation = Page.class)) }),
+                    {@Content(mediaType = "application/json", schema =
+                    @Schema(implementation = Page.class))}),
+            @ApiResponse(responseCode = "400", description = "Fail", content =
+                    {@Content(mediaType = "text/plain", schema = @Schema(implementation = String.class))}),
     })
     public ResponseEntity<?> getProductList(@RequestParam(defaultValue = "") String search,
                                             @RequestParam(defaultValue = "0") Optional<Integer> page,
@@ -56,7 +58,8 @@ public class ProductController {
                                             @RequestParam(defaultValue = "") @Parameter(description = "<b>Filter by store ID<b>") List<Long> storeIds,
                                             @RequestParam(defaultValue = "") @Parameter(description = "<b>Filter by category ID<b>") List<Long> categoryIds,
                                             @RequestParam(defaultValue = "") @Parameter(description = "<b>Filter by brand ID<b>") List<Long> brandIds,
-                                            @RequestParam(defaultValue = "") @Parameter(description = "<b>Filter by country ID<b>") List<Long> countryIds) throws MethodArgumentTypeMismatchException {
+                                            @RequestParam(defaultValue = "") @Parameter(description = "<b>Filter by country ID<b>") List<Long> countryIds)
+            throws MethodArgumentTypeMismatchException {
         Page<ProductDTO> productList = productService.getProductList(true, storeIds, categoryIds, brandIds, countryIds, search, sort, page.orElse(0), limit.orElse(10));
         if (!productList.getContent().isEmpty()) {
             return ResponseEntity.status(HttpStatus.OK).body(productList);
@@ -70,14 +73,17 @@ public class ProductController {
     @Operation(summary = "Get reviews by product id")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Success", content =
-                    { @Content(mediaType = "application/json", schema =
-                    @Schema(implementation = Page.class)) }),
+                    {@Content(mediaType = "application/json", schema =
+                    @Schema(implementation = Page.class))}),
+            @ApiResponse(responseCode = "400", description = "Fail", content =
+                    {@Content(mediaType = "text/plain", schema = @Schema(implementation = String.class))}),
     })
     public ResponseEntity<?> getReviewListByProductId(@PathVariable(value = "id") Long productId,
                                                       @RequestParam(defaultValue = "") String search,
                                                       @RequestParam(defaultValue = "0") Optional<Integer> page,
                                                       @RequestParam(defaultValue = "id,desc") String sort,
-                                                      @RequestParam(defaultValue = "10") Optional<Integer> limit) throws MethodArgumentTypeMismatchException {
+                                                      @RequestParam(defaultValue = "10") Optional<Integer> limit)
+            throws MethodArgumentTypeMismatchException {
         Page<ReviewDTO> reviewList = reviewService.getReviewListByProductId(true, productId, search, sort, page.orElse(0), limit.orElse(10));
         if (!reviewList.getContent().isEmpty()) {
             return ResponseEntity.status(HttpStatus.OK).body(reviewList);
@@ -91,10 +97,13 @@ public class ProductController {
     @Operation(summary = "Get product by id")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Success", content =
-                    { @Content(mediaType = "application/json", schema =
-                    @Schema(implementation = ProductExtraDTO.class)) }),
+                    {@Content(mediaType = "application/json", schema =
+                    @Schema(implementation = ProductExtraDTO.class))}),
+            @ApiResponse(responseCode = "400", description = "Fail", content =
+                    {@Content(mediaType = "text/plain", schema = @Schema(implementation = String.class))}),
     })
-    public ResponseEntity<?> getProductById(@PathVariable(value = "id") Long productId) throws MethodArgumentTypeMismatchException {
+    public ResponseEntity<?> getProductById(@PathVariable(value = "id") Long productId)
+            throws MethodArgumentTypeMismatchException {
         ProductExtraDTO product = productService.getProductById(true, productId);
         if (product != null) {
             return ResponseEntity.status(HttpStatus.OK).body(product);

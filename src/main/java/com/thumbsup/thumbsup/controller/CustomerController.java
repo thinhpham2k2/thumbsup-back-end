@@ -15,6 +15,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.validation.annotation.Validated;
@@ -83,7 +84,7 @@ public class CustomerController {
         }
     }
 
-    @PostMapping("")
+    @PostMapping(value = "", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @Secured({ADMIN})
     @Operation(summary = "Create customer")
     @ApiResponses(value = {
@@ -93,7 +94,7 @@ public class CustomerController {
             @ApiResponse(responseCode = "400", description = "Fail", content =
                     {@Content(mediaType = "text/plain", schema = @Schema(implementation = String.class))}),
     })
-    public ResponseEntity<?> createCustomer(@RequestBody @Validated CreateCustomerDTO create)
+    public ResponseEntity<?> createCustomer(@ModelAttribute @Validated CreateCustomerDTO create)
             throws MethodArgumentTypeMismatchException {
         CustomerDTO customer = customerService.createCustomer(create);
         if (customer != null) {
@@ -103,7 +104,7 @@ public class CustomerController {
         }
     }
 
-    @PutMapping("/{id}")
+    @PutMapping(value = "/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @Secured({ADMIN, CUSTOMER})
     @Operation(summary = "Update customer")
     @ApiResponses(value = {
@@ -114,7 +115,7 @@ public class CustomerController {
                     {@Content(mediaType = "text/plain", schema = @Schema(implementation = String.class))}),
     })
     public ResponseEntity<?> updateCustomer(@PathVariable(value = "id") Long id,
-                                            @RequestBody @Validated UpdateCustomerDTO update)
+                                            @ModelAttribute @Validated UpdateCustomerDTO update)
             throws MethodArgumentTypeMismatchException {
         CustomerDTO customer = customerService.updateCustomer(update, id);
         if (customer != null) {

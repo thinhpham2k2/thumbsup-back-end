@@ -11,6 +11,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -41,7 +42,7 @@ public class CreateCustomerDTO implements Serializable {
     @Size(min = 7, max = 20, message = "The length of phone is from 8 to 20 characters")
     private String phone;
 
-    private String avatar;
+    private MultipartFile avatar;
 
     @BirthdayConstraint
     private LocalDate dob;

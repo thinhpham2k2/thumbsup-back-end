@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -28,7 +29,7 @@ public class UpdateCustomerDTO implements Serializable {
     @EmailConstraint
     private String email;
 
-    private String avatar;
+    private MultipartFile avatar;
 
     @BirthdayConstraint
     private LocalDate dob;

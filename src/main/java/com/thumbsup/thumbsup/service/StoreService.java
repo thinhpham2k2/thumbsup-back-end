@@ -10,6 +10,7 @@ import com.thumbsup.thumbsup.entity.Customer;
 import com.thumbsup.thumbsup.entity.Store;
 import com.thumbsup.thumbsup.mapper.StoreMapper;
 import com.thumbsup.thumbsup.repository.*;
+import com.thumbsup.thumbsup.service.interfaces.IFileService;
 import com.thumbsup.thumbsup.service.interfaces.IPagingService;
 import com.thumbsup.thumbsup.service.interfaces.IStoreService;
 import jakarta.transaction.Transactional;
@@ -31,6 +32,8 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class StoreService implements IStoreService {
 
+    private final IFileService fileService;
+
     private final IPagingService pagingService;
 
     private final StoreRepository storeRepository;
@@ -47,8 +50,31 @@ public class StoreService implements IStoreService {
     public StoreExtraDTO createStore(CreateStoreDTO create) {
         if (customerRepository.findCustomerByEmailAndStatus(create.getEmail(), true).isEmpty()
                 && storeRepository.findStoreByEmailAndStatus(create.getEmail(), true).isEmpty()) {
-            Store store = storeRepository.save(StoreMapper.INSTANCE.createToEntity(create));
-            return entityToExtra(store);
+            Store store = StoreMapper.INSTANCE.createToEntity(create);
+
+            //Validate Logo Image
+            String linkLogo = "";
+            if (create.getLogo() != null) {
+                try {
+                    linkLogo = fileService.upload(create.getLogo());
+                } catch (Exception e) {
+                    throw new InvalidParameterException("Invalid logo image file");
+                }
+            }
+
+            //Validate Cover Photo Image
+            String linkPhoto = "";
+            if (create.getCoverPhoto() != null) {
+                try {
+                    linkPhoto = fileService.upload(create.getCoverPhoto());
+                } catch (Exception e) {
+                    throw new InvalidParameterException("Invalid cover photo image file");
+                }
+            }
+
+            store.setLogo(linkLogo);
+            store.setCoverPhoto(linkPhoto);
+            return entityToExtra(storeRepository.save(store));
         } else {
             throw new InvalidParameterException("Email is already in use");
         }
@@ -58,13 +84,42 @@ public class StoreService implements IStoreService {
     public StoreExtraDTO updateStore(UpdateStoreDTO update, Long id) {
         Optional<Store> store = storeRepository.findStoreByIdAndStatus(id, true);
         if (store.isPresent()) {
+
+            //Validate Image
+            String linkLogo;
+            if (update.getLogo() == null) {
+                linkLogo = store.get().getLogo();
+            } else {
+                try {
+                    linkLogo = fileService.upload(update.getLogo());
+                } catch (Exception e) {
+                    throw new InvalidParameterException("Invalid logo image file");
+                }
+            }
+
+            //Validate Image
+            String linkPhoto;
+            if (update.getLogo() == null) {
+                linkPhoto = store.get().getCoverPhoto();
+            } else {
+                try {
+                    linkPhoto = fileService.upload(update.getCoverPhoto());
+                } catch (Exception e) {
+                    throw new InvalidParameterException("Invalid cover photo image file");
+                }
+            }
+
             if (store.get().getEmail().equals(update.getEmail())) {
-                Store st = storeRepository.save(StoreMapper.INSTANCE.updateToEntity(update, store.get()));
-                return entityToExtra(st);
+                Store st = StoreMapper.INSTANCE.updateToEntity(update, store.get());
+                st.setLogo(linkLogo);
+                st.setCoverPhoto(linkPhoto);
+                return entityToExtra(storeRepository.save(st));
             } else if (customerRepository.findCustomerByEmailAndStatus(update.getEmail(), true).isEmpty()
                     && storeRepository.findStoreByEmailAndStatus(update.getEmail(), true).isEmpty()) {
-                Store st = storeRepository.save(StoreMapper.INSTANCE.updateToEntity(update, store.get()));
-                return entityToExtra(st);
+                Store st = StoreMapper.INSTANCE.updateToEntity(update, store.get());
+                st.setLogo(linkLogo);
+                st.setCoverPhoto(linkPhoto);
+                return entityToExtra(storeRepository.save(st));
             } else {
                 throw new InvalidParameterException("Email is already in use");
             }

@@ -8,6 +8,7 @@ import com.thumbsup.thumbsup.mapper.CustomerMapper;
 import com.thumbsup.thumbsup.repository.CustomerRepository;
 import com.thumbsup.thumbsup.repository.StoreRepository;
 import com.thumbsup.thumbsup.service.interfaces.ICustomerService;
+import com.thumbsup.thumbsup.service.interfaces.IFileService;
 import com.thumbsup.thumbsup.service.interfaces.IPagingService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +27,8 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class CustomerService implements ICustomerService {
 
+    private final IFileService fileService;
+
     private final IPagingService pagingService;
 
     private final StoreRepository storeRepository;
@@ -36,8 +39,20 @@ public class CustomerService implements ICustomerService {
     public CustomerDTO createCustomer(CreateCustomerDTO create) {
         if (customerRepository.findCustomerByEmailAndStatus(create.getEmail(), true).isEmpty()
                 && storeRepository.findStoreByEmailAndStatus(create.getEmail(), true).isEmpty()) {
-            Customer customer = customerRepository.save(CustomerMapper.INSTANCE.createToEntity(create));
-            return CustomerMapper.INSTANCE.toDTO(customer);
+            Customer customer = CustomerMapper.INSTANCE.createToEntity(create);
+
+            //Validate Image
+            String linkImg = "";
+            if (create.getAvatar() != null) {
+                try {
+                    linkImg = fileService.upload(create.getAvatar());
+                } catch (Exception e) {
+                    throw new InvalidParameterException("Invalid image file");
+                }
+            }
+
+            customer.setAvatar(linkImg);
+            return CustomerMapper.INSTANCE.toDTO(customerRepository.save(customer));
         } else {
             throw new InvalidParameterException("Email is already in use");
         }
@@ -47,13 +62,28 @@ public class CustomerService implements ICustomerService {
     public CustomerDTO updateCustomer(UpdateCustomerDTO update, Long id) {
         Optional<Customer> customer = customerRepository.findCustomerByIdAndStatus(id, true);
         if (customer.isPresent()) {
+
+            //Validate Image
+            String linkImg;
+            if (update.getAvatar() == null) {
+                linkImg = customer.get().getAvatar();
+            } else {
+                try {
+                    linkImg = fileService.upload(update.getAvatar());
+                } catch (Exception e) {
+                    throw new InvalidParameterException("Invalid image file");
+                }
+            }
+
             if (customer.get().getEmail().equals(update.getEmail())) {
-                Customer cus = customerRepository.save(CustomerMapper.INSTANCE.updateToEntity(update, customer.get()));
-                return CustomerMapper.INSTANCE.toDTO(cus);
+                Customer cus = CustomerMapper.INSTANCE.updateToEntity(update, customer.get());
+                cus.setAvatar(linkImg);
+                return CustomerMapper.INSTANCE.toDTO(customerRepository.save(cus));
             } else if (customerRepository.findCustomerByEmailAndStatus(update.getEmail(), true).isEmpty()
                     && storeRepository.findStoreByEmailAndStatus(update.getEmail(), true).isEmpty()) {
-                Customer cus = customerRepository.save(CustomerMapper.INSTANCE.updateToEntity(update, customer.get()));
-                return CustomerMapper.INSTANCE.toDTO(cus);
+                Customer cus = CustomerMapper.INSTANCE.updateToEntity(update, customer.get());
+                cus.setAvatar(linkImg);
+                return CustomerMapper.INSTANCE.toDTO(customerRepository.save(cus));
             } else {
                 throw new InvalidParameterException("Email is already in use");
             }

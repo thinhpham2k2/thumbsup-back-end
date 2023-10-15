@@ -10,6 +10,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.Serializable;
 import java.sql.Time;
@@ -40,9 +41,9 @@ public class CreateStoreDTO implements Serializable {
     @Size(min = 7, max = 20, message = "The length of phone is from 8 to 20 characters")
     private String phone;
 
-    private String logo;
+    private MultipartFile logo;
 
-    private String coverPhoto;
+    private MultipartFile coverPhoto;
 
     @NotNull(message = "Address is required!")
     @Size(min = 5, max = 4000, message = "The length of address is from 5 to 4000 characters")

@@ -24,11 +24,7 @@ public class EmailValidator implements ConstraintValidator<EmailConstraint, Obje
         try {
             constraintValidatorContext.disableDefaultConstraintViolation();
             if (value.toString().matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$")) {
-                String email = value.toString();
-                if (customerService.checkByEmail(email) && storeService.checkByEmail(email)) {
-                    return true;
-                }
-                constraintValidatorContext.buildConstraintViolationWithTemplate("Email is already in use").addConstraintViolation();
+                return true;
             } else {
                 constraintValidatorContext.buildConstraintViolationWithTemplate("Invalid email formatter").addConstraintViolation();
             }

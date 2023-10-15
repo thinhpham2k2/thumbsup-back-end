@@ -6,6 +6,7 @@ import com.thumbsup.thumbsup.dto.customer.UpdateCustomerDTO;
 import com.thumbsup.thumbsup.entity.Customer;
 import com.thumbsup.thumbsup.mapper.CustomerMapper;
 import com.thumbsup.thumbsup.repository.CustomerRepository;
+import com.thumbsup.thumbsup.repository.StoreRepository;
 import com.thumbsup.thumbsup.service.interfaces.ICustomerService;
 import com.thumbsup.thumbsup.service.interfaces.IPagingService;
 import jakarta.transaction.Transactional;
@@ -27,20 +28,35 @@ public class CustomerService implements ICustomerService {
 
     private final IPagingService pagingService;
 
+    private final StoreRepository storeRepository;
+
     private final CustomerRepository customerRepository;
 
     @Override
     public CustomerDTO createCustomer(CreateCustomerDTO create) {
-        Customer customer = customerRepository.save(CustomerMapper.INSTANCE.createToEntity(create));
-        return CustomerMapper.INSTANCE.toDTO(customer);
+        if (customerRepository.findCustomerByEmailAndStatus(create.getEmail(), true).isEmpty()
+                && storeRepository.findStoreByEmailAndStatus(create.getEmail(), true).isEmpty()) {
+            Customer customer = customerRepository.save(CustomerMapper.INSTANCE.createToEntity(create));
+            return CustomerMapper.INSTANCE.toDTO(customer);
+        } else {
+            throw new InvalidParameterException("Email is already in use");
+        }
     }
 
     @Override
     public CustomerDTO updateCustomer(UpdateCustomerDTO update, Long id) {
         Optional<Customer> customer = customerRepository.findCustomerByIdAndStatus(id, true);
         if (customer.isPresent()) {
-            Customer cus = customerRepository.save(CustomerMapper.INSTANCE.updateToEntity(update, customer.get()));
-            return CustomerMapper.INSTANCE.toDTO(cus);
+            if (customer.get().getEmail().equals(update.getEmail())) {
+                Customer cus = customerRepository.save(CustomerMapper.INSTANCE.updateToEntity(update, customer.get()));
+                return CustomerMapper.INSTANCE.toDTO(cus);
+            } else if (customerRepository.findCustomerByEmailAndStatus(update.getEmail(), true).isEmpty()
+                    && storeRepository.findStoreByEmailAndStatus(update.getEmail(), true).isEmpty()) {
+                Customer cus = customerRepository.save(CustomerMapper.INSTANCE.updateToEntity(update, customer.get()));
+                return CustomerMapper.INSTANCE.toDTO(cus);
+            } else {
+                throw new InvalidParameterException("Email is already in use");
+            }
         } else {
             throw new InvalidParameterException("Not found customer");
         }
@@ -55,11 +71,6 @@ public class CustomerService implements ICustomerService {
         } else {
             throw new InvalidParameterException("Not found customer");
         }
-    }
-
-    @Override
-    public boolean checkByEmail(String email) {
-        return customerRepository.findCustomerByEmailAndStatus(email, true).isEmpty();
     }
 
     @Override

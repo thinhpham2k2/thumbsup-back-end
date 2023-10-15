@@ -1,8 +1,10 @@
 package com.thumbsup.thumbsup.service;
 
 import com.thumbsup.thumbsup.common.Common;
+import com.thumbsup.thumbsup.dto.store.CreateStoreDTO;
 import com.thumbsup.thumbsup.dto.store.StoreDTO;
 import com.thumbsup.thumbsup.dto.store.StoreExtraDTO;
+import com.thumbsup.thumbsup.dto.store.UpdateStoreDTO;
 import com.thumbsup.thumbsup.entity.Category;
 import com.thumbsup.thumbsup.entity.Customer;
 import com.thumbsup.thumbsup.entity.Store;
@@ -42,8 +44,65 @@ public class StoreService implements IStoreService {
     private final WishlistStoreRepository wishlistStoreRepository;
 
     @Override
-    public boolean checkByEmail(String email) {
-        return storeRepository.findStoreByEmailAndStatus(email, true).isEmpty();
+    public StoreExtraDTO createStore(CreateStoreDTO create) {
+        if (customerRepository.findCustomerByEmailAndStatus(create.getEmail(), true).isEmpty()
+                && storeRepository.findStoreByEmailAndStatus(create.getEmail(), true).isEmpty()) {
+            Store store = storeRepository.save(StoreMapper.INSTANCE.createToEntity(create));
+            return entityToExtra(store);
+        } else {
+            throw new InvalidParameterException("Email is already in use");
+        }
+    }
+
+    @Override
+    public StoreExtraDTO updateStore(UpdateStoreDTO update, Long id) {
+        Optional<Store> store = storeRepository.findStoreByIdAndStatus(id, true);
+        if (store.isPresent()) {
+            if (store.get().getEmail().equals(update.getEmail())) {
+                Store st = storeRepository.save(StoreMapper.INSTANCE.updateToEntity(update, store.get()));
+                return entityToExtra(st);
+            } else if (customerRepository.findCustomerByEmailAndStatus(update.getEmail(), true).isEmpty()
+                    && storeRepository.findStoreByEmailAndStatus(update.getEmail(), true).isEmpty()) {
+                Store st = storeRepository.save(StoreMapper.INSTANCE.updateToEntity(update, store.get()));
+                return entityToExtra(st);
+            } else {
+                throw new InvalidParameterException("Email is already in use");
+            }
+        } else {
+            throw new InvalidParameterException("Not found store");
+        }
+    }
+
+    @Override
+    public void deleteStore(Long id) {
+        Optional<Store> store = storeRepository.findStoreByIdAndStatus(id, true);
+        if (store.isPresent()) {
+            store.get().setStatus(false);
+            storeRepository.save(store.get());
+        } else {
+            throw new InvalidParameterException("Not found store");
+        }
+    }
+
+    @Override
+    public StoreExtraDTO entityToExtra(Store entity) {
+        StoreExtraDTO storeExtraDTO = StoreMapper.INSTANCE.toExtraDTO(entity);
+
+        if (Common.role.equals("Customer")) {
+            Optional<Customer> customer = customerRepository.findCustomerByUserNameAndStatus(Common.userName, true);
+            customer.ifPresent(value -> storeExtraDTO.setFavor(wishlistStoreRepository.existsByStatusAndCustomerIdAndStoreId(true, value.getId(), storeExtraDTO.getId())));
+        }
+
+        storeExtraDTO.setNumOfFollowing(wishlistStoreRepository.countAllByStatusAndStoreId(true, storeExtraDTO.getId()).orElse(0));
+        int count = reviewRepository.countAllByProductStoreIdAndStatus(storeExtraDTO.getId(), true).orElse(0);
+        storeExtraDTO.setNumOfRating(count);
+        storeExtraDTO.setRating(count == 0 ? BigDecimal.ZERO : reviewRepository.sumRatingReviewByStore(true, storeExtraDTO.getId()).orElse(BigDecimal.ZERO)
+                .divide(new BigDecimal(count), 2, RoundingMode.HALF_DOWN));
+        storeExtraDTO.setCateList(categoryRepository
+                .getDistinctByProductListStoreIdAndProductListStatusAndStatus(storeExtraDTO.getId(), true, true)
+                .stream().map(Category::getCategory).toList());
+
+        return storeExtraDTO;
     }
 
     @Override
@@ -76,26 +135,7 @@ public class StoreService implements IStoreService {
     @Override
     public StoreExtraDTO getStoreById(boolean status, long storeId) {
         Optional<Store> store = storeRepository.findStoreByIdAndStatus(storeId, status);
-        if (store.isPresent()) {
-            StoreExtraDTO storeExtraDTO = StoreMapper.INSTANCE.toExtraDTO(store.get());
-
-            if (Common.role.equals("Customer")) {
-                Optional<Customer> customer = customerRepository.findCustomerByUserNameAndStatus(Common.userName, true);
-                customer.ifPresent(value -> storeExtraDTO.setFavor(wishlistStoreRepository.existsByStatusAndCustomerIdAndStoreId(true, value.getId(), storeExtraDTO.getId())));
-            }
-
-            storeExtraDTO.setNumOfFollowing(wishlistStoreRepository.countAllByStatusAndStoreId(true, storeExtraDTO.getId()).orElse(0));
-            int count = reviewRepository.countAllByProductStoreIdAndStatus(storeExtraDTO.getId(), true).orElse(0);
-            storeExtraDTO.setNumOfRating(count);
-            storeExtraDTO.setRating(count == 0 ? BigDecimal.ZERO : reviewRepository.sumRatingReviewByStore(true, storeExtraDTO.getId()).orElse(BigDecimal.ZERO)
-                    .divide(new BigDecimal(count), 2, RoundingMode.HALF_DOWN));
-            storeExtraDTO.setCateList(categoryRepository
-                    .getDistinctByProductListStoreIdAndProductListStatusAndStatus(storeExtraDTO.getId(), true, true)
-                    .stream().map(Category::getCategory).toList());
-
-            return storeExtraDTO;
-        }
-        return null;
+        return store.map(this::entityToExtra).orElse(null);
     }
 
     private static String transferProperty(String property) {

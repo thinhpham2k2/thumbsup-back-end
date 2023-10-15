@@ -15,8 +15,6 @@ public interface ICustomerService {
 
     boolean checkByUsername(String userName);
 
-    boolean checkByEmail(String email);
-
     CustomerDTO createCustomer(CreateCustomerDTO create);
 
     CustomerDTO updateCustomer(UpdateCustomerDTO update, Long id);

@@ -84,7 +84,7 @@ public class CustomerController {
     }
 
     @PostMapping("")
-    @Secured({ADMIN, STORE, CUSTOMER})
+    @Secured({ADMIN})
     @Operation(summary = "Create customer")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Created", content =
@@ -104,7 +104,7 @@ public class CustomerController {
     }
 
     @PutMapping("/{id}")
-    @Secured({ADMIN, STORE, CUSTOMER})
+    @Secured({ADMIN, CUSTOMER})
     @Operation(summary = "Update customer")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Success", content =
@@ -120,12 +120,12 @@ public class CustomerController {
         if (customer != null) {
             return ResponseEntity.status(HttpStatus.CREATED).body(update);
         } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Create fail");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Update fail");
         }
     }
 
     @DeleteMapping("/{id}")
-    @Secured({ADMIN, STORE})
+    @Secured({ADMIN})
     @Operation(summary = "Delete customer")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "204", description = "No Content", content =

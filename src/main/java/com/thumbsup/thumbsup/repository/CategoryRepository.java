@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface CategoryRepository extends JpaRepository<Category, Long> {
@@ -14,4 +15,6 @@ public interface CategoryRepository extends JpaRepository<Category, Long> {
     Page<Category> getCategoriesByStatus(boolean status, Pageable pageable);
 
     List<Category> getDistinctByProductListStoreIdAndProductListStatusAndStatus(long storeId, boolean productStatus, boolean cateStatus);
+
+    Optional<Category> findByIdAndStatus(long id, boolean status);
 }

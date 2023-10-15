@@ -13,19 +13,17 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Range;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.util.List;
 
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonIgnoreProperties(value = {"validSalePrice"})
-public class CreateProductDTO implements Serializable {
+public class UpdateProductDTO implements Serializable {
     @NotNull(message = "Product's name is required!")
     @Size(min = 2, max = 255, message = "The length of product's name is from 2 to 255 characters")
     private String productName;
@@ -68,8 +66,6 @@ public class CreateProductDTO implements Serializable {
     @CountryConstraint
     @NotNull(message = "Country's id is required")
     private Long countryId;
-
-    private List<MultipartFile> imageList;
 
     @AssertTrue(message = "Invalid sale price")
     public boolean isValidSalePrice() {

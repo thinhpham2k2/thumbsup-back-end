@@ -98,7 +98,7 @@ public class CustomerController {
             throws MethodArgumentTypeMismatchException {
         CustomerDTO customer = customerService.createCustomer(create);
         if (customer != null) {
-            return ResponseEntity.status(HttpStatus.CREATED).body(create);
+            return ResponseEntity.status(HttpStatus.CREATED).body(customer);
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Create fail");
         }
@@ -119,7 +119,7 @@ public class CustomerController {
             throws MethodArgumentTypeMismatchException {
         CustomerDTO customer = customerService.updateCustomer(update, id);
         if (customer != null) {
-            return ResponseEntity.status(HttpStatus.CREATED).body(update);
+            return ResponseEntity.status(HttpStatus.CREATED).body(customer);
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Update fail");
         }

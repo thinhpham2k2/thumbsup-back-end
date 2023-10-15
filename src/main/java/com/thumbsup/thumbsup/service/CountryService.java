@@ -47,4 +47,9 @@ public class CountryService implements ICountryService {
                 .map(CountryMapper.INSTANCE::toDTO)
                 .collect(Collectors.toList()), pageResult.getPageable(), pageResult.getTotalElements());
     }
+
+    @Override
+    public CountryDTO getCountryById(long id) {
+        return CountryMapper.INSTANCE.toDTO(countryRepository.findByIdAndStatus(id, true).orElse(null));
+    }
 }

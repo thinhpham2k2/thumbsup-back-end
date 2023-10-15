@@ -10,9 +10,9 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class UsernameValidator implements ConstraintValidator<UsernameConstraint, Object> {
 
-    private final ICustomerService customerService;
-
     private final IStoreService storeService;
+
+    private final ICustomerService customerService;
 
     @Override
     public void initialize(UsernameConstraint constraintAnnotation) {

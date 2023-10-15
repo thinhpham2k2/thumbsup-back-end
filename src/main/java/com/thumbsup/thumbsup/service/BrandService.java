@@ -47,4 +47,9 @@ public class BrandService implements IBrandService {
                 .map(BrandMapper.INSTANCE::toDTO)
                 .collect(Collectors.toList()), pageResult.getPageable(), pageResult.getTotalElements());
     }
+
+    @Override
+    public BrandDTO getBrandById(long id) {
+        return BrandMapper.INSTANCE.toDTO(brandRepository.findByIdAndStatus(id, true).orElse(null));
+    }
 }

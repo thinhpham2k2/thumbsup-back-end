@@ -127,7 +127,7 @@ public class StoreController {
             throws MethodArgumentTypeMismatchException {
         StoreExtraDTO store = storeService.createStore(create);
         if (store != null) {
-            return ResponseEntity.status(HttpStatus.CREATED).body(create);
+            return ResponseEntity.status(HttpStatus.CREATED).body(store);
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Create fail");
         }
@@ -148,7 +148,7 @@ public class StoreController {
             throws MethodArgumentTypeMismatchException {
         StoreExtraDTO store = storeService.updateStore(update, id);
         if (store != null) {
-            return ResponseEntity.status(HttpStatus.CREATED).body(update);
+            return ResponseEntity.status(HttpStatus.CREATED).body(store);
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Update fail");
         }

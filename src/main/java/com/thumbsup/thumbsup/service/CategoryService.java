@@ -47,4 +47,9 @@ public class CategoryService implements ICategoryService {
                 .map(CategoryMapper.INSTANCE::toDTO)
                 .collect(Collectors.toList()), pageResult.getPageable(), pageResult.getTotalElements());
     }
+
+    @Override
+    public CategoryDTO getCategoryById(long id) {
+        return CategoryMapper.INSTANCE.toDTO(categoryRepository.findByIdAndStatus(id, true).orElse(null));
+    }
 }

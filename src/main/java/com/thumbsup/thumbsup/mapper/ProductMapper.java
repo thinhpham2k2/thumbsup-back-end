@@ -1,11 +1,14 @@
 package com.thumbsup.thumbsup.mapper;
 
 import com.thumbsup.thumbsup.dto.image.ImageDTO;
+import com.thumbsup.thumbsup.dto.product.CreateProductDTO;
 import com.thumbsup.thumbsup.dto.product.ProductDTO;
 import com.thumbsup.thumbsup.dto.product.ProductExtraDTO;
+import com.thumbsup.thumbsup.dto.product.UpdateProductDTO;
 import com.thumbsup.thumbsup.entity.*;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
 import org.mapstruct.Named;
 import org.mapstruct.factory.Mappers;
 
@@ -44,6 +47,10 @@ public interface ProductMapper {
     @Mapping(target = "imageList", source = "imageList", qualifiedByName = "mapImageList")
     ProductExtraDTO toExtraDTO(Product entity);
 
+    @Mapping(target = "id", expression = "java(null)")
+    @Mapping(target = "rating", expression = "java(java.math.BigDecimal.ZERO)")
+    @Mapping(target = "numOfRating", expression = "java(0)")
+    @Mapping(target = "status", expression = "java(true)")
     @Mapping(target = "wishlistProductList", ignore = true)
     @Mapping(target = "reviewList", ignore = true)
     @Mapping(target = "orderDetailList", ignore = true)
@@ -52,7 +59,21 @@ public interface ProductMapper {
     @Mapping(target = "category", source = "categoryId", qualifiedByName = "mapCategory")
     @Mapping(target = "brand", source = "brandId", qualifiedByName = "mapBrand")
     @Mapping(target = "country", source = "countryId", qualifiedByName = "mapCountry")
-    Product dtoToEntity(ProductDTO dto);
+    Product createToEntity(CreateProductDTO createDTO);
+
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "rating", ignore = true)
+    @Mapping(target = "numOfRating", ignore = true)
+    @Mapping(target = "status", ignore = true)
+    @Mapping(target = "wishlistProductList", ignore = true)
+    @Mapping(target = "reviewList", ignore = true)
+    @Mapping(target = "orderDetailList", ignore = true)
+    @Mapping(target = "imageList", ignore = true)
+    @Mapping(target = "store", source = "storeId", qualifiedByName = "mapStore")
+    @Mapping(target = "category", source = "categoryId", qualifiedByName = "mapCategory")
+    @Mapping(target = "brand", source = "brandId", qualifiedByName = "mapBrand")
+    @Mapping(target = "country", source = "countryId", qualifiedByName = "mapCountry")
+    Product updateToEntity(UpdateProductDTO updateDTO, @MappingTarget Product entity);
 
     @Named("mapImage")
     default String mapImage(List<Image> imageList) {

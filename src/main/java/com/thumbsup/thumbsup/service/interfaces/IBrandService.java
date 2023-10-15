@@ -6,4 +6,6 @@ import org.springframework.data.domain.Page;
 public interface IBrandService {
 
     Page<BrandDTO> getBrandList(boolean status, String sort, int page, int limit);
+
+    BrandDTO getBrandById(long id);
 }

@@ -10,9 +10,9 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class EmailValidator implements ConstraintValidator<EmailConstraint, Object> {
 
-    private final ICustomerService customerService;
-
     private final IStoreService storeService;
+
+    private final ICustomerService customerService;
 
     @Override
     public void initialize(EmailConstraint constraintAnnotation) {

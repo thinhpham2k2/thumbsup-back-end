@@ -1,7 +1,9 @@
 package com.thumbsup.thumbsup.controller;
 
+import com.thumbsup.thumbsup.dto.product.CreateProductDTO;
 import com.thumbsup.thumbsup.dto.product.ProductDTO;
 import com.thumbsup.thumbsup.dto.product.ProductExtraDTO;
+import com.thumbsup.thumbsup.dto.product.UpdateProductDTO;
 import com.thumbsup.thumbsup.dto.review.ReviewDTO;
 import com.thumbsup.thumbsup.service.interfaces.IProductService;
 import com.thumbsup.thumbsup.service.interfaces.IReviewService;
@@ -16,8 +18,10 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
@@ -110,5 +114,61 @@ public class ProductController {
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Not found product !");
         }
+    }
+
+    @PostMapping(value = "", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @Secured({ADMIN, STORE})
+    @Operation(summary = "Create product")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Created", content =
+                    {@Content(mediaType = "application/json", schema =
+                    @Schema(implementation = ProductExtraDTO.class))}),
+            @ApiResponse(responseCode = "400", description = "Fail", content =
+                    {@Content(mediaType = "text/plain", schema = @Schema(implementation = String.class))}),
+    })
+    public ResponseEntity<?> createProduct(@ModelAttribute @Validated CreateProductDTO create)
+            throws MethodArgumentTypeMismatchException {
+        ProductExtraDTO product = productService.createProduct(create);
+        if (product != null) {
+            return ResponseEntity.status(HttpStatus.CREATED).body(create);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Create fail");
+        }
+    }
+
+    @PutMapping("/{id}")
+    @Secured({ADMIN, STORE})
+    @Operation(summary = "Update product")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Success", content =
+                    {@Content(mediaType = "application/json", schema =
+                    @Schema(implementation = ProductExtraDTO.class))}),
+            @ApiResponse(responseCode = "400", description = "Fail", content =
+                    {@Content(mediaType = "text/plain", schema = @Schema(implementation = String.class))}),
+    })
+    public ResponseEntity<?> updateProduct(@PathVariable(value = "id") Long id,
+                                         @ModelAttribute @Validated UpdateProductDTO update)
+            throws MethodArgumentTypeMismatchException {
+        ProductExtraDTO product = productService.updateProduct(update, id);
+        if (product != null) {
+            return ResponseEntity.status(HttpStatus.CREATED).body(update);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Update fail");
+        }
+    }
+
+    @DeleteMapping("/{id}")
+    @Secured({ADMIN, STORE})
+    @Operation(summary = "Delete product")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204", description = "No Content", content =
+                    {@Content(mediaType = "text/plain", schema = @Schema(implementation = String.class))}),
+            @ApiResponse(responseCode = "400", description = "Fail", content =
+                    {@Content(mediaType = "text/plain", schema = @Schema(implementation = String.class))}),
+    })
+    public ResponseEntity<?> deleteProduct(@PathVariable(value = "id") Long id)
+            throws MethodArgumentTypeMismatchException {
+        productService.deleteProduct(id);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Delete success");
     }
 }

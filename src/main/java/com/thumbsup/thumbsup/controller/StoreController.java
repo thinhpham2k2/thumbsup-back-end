@@ -18,6 +18,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.validation.annotation.Validated;
@@ -112,7 +113,7 @@ public class StoreController {
         }
     }
 
-    @PostMapping("")
+    @PostMapping(value = "", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @Secured({ADMIN})
     @Operation(summary = "Create store")
     @ApiResponses(value = {
@@ -122,17 +123,17 @@ public class StoreController {
             @ApiResponse(responseCode = "400", description = "Fail", content =
                     {@Content(mediaType = "text/plain", schema = @Schema(implementation = String.class))}),
     })
-    public ResponseEntity<?> createStore(@RequestBody @Validated CreateStoreDTO create)
+    public ResponseEntity<?> createStore(@ModelAttribute @Validated CreateStoreDTO create)
             throws MethodArgumentTypeMismatchException {
         StoreExtraDTO store = storeService.createStore(create);
         if (store != null) {
-            return ResponseEntity.status(HttpStatus.CREATED).body(create);
+            return ResponseEntity.status(HttpStatus.CREATED).body(store);
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Create fail");
         }
     }
 
-    @PutMapping("/{id}")
+    @PutMapping(value = "/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @Secured({ADMIN, STORE})
     @Operation(summary = "Update store")
     @ApiResponses(value = {
@@ -143,11 +144,11 @@ public class StoreController {
                     {@Content(mediaType = "text/plain", schema = @Schema(implementation = String.class))}),
     })
     public ResponseEntity<?> updateStore(@PathVariable(value = "id") Long id,
-                                            @RequestBody @Validated UpdateStoreDTO update)
+                                         @ModelAttribute @Validated UpdateStoreDTO update)
             throws MethodArgumentTypeMismatchException {
         StoreExtraDTO store = storeService.updateStore(update, id);
         if (store != null) {
-            return ResponseEntity.status(HttpStatus.CREATED).body(update);
+            return ResponseEntity.status(HttpStatus.CREATED).body(store);
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Update fail");
         }

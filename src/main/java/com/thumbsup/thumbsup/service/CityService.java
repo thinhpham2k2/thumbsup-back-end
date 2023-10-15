@@ -47,4 +47,9 @@ public class CityService implements ICityService {
                 .map(CityMapper.INSTANCE::toDTO)
                 .collect(Collectors.toList()), pageResult.getPageable(), pageResult.getTotalElements());
     }
+
+    @Override
+    public CityDTO getCityById(long id) {
+        return CityMapper.INSTANCE.toDTO(cityRepository.findByIdAndStatus(id, true).orElse(null));
+    }
 }

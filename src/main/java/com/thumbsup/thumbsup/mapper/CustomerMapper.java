@@ -5,7 +5,10 @@ import com.thumbsup.thumbsup.dto.customer.CustomerDTO;
 import com.thumbsup.thumbsup.dto.customer.UpdateCustomerDTO;
 import com.thumbsup.thumbsup.entity.City;
 import com.thumbsup.thumbsup.entity.Customer;
-import org.mapstruct.*;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
+import org.mapstruct.Named;
 import org.mapstruct.factory.Mappers;
 
 @Mapper(componentModel = "spring")
@@ -18,6 +21,7 @@ public interface CustomerMapper {
     CustomerDTO toDTO(Customer entity);
 
     @Mapping(target = "id", expression = "java(null)")
+    @Mapping(target = "avatar", ignore = true)
     @Mapping(target = "wishlistProductList", ignore = true)
     @Mapping(target = "wishlistStoreList", ignore = true)
     @Mapping(target = "reviewList", ignore = true)
@@ -45,12 +49,5 @@ public interface CustomerMapper {
         City city = new City();
         city.setId(id);
         return city;
-    }
-
-    @AfterMapping
-    default void  mapAvatar(UpdateCustomerDTO updateDTO, @MappingTarget Customer entity) {
-        if(!updateDTO.getAvatar().isBlank()){
-            entity.setAvatar(updateDTO.getAvatar());
-        }
     }
 }

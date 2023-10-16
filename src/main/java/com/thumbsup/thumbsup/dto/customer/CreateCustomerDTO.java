@@ -23,6 +23,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @JsonIgnoreProperties(value = { "passwordMatching" })
 public class CreateCustomerDTO implements Serializable {
+    @NotNull(message = "User name is required")
     @UsernameConstraint
     private String userName;
 

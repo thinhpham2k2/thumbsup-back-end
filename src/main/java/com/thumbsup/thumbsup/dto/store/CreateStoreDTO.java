@@ -22,6 +22,7 @@ import java.sql.Time;
 @AllArgsConstructor
 @JsonIgnoreProperties(value = { "passwordMatching" })
 public class CreateStoreDTO implements Serializable {
+    @NotNull(message = "User name is required")
     @UsernameConstraint
     private String userName;
 

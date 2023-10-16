@@ -36,6 +36,7 @@ public class CreateStoreDTO implements Serializable {
     @Size(min = 2, max = 255, message = "The length of store name is from 2 to 255 characters")
     private String storeName;
 
+    @NotNull
     @EmailConstraint
     private String email;
 

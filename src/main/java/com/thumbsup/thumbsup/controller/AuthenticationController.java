@@ -26,6 +26,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
@@ -82,7 +83,7 @@ public class AuthenticationController {
             @ApiResponse(responseCode = "400", description = "Fail", content =
                     {@Content(mediaType = "text/plain", schema = @Schema(implementation = String.class))}),
     })
-    public ResponseEntity<?> registerStoreAccount(@ModelAttribute CreateStoreDTO register)
+    public ResponseEntity<?> registerStoreAccount(@ModelAttribute @Validated CreateStoreDTO register)
             throws MethodArgumentTypeMismatchException {
         Common.role = "Unauthentic";
         StoreExtraDTO store = storeService.createStore(register);
@@ -116,7 +117,7 @@ public class AuthenticationController {
             @ApiResponse(responseCode = "400", description = "Fail", content =
                     {@Content(mediaType = "text/plain", schema = @Schema(implementation = String.class))}),
     })
-    public ResponseEntity<?> registerCustomerAccount(@ModelAttribute CreateCustomerDTO register)
+    public ResponseEntity<?> registerCustomerAccount(@ModelAttribute @Validated CreateCustomerDTO register)
             throws MethodArgumentTypeMismatchException {
         CustomerDTO customer = customerService.createCustomer(register);
         if (customer != null) {
@@ -139,6 +140,20 @@ public class AuthenticationController {
             throws MethodArgumentTypeMismatchException {
         return accountAuthentication(loginFormDTO, "Mobile");
     }
+
+//    @PostMapping("/mobile/google/login")
+//    @Operation(summary = "Customer or Store login to system with google")
+//    @ApiResponses(value = {
+//            @ApiResponse(responseCode = "200", description = "Success", content =
+//                    {@Content(mediaType = "application/json", schema =
+//                    @Schema(implementation = JwtResponseDTO.class))}),
+//            @ApiResponse(responseCode = "400", description = "Fail", content =
+//                    {@Content(mediaType = "text/plain", schema = @Schema(implementation = String.class))}),
+//    })
+//    public ResponseEntity<?> loginMobileAccountWithGoogle(@RequestBody LoginFormDTO loginFormDTO)
+//            throws MethodArgumentTypeMismatchException {
+//        return ResponseEntity.badRequest().body("Missing password");
+//    }
 
     private ResponseEntity<?> accountAuthentication(LoginFormDTO loginFormDTO, String role) {
         String userName = loginFormDTO.getUserName();

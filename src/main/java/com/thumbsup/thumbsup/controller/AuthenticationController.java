@@ -3,6 +3,7 @@ package com.thumbsup.thumbsup.controller;
 import com.thumbsup.thumbsup.common.Common;
 import com.thumbsup.thumbsup.dto.customer.CreateCustomerDTO;
 import com.thumbsup.thumbsup.dto.customer.CustomerDTO;
+import com.thumbsup.thumbsup.dto.jwt.GoogleTokenDTO;
 import com.thumbsup.thumbsup.dto.jwt.JwtResponseDTO;
 import com.thumbsup.thumbsup.dto.jwt.LoginFormDTO;
 import com.thumbsup.thumbsup.dto.store.CreateStoreDTO;
@@ -10,6 +11,7 @@ import com.thumbsup.thumbsup.dto.store.StoreExtraDTO;
 import com.thumbsup.thumbsup.entity.CustomUserDetails;
 import com.thumbsup.thumbsup.jwt.JwtTokenProvider;
 import com.thumbsup.thumbsup.service.interfaces.ICustomerService;
+import com.thumbsup.thumbsup.service.interfaces.IGoogleService;
 import com.thumbsup.thumbsup.service.interfaces.IJwtService;
 import com.thumbsup.thumbsup.service.interfaces.IStoreService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -30,6 +32,9 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
+import java.io.IOException;
+import java.security.GeneralSecurityException;
+
 @RestController
 @RequiredArgsConstructor
 @Tag(name = "Authentication API")
@@ -39,6 +44,8 @@ public class AuthenticationController {
     private final IJwtService jwtService;
 
     private final IStoreService storeService;
+
+    private final IGoogleService googleService;
 
     private final ICustomerService customerService;
 
@@ -141,19 +148,21 @@ public class AuthenticationController {
         return accountAuthentication(loginFormDTO, "Mobile");
     }
 
-//    @PostMapping("/mobile/google/login")
-//    @Operation(summary = "Customer or Store login to system with google")
-//    @ApiResponses(value = {
-//            @ApiResponse(responseCode = "200", description = "Success", content =
-//                    {@Content(mediaType = "application/json", schema =
-//                    @Schema(implementation = JwtResponseDTO.class))}),
-//            @ApiResponse(responseCode = "400", description = "Fail", content =
-//                    {@Content(mediaType = "text/plain", schema = @Schema(implementation = String.class))}),
-//    })
-//    public ResponseEntity<?> loginMobileAccountWithGoogle(@RequestBody LoginFormDTO loginFormDTO)
-//            throws MethodArgumentTypeMismatchException {
-//        return ResponseEntity.badRequest().body("Missing password");
-//    }
+    @PostMapping("/mobile/google/login")
+    @Operation(summary = "Customer or Store login to system with google")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Success", content =
+                    {@Content(mediaType = "application/json", schema =
+                    @Schema(implementation = JwtResponseDTO.class))}),
+            @ApiResponse(responseCode = "400", description = "Fail", content =
+                    {@Content(mediaType = "text/plain", schema = @Schema(implementation = String.class))}),
+    })
+    public ResponseEntity<?> loginMobileAccountWithGoogle(@RequestBody GoogleTokenDTO token)
+            throws MethodArgumentTypeMismatchException, GeneralSecurityException, IOException {
+        String role = "Mobile";
+//        return accountAuthentication(googleService.loginWithGoogle(token, role), role);
+        return ResponseEntity.status(HttpStatus.OK).body(googleService.loginWithGoogle(token, role));
+    }
 
     private ResponseEntity<?> accountAuthentication(LoginFormDTO loginFormDTO, String role) {
         String userName = loginFormDTO.getUserName();

@@ -10,6 +10,8 @@ import java.util.Optional;
 @Repository
 public interface WishlistStoreRepository extends JpaRepository<WishlistStore, Long> {
 
+    Optional<WishlistStore> findFirstByCustomer_IdAndStore_Id(long customerId, long storeId);
+
     Boolean existsByStatusAndCustomerIdAndStoreId(boolean status, long customerId, long storeId);
 
     Optional<Integer> countAllByStatusAndStoreId(boolean status, long storeId);

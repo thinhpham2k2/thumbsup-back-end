@@ -1,13 +1,14 @@
 package com.thumbsup.thumbsup.service;
 
 import com.thumbsup.thumbsup.common.Common;
+import com.thumbsup.thumbsup.dto.wishlist.UpdateWishlistStoreDTO;
 import com.thumbsup.thumbsup.dto.wishlist.WishlistStoreDTO;
 import com.thumbsup.thumbsup.entity.Category;
+import com.thumbsup.thumbsup.entity.Customer;
+import com.thumbsup.thumbsup.entity.Store;
 import com.thumbsup.thumbsup.entity.WishlistStore;
 import com.thumbsup.thumbsup.mapper.WishlistStoreMapper;
-import com.thumbsup.thumbsup.repository.CategoryRepository;
-import com.thumbsup.thumbsup.repository.ReviewRepository;
-import com.thumbsup.thumbsup.repository.WishlistStoreRepository;
+import com.thumbsup.thumbsup.repository.*;
 import com.thumbsup.thumbsup.service.interfaces.IWishlistStoreService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -15,7 +16,9 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.security.InvalidParameterException;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
@@ -26,11 +29,36 @@ import java.util.function.Predicate;
 @RequiredArgsConstructor
 public class WishlistStoreService implements IWishlistStoreService {
 
-    private final WishlistStoreRepository wishlistStoreRepository;
+    private final StoreRepository storeRepository;
 
     private final ReviewRepository reviewRepository;
 
+    private final CustomerRepository customerRepository;
+
     private final CategoryRepository categoryRepository;
+
+    private final WishlistStoreRepository wishlistStoreRepository;
+
+    @Override
+    public WishlistStoreDTO updateWishlistStore(UpdateWishlistStoreDTO update) {
+        Optional<Store> store = storeRepository.findStoreByIdAndStatus(update.getStoreId(), true);
+        if (store.isPresent()) {
+            Optional<Customer> customer = customerRepository.findCustomerByIdAndStatus(update.getCustomerId(), true);
+            if (customer.isPresent()) {
+                Optional<WishlistStore> wishlist = wishlistStoreRepository.findFirstByCustomer_IdAndStore_Id(update.getCustomerId(), update.getStoreId());
+                if (wishlist.isPresent()) {
+                    wishlist.get().setStatus(!wishlist.get().getStatus());
+                    return WishlistStoreMapper.INSTANCE.toDTO(wishlistStoreRepository.save(wishlist.get()));
+                } else {
+                    return WishlistStoreMapper.INSTANCE.toDTO(wishlistStoreRepository.save(new WishlistStore(null, true, customer.get(), store.get())));
+                }
+            } else {
+                throw new InvalidParameterException("Not found customer");
+            }
+        } else {
+            throw new InvalidParameterException("Not found store");
+        }
+    }
 
     @Override
     public List<WishlistStoreDTO> getWishlistStore(boolean status) {

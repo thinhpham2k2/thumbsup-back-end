@@ -27,12 +27,14 @@ public class UpdateCustomerDTO implements Serializable {
     @Size(min = 7, max = 20, message = "The length of phone is from 8 to 20 characters")
     private String phone;
 
+    @NotNull
     @EmailConstraint
     private String email;
 
     private MultipartFile avatar;
 
     @BirthdayConstraint
+    @NotNull(message = "Date of birth is required")
     private LocalDate dob;
 
     @NotNull(message = "Address is required")

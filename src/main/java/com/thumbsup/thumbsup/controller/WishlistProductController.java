@@ -1,5 +1,6 @@
 package com.thumbsup.thumbsup.controller;
 
+import com.thumbsup.thumbsup.dto.wishlist.UpdateWishlistProductDTO;
 import com.thumbsup.thumbsup.dto.wishlist.WishlistProductDTO;
 import com.thumbsup.thumbsup.service.interfaces.IWishlistProductService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -14,9 +15,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import java.util.List;
@@ -52,6 +51,25 @@ public class WishlistProductController {
             return ResponseEntity.status(HttpStatus.OK).body(wishlistProductList);
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Not found wishlist product !");
+        }
+    }
+
+    @PutMapping("")
+    @Secured({CUSTOMER})
+    @Operation(summary = "Updating product wishlist")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Success", content =
+                    {@Content(mediaType = "text/plain", schema = @Schema(implementation = String.class))}),
+            @ApiResponse(responseCode = "400", description = "Fail", content =
+                    {@Content(mediaType = "text/plain", schema = @Schema(implementation = String.class))}),
+    })
+    public ResponseEntity<?> updateWishlist(@RequestBody UpdateWishlistProductDTO update)
+            throws MethodArgumentTypeMismatchException {
+        WishlistProductDTO wishlist = wishlistProductService.updateWishlistProduct(update);
+        if (wishlist != null) {
+            return ResponseEntity.status(HttpStatus.OK).body("Update success");
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Update fail");
         }
     }
 }

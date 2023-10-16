@@ -23,6 +23,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @JsonIgnoreProperties(value = { "passwordMatching" })
 public class CreateCustomerDTO implements Serializable {
+    @NotNull(message = "User name is required")
     @UsernameConstraint
     private String userName;
 
@@ -36,6 +37,7 @@ public class CreateCustomerDTO implements Serializable {
     @Size(min = 2, max = 255, message = "The length of full name is from 2 to 255 characters")
     private String fullName;
 
+    @NotNull
     @EmailConstraint
     private String email;
 
@@ -46,6 +48,7 @@ public class CreateCustomerDTO implements Serializable {
     private MultipartFile avatar;
 
     @BirthdayConstraint
+    @NotNull(message = "Date of birth is required")
     private LocalDate dob;
 
     @NotNull(message = "Address is required")

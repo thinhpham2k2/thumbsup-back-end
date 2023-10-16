@@ -13,6 +13,7 @@ import com.thumbsup.thumbsup.service.interfaces.IPagingService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.*;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.security.InvalidParameterException;
@@ -30,6 +31,8 @@ public class CustomerService implements ICustomerService {
     private final IFileService fileService;
 
     private final IPagingService pagingService;
+
+    private final PasswordEncoder passwordEncoder;
 
     private final StoreRepository storeRepository;
 
@@ -52,6 +55,7 @@ public class CustomerService implements ICustomerService {
             }
 
             customer.setAvatar(linkImg);
+            customer.setPassword(passwordEncoder.encode(customer.getPassword()));
             return CustomerMapper.INSTANCE.toDTO(customerRepository.save(customer));
         } else {
             throw new InvalidParameterException("Email is already in use");

@@ -16,6 +16,7 @@ import com.thumbsup.thumbsup.service.interfaces.IStoreService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.*;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -37,6 +38,8 @@ public class StoreService implements IStoreService {
     private final IPagingService pagingService;
 
     private final StoreRepository storeRepository;
+
+    private final PasswordEncoder passwordEncoder;
 
     private final ReviewRepository reviewRepository;
 
@@ -74,6 +77,7 @@ public class StoreService implements IStoreService {
 
             store.setLogo(linkLogo);
             store.setCoverPhoto(linkPhoto);
+            store.setPassword(passwordEncoder.encode(store.getPassword()));
             return entityToExtra(storeRepository.save(store));
         } else {
             throw new InvalidParameterException("Email is already in use");

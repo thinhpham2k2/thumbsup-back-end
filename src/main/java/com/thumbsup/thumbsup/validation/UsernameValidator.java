@@ -25,7 +25,6 @@ public class UsernameValidator implements ConstraintValidator<UsernameConstraint
             constraintValidatorContext.disableDefaultConstraintViolation();
             if (value.toString().matches("[a-z0-9]{3,30}")) {
                 String userName = value.toString();
-                System.out.println("Hayyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy");
                 if (customerService.checkByUsername(userName) && storeService.checkByUsername(userName)) {
                     return true;
                 }

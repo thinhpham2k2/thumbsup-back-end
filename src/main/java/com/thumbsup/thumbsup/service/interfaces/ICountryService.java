@@ -5,7 +5,7 @@ import org.springframework.data.domain.Page;
 
 public interface ICountryService {
 
-    Page<CountryDTO> getCountryList(boolean status, String sort, int page, int limit);
+    Page<CountryDTO> getCountryList(boolean status, String search, String sort, int page, int limit);
 
     CountryDTO getCountryById(long id);
 }

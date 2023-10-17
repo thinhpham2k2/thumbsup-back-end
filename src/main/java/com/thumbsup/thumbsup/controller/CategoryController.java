@@ -12,10 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import java.util.Optional;
@@ -43,15 +40,35 @@ public class CategoryController {
             @ApiResponse(responseCode = "400", description = "Fail", content =
                     {@Content(mediaType = "text/plain", schema = @Schema(implementation = String.class))}),
     })
-    public ResponseEntity<?> getCategoryList(@RequestParam(defaultValue = "0") Optional<Integer> page,
+    public ResponseEntity<?> getCategoryList(@RequestParam(defaultValue = "") String search,
+                                             @RequestParam(defaultValue = "0") Optional<Integer> page,
                                              @RequestParam(defaultValue = "id,asc") String sort,
                                              @RequestParam(defaultValue = "100") Optional<Integer> limit)
             throws MethodArgumentTypeMismatchException {
-        Page<CategoryDTO> categoryList = categoryService.getCategoryList(true, sort, page.orElse(0), limit.orElse(100));
+        Page<CategoryDTO> categoryList = categoryService.getCategoryList(true, search, sort, page.orElse(0), limit.orElse(100));
         if (!categoryList.getContent().isEmpty()) {
             return ResponseEntity.status(HttpStatus.OK).body(categoryList);
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Not found category list !");
+        }
+    }
+
+    @GetMapping("/{id}")
+    @Operation(summary = "Get category by id")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Success", content =
+                    {@Content(mediaType = "application/json", schema =
+                    @Schema(implementation = CategoryDTO.class))}),
+            @ApiResponse(responseCode = "400", description = "Fail", content =
+                    {@Content(mediaType = "text/plain", schema = @Schema(implementation = String.class))}),
+    })
+    public ResponseEntity<?> getCategoryById(@PathVariable(value = "id") Long categoryId)
+            throws MethodArgumentTypeMismatchException {
+        CategoryDTO category = categoryService.getCategoryById(categoryId);
+        if (category != null) {
+            return ResponseEntity.status(HttpStatus.OK).body(category);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Not found category !");
         }
     }
 }

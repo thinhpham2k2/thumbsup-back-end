@@ -12,10 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import java.util.Optional;
@@ -43,15 +40,35 @@ public class CountryController {
             @ApiResponse(responseCode = "400", description = "Fail", content =
                     {@Content(mediaType = "text/plain", schema = @Schema(implementation = String.class))}),
     })
-    public ResponseEntity<?> getCountryList(@RequestParam(defaultValue = "0") Optional<Integer> page,
+    public ResponseEntity<?> getCountryList(@RequestParam(defaultValue = "") String search,
+                                            @RequestParam(defaultValue = "0") Optional<Integer> page,
                                             @RequestParam(defaultValue = "id,asc") String sort,
                                             @RequestParam(defaultValue = "100") Optional<Integer> limit)
             throws MethodArgumentTypeMismatchException {
-        Page<CountryDTO> countryList = countryService.getCountryList(true, sort, page.orElse(0), limit.orElse(100));
+        Page<CountryDTO> countryList = countryService.getCountryList(true, search, sort, page.orElse(0), limit.orElse(100));
         if (!countryList.getContent().isEmpty()) {
             return ResponseEntity.status(HttpStatus.OK).body(countryList);
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Not found country list !");
+        }
+    }
+
+    @GetMapping("/{id}")
+    @Operation(summary = "Get country by id")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Success", content =
+                    {@Content(mediaType = "application/json", schema =
+                    @Schema(implementation = CountryDTO.class))}),
+            @ApiResponse(responseCode = "400", description = "Fail", content =
+                    {@Content(mediaType = "text/plain", schema = @Schema(implementation = String.class))}),
+    })
+    public ResponseEntity<?> getCountryById(@PathVariable(value = "id") Long countryId)
+            throws MethodArgumentTypeMismatchException {
+        CountryDTO country = countryService.getCountryById(countryId);
+        if (country != null) {
+            return ResponseEntity.status(HttpStatus.OK).body(country);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Not found country !");
         }
     }
 }

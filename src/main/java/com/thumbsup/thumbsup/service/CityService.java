@@ -27,7 +27,7 @@ public class CityService implements ICityService {
     private final CityRepository cityRepository;
 
     @Override
-    public Page<CityDTO> getCityList(boolean status, String sort, int page, int limit) {
+    public Page<CityDTO> getCityList(boolean status, String search, String sort, int page, int limit) {
         if (page < 0) throw new InvalidParameterException("Page number must not be less than zero!");
         if (limit < 1) throw new InvalidParameterException("Page size must not be less than one!");
 
@@ -41,7 +41,7 @@ public class CityService implements ICityService {
         }
 
         Pageable pageable = PageRequest.of(page, limit).withSort(Sort.by(order));
-        Page<City> pageResult = cityRepository.getCitiesByStatus(status, pageable);
+        Page<City> pageResult = cityRepository.getCitiesByStatus(status, search, pageable);
 
         return new PageImpl<>(pageResult.getContent().stream()
                 .map(CityMapper.INSTANCE::toDTO)

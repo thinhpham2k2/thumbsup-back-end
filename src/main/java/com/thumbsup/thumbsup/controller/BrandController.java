@@ -12,10 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import java.util.Optional;
@@ -43,15 +40,35 @@ public class BrandController {
             @ApiResponse(responseCode = "400", description = "Fail", content =
                     {@Content(mediaType = "text/plain", schema = @Schema(implementation = String.class))}),
     })
-    public ResponseEntity<?> getBrandList(@RequestParam(defaultValue = "0") Optional<Integer> page,
+    public ResponseEntity<?> getBrandList(@RequestParam(defaultValue = "") String search,
+                                          @RequestParam(defaultValue = "0") Optional<Integer> page,
                                           @RequestParam(defaultValue = "brand,asc") String sort,
                                           @RequestParam(defaultValue = "100") Optional<Integer> limit)
             throws MethodArgumentTypeMismatchException {
-        Page<BrandDTO> brandList = brandService.getBrandList(true, sort, page.orElse(0), limit.orElse(100));
+        Page<BrandDTO> brandList = brandService.getBrandList(true, search, sort, page.orElse(0), limit.orElse(100));
         if (!brandList.getContent().isEmpty()) {
             return ResponseEntity.status(HttpStatus.OK).body(brandList);
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Not found brand list !");
+        }
+    }
+
+    @GetMapping("/{id}")
+    @Operation(summary = "Get brand by id")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Success", content =
+                    {@Content(mediaType = "application/json", schema =
+                    @Schema(implementation = BrandDTO.class))}),
+            @ApiResponse(responseCode = "400", description = "Fail", content =
+                    {@Content(mediaType = "text/plain", schema = @Schema(implementation = String.class))}),
+    })
+    public ResponseEntity<?> getBrandById(@PathVariable(value = "id") Long brandId)
+            throws MethodArgumentTypeMismatchException {
+        BrandDTO brand = brandService.getBrandById(brandId);
+        if (brand != null) {
+            return ResponseEntity.status(HttpStatus.OK).body(brand);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Not found brand !");
         }
     }
 }

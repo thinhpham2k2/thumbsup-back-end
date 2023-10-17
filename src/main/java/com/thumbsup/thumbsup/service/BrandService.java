@@ -27,7 +27,7 @@ public class BrandService implements IBrandService {
     private final BrandRepository brandRepository;
 
     @Override
-    public Page<BrandDTO> getBrandList(boolean status, String sort, int page, int limit) {
+    public Page<BrandDTO> getBrandList(boolean status, String search, String sort, int page, int limit) {
         if (page < 0) throw new InvalidParameterException("Page number must not be less than zero!");
         if (limit < 1) throw new InvalidParameterException("Page size must not be less than one!");
 
@@ -41,7 +41,7 @@ public class BrandService implements IBrandService {
         }
 
         Pageable pageable = PageRequest.of(page, limit).withSort(Sort.by(order));
-        Page<Brand> pageResult = brandRepository.getBrandsByStatus(status, pageable);
+        Page<Brand> pageResult = brandRepository.getBrandsByStatus(status, search, pageable);
 
         return new PageImpl<>(pageResult.getContent().stream()
                 .map(BrandMapper.INSTANCE::toDTO)

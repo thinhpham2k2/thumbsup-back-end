@@ -12,10 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import java.util.Optional;
@@ -43,15 +40,35 @@ public class CityController {
             @ApiResponse(responseCode = "400", description = "Fail", content =
                     {@Content(mediaType = "text/plain", schema = @Schema(implementation = String.class))}),
     })
-    public ResponseEntity<?> getCityList(@RequestParam(defaultValue = "0") Optional<Integer> page,
+    public ResponseEntity<?> getCityList(@RequestParam(defaultValue = "") String search,
+                                         @RequestParam(defaultValue = "0") Optional<Integer> page,
                                          @RequestParam(defaultValue = "cityName,asc") String sort,
                                          @RequestParam(defaultValue = "100") Optional<Integer> limit)
             throws MethodArgumentTypeMismatchException {
-        Page<CityDTO> cityList = cityService.getCityList(true, sort, page.orElse(0), limit.orElse(100));
+        Page<CityDTO> cityList = cityService.getCityList(true, search, sort, page.orElse(0), limit.orElse(100));
         if (!cityList.getContent().isEmpty()) {
             return ResponseEntity.status(HttpStatus.OK).body(cityList);
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Not found city list !");
+        }
+    }
+
+    @GetMapping("/{id}")
+    @Operation(summary = "Get city by id")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Success", content =
+                    {@Content(mediaType = "application/json", schema =
+                    @Schema(implementation = CityDTO.class))}),
+            @ApiResponse(responseCode = "400", description = "Fail", content =
+                    {@Content(mediaType = "text/plain", schema = @Schema(implementation = String.class))}),
+    })
+    public ResponseEntity<?> getCityById(@PathVariable(value = "id") Long cityId)
+            throws MethodArgumentTypeMismatchException {
+        CityDTO city = cityService.getCityById(cityId);
+        if (city != null) {
+            return ResponseEntity.status(HttpStatus.OK).body(city);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Not found city !");
         }
     }
 }

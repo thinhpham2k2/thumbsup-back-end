@@ -44,18 +44,6 @@ public class SecurityConfig {
         return authenticationManagerBuilder.build();
     }
 
-//    @Bean
-//    public FirebaseMessaging firebaseMessaging() throws IOException {
-//        GoogleCredentials googleCredentials = GoogleCredentials
-//                .fromStream(new ClassPathResource("gadgetzone-49cd4-firebase-adminsdk-uluaa-d0ceb3a938.json").getInputStream());
-//        FirebaseOptions firebaseOptions = FirebaseOptions
-//                .builder()
-//                .setCredentials(googleCredentials)
-//                .build();
-//        FirebaseApp app = FirebaseApp.initializeApp(firebaseOptions, "wallet-app");
-//        return FirebaseMessaging.getInstance(app);
-//    }
-
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.cors(AbstractHttpConfigurer::disable).csrf(AbstractHttpConfigurer::disable);

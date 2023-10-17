@@ -67,6 +67,20 @@ public class AuthenticationController {
         return accountAuthentication(loginFormDTO, "Admin");
     }
 
+    @PostMapping("/admin/google/login")
+    @Operation(summary = "Admin login to system with google")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Success", content =
+                    {@Content(mediaType = "application/json", schema =
+                    @Schema(implementation = JwtResponseDTO.class))}),
+            @ApiResponse(responseCode = "400", description = "Fail", content =
+                    {@Content(mediaType = "text/plain", schema = @Schema(implementation = String.class))}),
+    })
+    public ResponseEntity<?> loginAdminAccountWithGoogle(@RequestBody GoogleTokenDTO token)
+            throws MethodArgumentTypeMismatchException, GeneralSecurityException, IOException {
+        return ResponseEntity.status(HttpStatus.OK).body(googleService.loginWithGoogle(token, "Admin"));
+    }
+
     @PostMapping("/store/login")
     @Operation(summary = "Store login to system")
     @ApiResponses(value = {
@@ -101,8 +115,8 @@ public class AuthenticationController {
         }
     }
 
-    @PostMapping("/customer/login")
-    @Operation(summary = "Customer login to system")
+    @PostMapping("/store/google/login")
+    @Operation(summary = "Store login to system with google")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Success", content =
                     {@Content(mediaType = "application/json", schema =
@@ -110,9 +124,9 @@ public class AuthenticationController {
             @ApiResponse(responseCode = "400", description = "Fail", content =
                     {@Content(mediaType = "text/plain", schema = @Schema(implementation = String.class))}),
     })
-    public ResponseEntity<?> loginCustomerAccount(@RequestBody LoginFormDTO loginFormDTO)
-            throws MethodArgumentTypeMismatchException {
-        return accountAuthentication(loginFormDTO, "Customer");
+    public ResponseEntity<?> loginStoreAccountWithGoogle(@RequestBody GoogleTokenDTO token)
+            throws MethodArgumentTypeMismatchException, GeneralSecurityException, IOException {
+        return ResponseEntity.status(HttpStatus.OK).body(googleService.loginWithGoogle(token, "Store"));
     }
 
     @PostMapping(value = "/customer/register", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
@@ -159,9 +173,7 @@ public class AuthenticationController {
     })
     public ResponseEntity<?> loginMobileAccountWithGoogle(@RequestBody GoogleTokenDTO token)
             throws MethodArgumentTypeMismatchException, GeneralSecurityException, IOException {
-        String role = "Mobile";
-//        return accountAuthentication(googleService.loginWithGoogle(token, role), role);
-        return ResponseEntity.status(HttpStatus.OK).body(googleService.loginWithGoogle(token, role));
+        return ResponseEntity.status(HttpStatus.OK).body(googleService.loginWithGoogle(token, "Mobile"));
     }
 
     private ResponseEntity<?> accountAuthentication(LoginFormDTO loginFormDTO, String role) {

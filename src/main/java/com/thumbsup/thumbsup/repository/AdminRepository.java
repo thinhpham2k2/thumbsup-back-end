@@ -16,6 +16,8 @@ public interface AdminRepository extends JpaRepository<Admin, Long> {
 
     Optional<Admin> findAdminByIdAndStatus(long adminId, boolean status);
 
+    Optional<Admin> findAdminByEmailAndStatus(String email, boolean status);
+
     @Query("SELECT a FROM Admin a " +
             "WHERE a.status = ?1 " +
             "AND (a.fullName LIKE %?2% " +

@@ -20,7 +20,6 @@ import com.thumbsup.thumbsup.service.interfaces.IGoogleService;
 import com.thumbsup.thumbsup.service.interfaces.IJwtService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -41,8 +40,6 @@ public class GoogleService implements IGoogleService {
     private final IJwtService jwtService;
 
     private final CityRepository cityRepository;
-
-    private final PasswordEncoder passwordEncoder;
 
     private final AdminRepository adminRepository;
 

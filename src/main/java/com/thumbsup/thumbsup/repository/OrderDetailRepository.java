@@ -14,4 +14,6 @@ public interface OrderDetailRepository extends JpaRepository<OrderDetail, Long> 
             "WHERE d.status = ?1 " +
             "AND d.product.id = ?2")
     Optional<Integer> getNumberOfSoldProduct(boolean status, long productId);
+
+    boolean existsByOrder_Customer_IdAndProduct_IdAndStatus(long customerId, long productId, boolean status);
 }

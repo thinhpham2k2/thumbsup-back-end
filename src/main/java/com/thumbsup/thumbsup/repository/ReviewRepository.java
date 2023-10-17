@@ -27,4 +27,6 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
             "OR r.product.productName LIKE %?3% " +
             "OR r.comment LIKE %?3%)")
     Page<Review> getReviewListByProductId(boolean status, Long productId, String search, Pageable pageable);
+
+    boolean existsByCustomer_IdAndProduct_IdAndStatus(long customerId, long productId, boolean status);
 }

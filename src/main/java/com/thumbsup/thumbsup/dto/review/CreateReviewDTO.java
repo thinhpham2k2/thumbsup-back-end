@@ -1,27 +1,30 @@
 package com.thumbsup.thumbsup.dto.review;
 
+import com.thumbsup.thumbsup.validation.interfaces.CustomerConstraint;
+import com.thumbsup.thumbsup.validation.interfaces.ProductConstraint;
+import com.thumbsup.thumbsup.validation.interfaces.RatingConstraint;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
 
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ReviewDTO implements Serializable {
-    private Long id;
+public class CreateReviewDTO implements Serializable {
     private String comment;
+
+    @RatingConstraint
     private Integer rating;
-    private LocalDateTime dateCreated;
+
     private Boolean state;
+
+    @CustomerConstraint
     private Long customerId;
-    private String customerName;
-    private String customerAvatar;
+
+    @ProductConstraint
     private Long productId;
-    private String productName;
-    private Boolean status;
 }

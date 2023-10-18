@@ -40,7 +40,7 @@ public class OrderController {
     private final IOrderService orderService;
 
     @GetMapping("")
-    @Secured({ADMIN, STORE, CUSTOMER})
+    @Secured({ADMIN})
     @Operation(summary = "Get order list")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Success", content =

@@ -16,5 +16,5 @@ public interface IOrderService {
 
     OrderDTO getOrderByIdForStore(long id, long storeId);
 
-    void createOrder(CreateOrderDTO create);
+    void createOrder(CreateOrderDTO create, boolean isPaid, String token);
 }

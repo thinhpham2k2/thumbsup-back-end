@@ -3,10 +3,7 @@ package com.thumbsup.thumbsup.service;
 import com.thumbsup.thumbsup.dto.order.CreateOrderDTO;
 import com.thumbsup.thumbsup.dto.order.CreateOrderDetailDTO;
 import com.thumbsup.thumbsup.dto.order.OrderDTO;
-import com.thumbsup.thumbsup.entity.Order;
-import com.thumbsup.thumbsup.entity.OrderDetail;
-import com.thumbsup.thumbsup.entity.Product;
-import com.thumbsup.thumbsup.entity.StateDetail;
+import com.thumbsup.thumbsup.entity.*;
 import com.thumbsup.thumbsup.mapper.OrderDetailMapper;
 import com.thumbsup.thumbsup.mapper.OrderMapper;
 import com.thumbsup.thumbsup.repository.*;
@@ -34,6 +31,8 @@ public class OrderService implements IOrderService {
 
     private final IPagingService pagingService;
 
+    private final StoreRepository storeRepository;
+
     private final StateRepository stateRepository;
 
     private final OrderRepository orderRepository;
@@ -44,23 +43,25 @@ public class OrderService implements IOrderService {
 
     private final StateDetailRepository stateDetailRepository;
 
+    private final TransactionOrderRepository transactionOrderRepository;
+
     @Override
-    public void createOrder(CreateOrderDTO create) {
+    public void createOrder(CreateOrderDTO create, boolean isPaid, String token) {
         if (create.getAmount().compareTo(create.getOrderDetailList().stream().map(CreateOrderDetailDTO::getAmount)
                 .reduce(BigDecimal.ZERO, BigDecimal::add)) == 0) {
-
-            long orderId = 0L;
-
+            Store store = new Store();
             for (CreateOrderDetailDTO d : create.getOrderDetailList()) {
                 Optional<Product> p = productRepository.getProductByStatusAndId(true, d.getProductId());
-                if (p.isPresent() && p.get().getQuantity() < d.getQuantity()) {
-                    throw new InvalidParameterException("Quantity of the " + p.get().getProductName() + " is not enough");
+                if (p.isPresent()) {
+                    store = p.get().getStore();
+                    if (p.get().getQuantity() < d.getQuantity()) {
+                        throw new InvalidParameterException("Quantity of the " + p.get().getProductName() + " is not enough");
+                    }
                 }
             }
 
             try {
                 Order order = orderRepository.save(OrderMapper.INSTANCE.createToEntity(create));
-                orderId = order.getId();
 
                 for (CreateOrderDetailDTO d : create.getOrderDetailList()) {
                     OrderDetail detail = OrderDetailMapper.INSTANCE.createToEntity(d);
@@ -77,6 +78,18 @@ public class OrderService implements IOrderService {
                 StateDetail stateDetail = new StateDetail(null, LocalDateTime.now(), true,
                         stateRepository.getFirstState(true), order);
                 stateDetailRepository.save(stateDetail);
+
+                BigDecimal amount;
+                if (isPaid) {
+                    amount = order.getAmount().multiply(new BigDecimal("0.95"));
+                } else {
+                    amount = order.getAmount().multiply(new BigDecimal("-0.05"));
+                }
+                transactionOrderRepository.save(new TransactionOrder(null, token, amount, LocalDateTime.now(),
+                        true, true, order, store));
+
+                store.setBalance(store.getBalance().add(amount));
+                storeRepository.save(store);
             } catch (Exception e) {
                 throw new InvalidParameterException("Create order fail");
             }

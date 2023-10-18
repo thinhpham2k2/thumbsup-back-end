@@ -101,9 +101,11 @@ public class OrderController {
             @ApiResponse(responseCode = "400", description = "Fail", content =
                     {@Content(mediaType = "text/plain", schema = @Schema(implementation = String.class))}),
     })
-    public ResponseEntity<?> createOrder(@RequestBody @Validated CreateOrderDTO create)
+    public ResponseEntity<?> createOrder(@RequestBody @Validated CreateOrderDTO create,
+                                         @RequestParam(defaultValue = "false") boolean isPaid,
+                                         @RequestParam(defaultValue = "") String token)
             throws MethodArgumentTypeMismatchException {
-        orderService.createOrder(create);
+        orderService.createOrder(create, isPaid, token);
         return ResponseEntity.status(HttpStatus.CREATED).body("Create success");
     }
 }

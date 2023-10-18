@@ -1,5 +1,6 @@
 package com.thumbsup.thumbsup.service.interfaces;
 
+import com.thumbsup.thumbsup.dto.order.CreateOrderDTO;
 import com.thumbsup.thumbsup.dto.order.OrderDTO;
 import org.springframework.data.domain.Page;
 
@@ -14,4 +15,6 @@ public interface IOrderService {
     OrderDTO getOrderByIdForCustomer(long id, long customerId);
 
     OrderDTO getOrderByIdForStore(long id, long storeId);
+
+    void createOrder(CreateOrderDTO create);
 }

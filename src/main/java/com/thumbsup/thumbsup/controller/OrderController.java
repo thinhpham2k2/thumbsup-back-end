@@ -1,5 +1,6 @@
 package com.thumbsup.thumbsup.controller;
 
+import com.thumbsup.thumbsup.dto.order.CreateOrderDTO;
 import com.thumbsup.thumbsup.dto.order.OrderDTO;
 import com.thumbsup.thumbsup.service.interfaces.IOrderService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -15,6 +16,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
@@ -47,18 +49,18 @@ public class OrderController {
                     {@Content(mediaType = "text/plain", schema = @Schema(implementation = String.class))}),
     })
     public ResponseEntity<?> getOrderList(@RequestParam(defaultValue = "") String search,
-                                             @RequestParam(defaultValue = "0") Optional<Integer> page,
-                                             @RequestParam(defaultValue = "id,desc") String sort,
-                                             @RequestParam(defaultValue = "10") Optional<Integer> limit,
-                                             @RequestParam(defaultValue = "")
-                                                 @Parameter(description = "<b>Filter by customer ID<b>")
-                                                 List<Long> customerIds,
-                                             @RequestParam(defaultValue = "")
-                                                 @Parameter(description = "<b>Filter by state ID<b>")
-                                                 List<Long> stateIds,
-                                             @RequestParam(defaultValue = "")
-                                                 @Parameter(description = "<b>Filter by store ID<b>")
-                                                 List<Long> storeIds)
+                                          @RequestParam(defaultValue = "0") Optional<Integer> page,
+                                          @RequestParam(defaultValue = "id,desc") String sort,
+                                          @RequestParam(defaultValue = "10") Optional<Integer> limit,
+                                          @RequestParam(defaultValue = "")
+                                          @Parameter(description = "<b>Filter by customer ID<b>")
+                                          List<Long> customerIds,
+                                          @RequestParam(defaultValue = "")
+                                          @Parameter(description = "<b>Filter by state ID<b>")
+                                          List<Long> stateIds,
+                                          @RequestParam(defaultValue = "")
+                                          @Parameter(description = "<b>Filter by store ID<b>")
+                                          List<Long> storeIds)
             throws MethodArgumentTypeMismatchException {
         Page<OrderDTO> orderList = orderService.getOrderList(true, customerIds, stateIds, storeIds, search, sort,
                 page.orElse(0), limit.orElse(10));
@@ -87,5 +89,21 @@ public class OrderController {
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Not found order");
         }
+    }
+
+    @PostMapping("")
+    @Secured({ADMIN, STORE, CUSTOMER})
+    @Operation(summary = "Create order")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Created", content =
+                    {@Content(mediaType = "application/json", schema =
+                    @Schema(implementation = OrderDTO.class))}),
+            @ApiResponse(responseCode = "400", description = "Fail", content =
+                    {@Content(mediaType = "text/plain", schema = @Schema(implementation = String.class))}),
+    })
+    public ResponseEntity<?> createOrder(@RequestBody @Validated CreateOrderDTO create)
+            throws MethodArgumentTypeMismatchException {
+        orderService.createOrder(create);
+        return ResponseEntity.status(HttpStatus.CREATED).body("Create success");
     }
 }

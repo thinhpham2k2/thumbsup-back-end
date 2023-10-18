@@ -1,5 +1,6 @@
 package com.thumbsup.thumbsup.mapper;
 
+import com.thumbsup.thumbsup.dto.order.CreateOrderDTO;
 import com.thumbsup.thumbsup.dto.order.OrderDTO;
 import com.thumbsup.thumbsup.dto.order.OrderDetailDTO;
 import com.thumbsup.thumbsup.dto.state.StateDetailDTO;
@@ -25,11 +26,14 @@ public interface OrderMapper {
     @Mapping(target = "stateDetailList", source = "stateDetailList", qualifiedByName = "mapStateDetail")
     OrderDTO toDTO(Order entity);
 
+    @Mapping(target = "id", expression = "java(null)")
+    @Mapping(target = "status", expression = "java(true)")
     @Mapping(target = "stateDetailList", ignore = true)
     @Mapping(target = "orderDetailList", ignore = true)
     @Mapping(target = "transactionOrderList", ignore = true)
+    @Mapping(target = "dateCreated", expression = "java(java.time.LocalDateTime.now())")
     @Mapping(target = "customer", source = "customerId", qualifiedByName = "mapCustomer")
-    Order dtoToEntity(OrderDTO dto);
+    Order createToEntity(CreateOrderDTO create);
 
     @Named("mapCustomer")
     default Customer mapCustomer(Long id) {

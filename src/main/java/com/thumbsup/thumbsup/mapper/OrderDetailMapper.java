@@ -1,8 +1,8 @@
 package com.thumbsup.thumbsup.mapper;
 
+import com.thumbsup.thumbsup.dto.order.CreateOrderDetailDTO;
 import com.thumbsup.thumbsup.dto.order.OrderDetailDTO;
 import com.thumbsup.thumbsup.entity.Image;
-import com.thumbsup.thumbsup.entity.Order;
 import com.thumbsup.thumbsup.entity.OrderDetail;
 import com.thumbsup.thumbsup.entity.Product;
 import org.mapstruct.Mapper;
@@ -23,16 +23,11 @@ public interface OrderDetailMapper {
     @Mapping(target = "productImage", source = "product.imageList", qualifiedByName = "mapImage")
     OrderDetailDTO toDTO(OrderDetail entity);
 
-    @Mapping(target = "order", source = "orderId", qualifiedByName = "mapOrder")
+    @Mapping(target = "id", expression = "java(null)")
+    @Mapping(target = "status", expression = "java(true)")
+    @Mapping(target = "order", ignore = true)
     @Mapping(target = "product", source = "productId", qualifiedByName = "mapProduct")
-    OrderDetail dtoToEntity(OrderDetailDTO dto);
-
-    @Named("mapOrder")
-    default Order mapOrder(Long id) {
-        Order order = new Order();
-        order.setId(id);
-        return order;
-    }
+    OrderDetail createToEntity(CreateOrderDetailDTO create);
 
     @Named("mapProduct")
     default Product mapProduct(Long id) {

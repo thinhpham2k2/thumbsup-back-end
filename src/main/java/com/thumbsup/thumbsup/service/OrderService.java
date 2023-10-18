@@ -28,6 +28,21 @@ public class OrderService implements IOrderService {
     private final OrderRepository orderRepository;
 
     @Override
+    public OrderDTO getOrderByIdForCustomer(long id, long customerId) {
+        return OrderMapper.INSTANCE.toDTO(orderRepository.findByIdAndCustomer_IdAndStatus(id, customerId, true).orElse(null));
+    }
+
+    @Override
+    public OrderDTO getOrderByIdForStore(long id, long storeId) {
+        return OrderMapper.INSTANCE.toDTO(orderRepository.getOrderByIdAndStore(id, true, storeId).orElse(null));
+    }
+
+    @Override
+    public OrderDTO getOrderById(long id) {
+        return OrderMapper.INSTANCE.toDTO(orderRepository.findByIdAndStatus(id, true).orElse(null));
+    }
+
+    @Override
     public Page<OrderDTO> getOrderList(boolean status, List<Long> customerIds, List<Long> stateIds, List<Long> storeIds,
                                        String search, String sort, int page, int limit) {
         if (limit < 1) throw new InvalidParameterException("Page size must not be less than one!");

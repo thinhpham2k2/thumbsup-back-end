@@ -15,10 +15,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import java.util.List;
@@ -49,7 +46,7 @@ public class OrderController {
             @ApiResponse(responseCode = "400", description = "Fail", content =
                     {@Content(mediaType = "text/plain", schema = @Schema(implementation = String.class))}),
     })
-    public ResponseEntity<?> getCustomerList(@RequestParam(defaultValue = "") String search,
+    public ResponseEntity<?> getOrderList(@RequestParam(defaultValue = "") String search,
                                              @RequestParam(defaultValue = "0") Optional<Integer> page,
                                              @RequestParam(defaultValue = "id,desc") String sort,
                                              @RequestParam(defaultValue = "10") Optional<Integer> limit,
@@ -69,6 +66,26 @@ public class OrderController {
             return ResponseEntity.status(HttpStatus.OK).body(orderList);
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Not found order list");
+        }
+    }
+
+    @GetMapping("/{id}")
+    @Secured({ADMIN})
+    @Operation(summary = "Get order detail by id")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Success", content =
+                    {@Content(mediaType = "application/json", schema =
+                    @Schema(implementation = OrderDTO.class))}),
+            @ApiResponse(responseCode = "400", description = "Fail", content =
+                    {@Content(mediaType = "text/plain", schema = @Schema(implementation = String.class))}),
+    })
+    public ResponseEntity<?> getOrderDetailById(@PathVariable(value = "id") Long orderId)
+            throws MethodArgumentTypeMismatchException {
+        OrderDTO order = orderService.getOrderById(orderId);
+        if (order != null) {
+            return ResponseEntity.status(HttpStatus.OK).body(order);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Not found order");
         }
     }
 }

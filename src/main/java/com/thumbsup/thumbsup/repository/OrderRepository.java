@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface OrderRepository extends JpaRepository<Order, Long> {
@@ -22,4 +23,14 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
             "OR o.customer.city.cityName LIKE %?5%)" +
             "GROUP BY o")
     Page<Order> getOrderList(boolean status, List<Long> customerIds, List<Long> stateIds, List<Long> storeIds, String search, Pageable pageable);
+
+    Optional<Order> findByIdAndStatus(long id, boolean status);
+
+    Optional<Order> findByIdAndCustomer_IdAndStatus(long id, long customerId, boolean status);
+
+    @Query("SELECT o FROM Order o " +
+            "WHERE o.id = ?1 " +
+            "AND o.status = ?2 " +
+            "AND (SELECT MAX(d.product.store.id) FROM OrderDetail d WHERE d.order = o) = ?3 ")
+    Optional<Order> getOrderByIdAndStore(long id, boolean status, long storeId);
 }

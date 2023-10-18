@@ -8,4 +8,10 @@ import java.util.List;
 public interface IOrderService {
 
     Page<OrderDTO> getOrderList(boolean status, List<Long> customerIds, List<Long> stateIds, List<Long> storeIds, String search, String sort, int page, int limit);
+
+    OrderDTO getOrderById(long id);
+
+    OrderDTO getOrderByIdForCustomer(long id, long customerId);
+
+    OrderDTO getOrderByIdForStore(long id, long storeId);
 }

@@ -50,6 +50,27 @@ public class StoreController {
 
     private final IProductService productService;
 
+    @GetMapping("/{id}/orders/{orderId}")
+    @Secured({ADMIN})
+    @Operation(summary = "Get order detail by id for store")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Success", content =
+                    {@Content(mediaType = "application/json", schema =
+                    @Schema(implementation = OrderDTO.class))}),
+            @ApiResponse(responseCode = "400", description = "Fail", content =
+                    {@Content(mediaType = "text/plain", schema = @Schema(implementation = String.class))}),
+    })
+    public ResponseEntity<?> getOrderDetailByIdForCustomer(@PathVariable(value = "id") Long storeId,
+                                                           @PathVariable(value = "orderId") Long orderId)
+            throws MethodArgumentTypeMismatchException {
+        OrderDTO order = orderService.getOrderByIdForStore(orderId, storeId);
+        if (order != null) {
+            return ResponseEntity.status(HttpStatus.OK).body(order);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Not found order");
+        }
+    }
+
     @GetMapping("/{id}/orders")
     @Secured({STORE})
     @Operation(summary = "Get order list by store id")
@@ -60,17 +81,17 @@ public class StoreController {
             @ApiResponse(responseCode = "400", description = "Fail", content =
                     {@Content(mediaType = "text/plain", schema = @Schema(implementation = String.class))}),
     })
-    public ResponseEntity<?> getCustomerList(@RequestParam(defaultValue = "") String search,
-                                             @RequestParam(defaultValue = "0") Optional<Integer> page,
-                                             @RequestParam(defaultValue = "id,desc") String sort,
-                                             @RequestParam(defaultValue = "10") Optional<Integer> limit,
-                                             @PathVariable(value = "id") Long storeId,
-                                             @RequestParam(defaultValue = "")
-                                                 @Parameter(description = "<b>Filter by customer ID<b>")
-                                                 List<Long> customerIds,
-                                             @RequestParam(defaultValue = "")
-                                             @Parameter(description = "<b>Filter by state ID<b>")
-                                             List<Long> stateIds)
+    public ResponseEntity<?> getOrderListByStore(@RequestParam(defaultValue = "") String search,
+                                                 @RequestParam(defaultValue = "0") Optional<Integer> page,
+                                                 @RequestParam(defaultValue = "id,desc") String sort,
+                                                 @RequestParam(defaultValue = "10") Optional<Integer> limit,
+                                                 @PathVariable(value = "id") Long storeId,
+                                                 @RequestParam(defaultValue = "")
+                                                    @Parameter(description = "<b>Filter by customer ID<b>")
+                                                    List<Long> customerIds,
+                                                 @RequestParam(defaultValue = "")
+                                                    @Parameter(description = "<b>Filter by state ID<b>")
+                                                    List<Long> stateIds)
             throws MethodArgumentTypeMismatchException {
         Page<OrderDTO> orderList = orderService.getOrderList(true, customerIds, stateIds, Collections.singletonList(storeId), search, sort,
                 page.orElse(0), limit.orElse(10));
@@ -94,8 +115,8 @@ public class StoreController {
                                           @RequestParam(defaultValue = "id,desc") String sort,
                                           @RequestParam(defaultValue = "10") Optional<Integer> limit,
                                           @RequestParam(defaultValue = "")
-                                              @Parameter(description = "<b>Filter by city ID<b>")
-                                              List<Long> cityIds)
+                                          @Parameter(description = "<b>Filter by city ID<b>")
+                                          List<Long> cityIds)
             throws MethodArgumentTypeMismatchException {
         Page<StoreDTO> storeList = storeService.getStoreList(true, cityIds, search, sort, page.orElse(0), limit.orElse(10));
         if (!storeList.getContent().isEmpty()) {
@@ -140,14 +161,14 @@ public class StoreController {
                                                      @RequestParam(defaultValue = "id,desc") String sort,
                                                      @RequestParam(defaultValue = "10") Optional<Integer> limit,
                                                      @RequestParam(defaultValue = "")
-                                                         @Parameter(description = "<b>Filter by category ID<b>")
-                                                         List<Long> categoryIds,
+                                                     @Parameter(description = "<b>Filter by category ID<b>")
+                                                     List<Long> categoryIds,
                                                      @RequestParam(defaultValue = "")
-                                                         @Parameter(description = "<b>Filter by brand ID<b>")
-                                                         List<Long> brandIds,
+                                                     @Parameter(description = "<b>Filter by brand ID<b>")
+                                                     List<Long> brandIds,
                                                      @RequestParam(defaultValue = "")
-                                                         @Parameter(description = "<b>Filter by country ID<b>")
-                                                         List<Long> countryIds)
+                                                     @Parameter(description = "<b>Filter by country ID<b>")
+                                                     List<Long> countryIds)
             throws MethodArgumentTypeMismatchException {
         Page<ProductDTO> productList = productService.getProductListByStoreId(true, storeId, categoryIds, brandIds, countryIds, search, sort, page.orElse(0), limit.orElse(10));
         if (!productList.getContent().isEmpty()) {

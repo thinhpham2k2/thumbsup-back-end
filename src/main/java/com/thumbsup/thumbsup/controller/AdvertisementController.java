@@ -55,13 +55,15 @@ public class AdvertisementController {
                                                        @RequestParam(defaultValue = "0") Optional<Integer> page,
                                                        @RequestParam(defaultValue = "price,desc") String sort,
                                                        @RequestParam(defaultValue = "100") Optional<Integer> limit,
-                                                       @RequestParam(defaultValue = "") @Parameter(description = "<b>Filter by store ID<b>") List<Long> storeIds)
+                                                       @RequestParam(defaultValue = "")
+                                                           @Parameter(description = "<b>Filter by store ID<b>")
+                                                           List<Long> storeIds)
             throws MethodArgumentTypeMismatchException {
         Page<StoreExtraDTO> storeExtraList = advertisementService.getAdvertisementStoreList(true, storeIds, LocalDateTime.now(), search, sort, page.orElse(0), limit.orElse(100));
         if (!storeExtraList.isEmpty()) {
             return ResponseEntity.status(HttpStatus.OK).body(storeExtraList);
         } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Not found advertisement store list !");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Not found advertisement store list");
         }
     }
 
@@ -79,13 +81,15 @@ public class AdvertisementController {
                                                   @RequestParam(defaultValue = "0") Optional<Integer> page,
                                                   @RequestParam(defaultValue = "id,desc") String sort,
                                                   @RequestParam(defaultValue = "10") Optional<Integer> limit,
-                                                  @RequestParam(defaultValue = "") @Parameter(description = "<b>Filter by store ID<b>") List<Long> storeIds)
+                                                  @RequestParam(defaultValue = "")
+                                                      @Parameter(description = "<b>Filter by store ID<b>")
+                                                      List<Long> storeIds)
             throws MethodArgumentTypeMismatchException {
         Page<AdvertisementDTO> advertisementList = advertisementService.getAdvertisementList(true, storeIds, LocalDateTime.now(), search, sort, page.orElse(0), limit.orElse(10));
         if (!advertisementList.isEmpty()) {
             return ResponseEntity.status(HttpStatus.OK).body(advertisementList);
         } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Not found advertisement list !");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Not found advertisement list");
         }
     }
 }

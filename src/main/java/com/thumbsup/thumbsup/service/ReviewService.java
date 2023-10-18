@@ -88,12 +88,12 @@ public class ReviewService implements IReviewService {
         if (pagingService.checkPropertPresent(sourceFieldList, subSort[0])) {
             order.add(new Sort.Order(pagingService.getSortDirection(subSort[1]), transferProperty(subSort[0])));
         } else {
-            throw new InvalidParameterException(subSort[0] + " is not a propertied of Review!");
+            throw new InvalidParameterException(subSort[0] + " is not a propertied of Review");
         }
         return PageRequest.of(page, limit).withSort(Sort.by(order));
     }
 
-    private static String transferProperty(String property) {
+    private String transferProperty(String property) {
         return switch (property) {
             case "customer" -> "customer.fullName";
             case "product" -> "product.productName";

@@ -59,16 +59,24 @@ public class ProductController {
                                             @RequestParam(defaultValue = "0") Optional<Integer> page,
                                             @RequestParam(defaultValue = "id,desc") String sort,
                                             @RequestParam(defaultValue = "10") Optional<Integer> limit,
-                                            @RequestParam(defaultValue = "") @Parameter(description = "<b>Filter by store ID<b>") List<Long> storeIds,
-                                            @RequestParam(defaultValue = "") @Parameter(description = "<b>Filter by category ID<b>") List<Long> categoryIds,
-                                            @RequestParam(defaultValue = "") @Parameter(description = "<b>Filter by brand ID<b>") List<Long> brandIds,
-                                            @RequestParam(defaultValue = "") @Parameter(description = "<b>Filter by country ID<b>") List<Long> countryIds)
+                                            @RequestParam(defaultValue = "")
+                                                @Parameter(description = "<b>Filter by store ID<b>")
+                                                List<Long> storeIds,
+                                            @RequestParam(defaultValue = "")
+                                                @Parameter(description = "<b>Filter by category ID<b>")
+                                                List<Long> categoryIds,
+                                            @RequestParam(defaultValue = "")
+                                                @Parameter(description = "<b>Filter by brand ID<b>")
+                                                List<Long> brandIds,
+                                            @RequestParam(defaultValue = "")
+                                                @Parameter(description = "<b>Filter by country ID<b>")
+                                                List<Long> countryIds)
             throws MethodArgumentTypeMismatchException {
         Page<ProductDTO> productList = productService.getProductList(true, storeIds, categoryIds, brandIds, countryIds, search, sort, page.orElse(0), limit.orElse(10));
         if (!productList.getContent().isEmpty()) {
             return ResponseEntity.status(HttpStatus.OK).body(productList);
         } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Not found product list !");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Not found product list");
         }
     }
 
@@ -92,7 +100,7 @@ public class ProductController {
         if (!reviewList.getContent().isEmpty()) {
             return ResponseEntity.status(HttpStatus.OK).body(reviewList);
         } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Not found review list !");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Not found review list");
         }
     }
 
@@ -112,7 +120,7 @@ public class ProductController {
         if (product != null) {
             return ResponseEntity.status(HttpStatus.OK).body(product);
         } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Not found product !");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Not found product");
         }
     }
 

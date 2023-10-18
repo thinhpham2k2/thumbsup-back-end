@@ -55,7 +55,7 @@ public class AdvertisementService implements IAdvertisementService {
         if (pagingService.checkPropertPresent(sourceFieldList, subSort[0])) {
             order.add(new Sort.Order(pagingService.getSortDirection(subSort[1]), transferProperty(subSort[0])));
         } else {
-            throw new InvalidParameterException(subSort[0] + " is not a propertied of Advertisement!");
+            throw new InvalidParameterException(subSort[0] + " is not a propertied of Advertisement");
         }
 
         Pageable pageable = PageRequest.of(page, limit).withSort(Sort.by(order));
@@ -97,7 +97,7 @@ public class AdvertisementService implements IAdvertisementService {
         if (pagingService.checkPropertPresent(sourceFieldList, subSort[0])) {
             order.add(new Sort.Order(pagingService.getSortDirection(subSort[1]), transferProperty(subSort[0])));
         } else {
-            throw new InvalidParameterException(subSort[0] + " is not a propertied of Advertisement!");
+            throw new InvalidParameterException(subSort[0] + " is not a propertied of Advertisement");
         }
 
         Pageable pageable = PageRequest.of(page, limit).withSort(Sort.by(order));
@@ -108,7 +108,7 @@ public class AdvertisementService implements IAdvertisementService {
                 .collect(Collectors.toList()), pageResult.getPageable(), pageResult.getTotalElements());
     }
 
-    private static String transferProperty(String property) {
+    private String transferProperty(String property) {
         if (property.equals("store")) {
             return "store.storeName";
         }

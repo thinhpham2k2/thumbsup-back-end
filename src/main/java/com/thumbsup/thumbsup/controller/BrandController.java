@@ -49,7 +49,7 @@ public class BrandController {
         if (!brandList.getContent().isEmpty()) {
             return ResponseEntity.status(HttpStatus.OK).body(brandList);
         } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Not found brand list !");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Not found brand list");
         }
     }
 
@@ -68,7 +68,7 @@ public class BrandController {
         if (brand != null) {
             return ResponseEntity.status(HttpStatus.OK).body(brand);
         } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Not found brand !");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Not found brand");
         }
     }
 }

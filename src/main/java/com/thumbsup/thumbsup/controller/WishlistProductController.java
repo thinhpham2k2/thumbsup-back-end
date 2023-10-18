@@ -50,7 +50,7 @@ public class WishlistProductController {
         if (!wishlistProductList.isEmpty()) {
             return ResponseEntity.status(HttpStatus.OK).body(wishlistProductList);
         } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Not found wishlist product !");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Not found wishlist product");
         }
     }
 

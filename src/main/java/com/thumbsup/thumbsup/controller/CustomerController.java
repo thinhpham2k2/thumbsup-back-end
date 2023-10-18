@@ -54,13 +54,15 @@ public class CustomerController {
                                              @RequestParam(defaultValue = "0") Optional<Integer> page,
                                              @RequestParam(defaultValue = "id,desc") String sort,
                                              @RequestParam(defaultValue = "10") Optional<Integer> limit,
-                                             @RequestParam(defaultValue = "") @Parameter(description = "<b>Filter by city ID<b>") List<Long> cityIds)
+                                             @RequestParam(defaultValue = "")
+                                                 @Parameter(description = "<b>Filter by city ID<b>")
+                                                 List<Long> cityIds)
             throws MethodArgumentTypeMismatchException {
         Page<CustomerDTO> customerList = customerService.getCustomerList(true, cityIds, search, sort, page.orElse(0), limit.orElse(10));
         if (!customerList.getContent().isEmpty()) {
             return ResponseEntity.status(HttpStatus.OK).body(customerList);
         } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Not found customer list !");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Not found customer list");
         }
     }
 
@@ -80,7 +82,7 @@ public class CustomerController {
         if (customer != null) {
             return ResponseEntity.status(HttpStatus.OK).body(customer);
         } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Not found customer !");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Not found customer");
         }
     }
 

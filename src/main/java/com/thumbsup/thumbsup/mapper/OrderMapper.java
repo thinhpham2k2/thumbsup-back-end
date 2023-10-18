@@ -3,16 +3,15 @@ package com.thumbsup.thumbsup.mapper;
 import com.thumbsup.thumbsup.dto.order.OrderDTO;
 import com.thumbsup.thumbsup.dto.order.OrderDetailDTO;
 import com.thumbsup.thumbsup.dto.state.StateDetailDTO;
-import com.thumbsup.thumbsup.entity.Customer;
-import com.thumbsup.thumbsup.entity.Order;
-import com.thumbsup.thumbsup.entity.OrderDetail;
-import com.thumbsup.thumbsup.entity.StateDetail;
+import com.thumbsup.thumbsup.entity.*;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
 import org.mapstruct.factory.Mappers;
 
+import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 
 @Mapper(componentModel = "spring")
 public interface OrderMapper {
@@ -21,6 +20,7 @@ public interface OrderMapper {
 
     @Mapping(target = "customerId", source = "customer.id")
     @Mapping(target = "customerName", source = "customer.fullName")
+    @Mapping(target = "stateCurrent", source = "stateDetailList", qualifiedByName = "mapStateCurrent")
     @Mapping(target = "orderDetailList", source = "orderDetailList", qualifiedByName = "mapOrderDetail")
     @Mapping(target = "stateDetailList", source = "stateDetailList", qualifiedByName = "mapStateDetail")
     OrderDTO toDTO(Order entity);
@@ -46,5 +46,14 @@ public interface OrderMapper {
     @Named("mapStateDetail")
     default List<StateDetailDTO> mapStateDetail(List<StateDetail> stateDetailList) {
         return stateDetailList.stream().map(StateDetailMapper.INSTANCE::toDTO).toList();
+    }
+
+    @Named("mapStateCurrent")
+    default String mapStateCurrent(List<StateDetail> stateDetailList) {
+        Optional<State> state = stateDetailList.stream().max(Comparator.comparingLong(StateDetail::getId)).map(StateDetail::getState);
+        if (state.isPresent()){
+            return state.get().getState();
+        }
+        return stateDetailList.stream().findFirst().map(s -> s.getState().getState()).orElse("");
     }
 }

@@ -49,7 +49,7 @@ public class CategoryController {
         if (!categoryList.getContent().isEmpty()) {
             return ResponseEntity.status(HttpStatus.OK).body(categoryList);
         } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Not found category list !");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Not found category list");
         }
     }
 
@@ -68,7 +68,7 @@ public class CategoryController {
         if (category != null) {
             return ResponseEntity.status(HttpStatus.OK).body(category);
         } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Not found category !");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Not found category");
         }
     }
 }

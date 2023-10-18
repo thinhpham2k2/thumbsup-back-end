@@ -49,7 +49,7 @@ public class CountryController {
         if (!countryList.getContent().isEmpty()) {
             return ResponseEntity.status(HttpStatus.OK).body(countryList);
         } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Not found country list !");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Not found country list");
         }
     }
 
@@ -68,7 +68,7 @@ public class CountryController {
         if (country != null) {
             return ResponseEntity.status(HttpStatus.OK).body(country);
         } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Not found country !");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Not found country");
         }
     }
 }

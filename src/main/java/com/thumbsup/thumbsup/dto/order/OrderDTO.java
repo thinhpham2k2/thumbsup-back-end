@@ -23,6 +23,7 @@ public class OrderDTO implements Serializable {
     private String customerName;
     private Boolean state;
     private Boolean status;
+    private String stateCurrent;
     private List<OrderDetailDTO> orderDetailList;
     private List<StateDetailDTO> stateDetailList;
 }

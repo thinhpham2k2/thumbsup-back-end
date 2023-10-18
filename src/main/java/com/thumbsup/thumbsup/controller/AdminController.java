@@ -46,7 +46,7 @@ public class AdminController {
         if (admin != null) {
             return ResponseEntity.status(HttpStatus.OK).body(admin);
         } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Not found admin !");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Not found admin");
         }
     }
 
@@ -69,7 +69,7 @@ public class AdminController {
         if (!adminList.isEmpty()) {
             return ResponseEntity.status(HttpStatus.OK).body(adminList);
         } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Not found admin list !");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Not found admin list");
         }
     }
 }

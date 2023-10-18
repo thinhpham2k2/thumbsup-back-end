@@ -53,7 +53,7 @@ public class StateController {
         if (!stateList.getContent().isEmpty()) {
             return ResponseEntity.status(HttpStatus.OK).body(stateList);
         } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Not found state list !");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Not found state list");
         }
     }
 
@@ -73,7 +73,7 @@ public class StateController {
         if (state != null) {
             return ResponseEntity.status(HttpStatus.OK).body(state);
         } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Not found state !");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Not found state");
         }
     }
 }

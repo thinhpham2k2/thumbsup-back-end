@@ -23,12 +23,12 @@ public class ApplicationExceptionHandler {
 
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
     public ResponseEntity<?> handleMethodArgumentTypeMismatchException(MethodArgumentTypeMismatchException ex) {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid request parameter variable !");
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid request parameter variable");
     }
 
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ResponseEntity<?> handleMethodArgumentTypeMismatchException(HttpMessageNotReadableException ex) {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid request parameter variable !");
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid request parameter variable");
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)

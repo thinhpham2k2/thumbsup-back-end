@@ -123,7 +123,7 @@ public class CustomerService implements ICustomerService {
         if (pagingService.checkPropertPresent(sourceFieldList, subSort[0])) {
             order.add(new Sort.Order(pagingService.getSortDirection(subSort[1]), transferProperty(subSort[0])));
         } else {
-            throw new InvalidParameterException(subSort[0] + " is not a propertied of Customer!");
+            throw new InvalidParameterException(subSort[0] + " is not a propertied of Customer");
         }
 
         Pageable pageable = PageRequest.of(page, limit).withSort(Sort.by(order));
@@ -140,7 +140,7 @@ public class CustomerService implements ICustomerService {
         return customer.map(CustomerMapper.INSTANCE::toDTO).orElse(null);
     }
 
-    private static String transferProperty(String property) {
+    private String transferProperty(String property) {
         if (property.equals("city")) {
             return "city.cityName";
         }

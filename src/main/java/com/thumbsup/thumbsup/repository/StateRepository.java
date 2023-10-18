@@ -19,4 +19,10 @@ public interface StateRepository extends JpaRepository<State, Long> {
     Page<State> getStatesByStatus(boolean status, String search, Pageable pageable);
 
     Optional<State> findByIdAndStatus(long id, boolean status);
+
+    @Query("SELECT s FROM State s " +
+            "WHERE s.status = ?1 " +
+            "ORDER BY s.id ASC " +
+            "LIMIT 1")
+    State getFirstState(boolean status);
 }

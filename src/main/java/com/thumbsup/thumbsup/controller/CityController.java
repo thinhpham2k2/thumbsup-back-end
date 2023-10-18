@@ -49,7 +49,7 @@ public class CityController {
         if (!cityList.getContent().isEmpty()) {
             return ResponseEntity.status(HttpStatus.OK).body(cityList);
         } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Not found city list !");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Not found city list");
         }
     }
 
@@ -68,7 +68,7 @@ public class CityController {
         if (city != null) {
             return ResponseEntity.status(HttpStatus.OK).body(city);
         } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Not found city !");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Not found city");
         }
     }
 }

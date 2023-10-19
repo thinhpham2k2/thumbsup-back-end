@@ -138,7 +138,7 @@ public class ProductController {
             throws MethodArgumentTypeMismatchException {
         ProductExtraDTO product = productService.createProduct(create);
         if (product != null) {
-            return ResponseEntity.status(HttpStatus.CREATED).body(create);
+            return ResponseEntity.status(HttpStatus.CREATED).body(product);
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Create fail");
         }
@@ -159,7 +159,7 @@ public class ProductController {
             throws MethodArgumentTypeMismatchException {
         ProductExtraDTO product = productService.updateProduct(update, id);
         if (product != null) {
-            return ResponseEntity.status(HttpStatus.CREATED).body(update);
+            return ResponseEntity.status(HttpStatus.OK).body(product);
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Update fail");
         }

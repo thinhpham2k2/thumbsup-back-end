@@ -1,10 +1,13 @@
 package com.thumbsup.thumbsup.mapper;
 
+import com.thumbsup.thumbsup.dto.request.CreateRequestDTO;
 import com.thumbsup.thumbsup.dto.request.RequestDTO;
+import com.thumbsup.thumbsup.dto.request.UpdateRequestDTO;
 import com.thumbsup.thumbsup.entity.Request;
 import com.thumbsup.thumbsup.entity.Store;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
 import org.mapstruct.Named;
 import org.mapstruct.factory.Mappers;
 
@@ -19,8 +22,23 @@ public interface RequestMapper {
     @Mapping(target = "storeImageCover", source = "store.coverPhoto")
     RequestDTO toDTO(Request entity);
 
+    @Mapping(target = "id", expression = "java(null)")
+    @Mapping(target = "amount", ignore = true)
+    @Mapping(target = "method", ignore = true)
+    @Mapping(target = "status", expression = "java(true)")
+    @Mapping(target = "dateCreated", expression = "java(java.time.LocalDateTime.now())")
+    @Mapping(target = "dateAccept", expression = "java(java.time.LocalDateTime.now())")
     @Mapping(target = "store", source = "storeId", qualifiedByName = "mapStore")
-    Request dtoToEntity(RequestDTO dto);
+    Request createToEntity(CreateRequestDTO create);
+
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "amount", ignore = true)
+    @Mapping(target = "method", ignore = true)
+    @Mapping(target = "status", ignore = true)
+    @Mapping(target = "dateCreated", ignore = true)
+    @Mapping(target = "dateAccept", ignore = true)
+    @Mapping(target = "store", ignore = true)
+    Request updateToEntity(UpdateRequestDTO update, @MappingTarget Request entity);
 
     @Named("mapStore")
     default Store mapStore(Long id) {

@@ -56,7 +56,8 @@ public class PaymentAccountController {
                                             @Parameter(description = "<b>Filter by store ID<b>")
                                             List<Long> storeIds)
             throws MethodArgumentTypeMismatchException {
-        Page<PaymentAccountDTO> paymentList = paymentAccountService.getPaymentList(true, storeIds, search, sort, page.orElse(0), limit.orElse(10));
+        Page<PaymentAccountDTO> paymentList = paymentAccountService.getPaymentList(true, storeIds, search, sort,
+                page.orElse(0), limit.orElse(10));
         if (!paymentList.getContent().isEmpty()) {
             return ResponseEntity.status(HttpStatus.OK).body(paymentList);
         } else {

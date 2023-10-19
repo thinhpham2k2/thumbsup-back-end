@@ -8,6 +8,7 @@ import com.thumbsup.thumbsup.dto.store.CreateStoreDTO;
 import com.thumbsup.thumbsup.dto.store.StoreDTO;
 import com.thumbsup.thumbsup.dto.store.StoreExtraDTO;
 import com.thumbsup.thumbsup.dto.store.UpdateStoreDTO;
+import com.thumbsup.thumbsup.dto.transaction.TransactionOrderDTO;
 import com.thumbsup.thumbsup.service.interfaces.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -53,6 +54,8 @@ public class StoreController {
     private final IProductService productService;
 
     private final IPaymentAccountService paymentAccountService;
+
+    private final ITransactionOrderService transactionOrderService;
 
     @GetMapping("/{id}/orders/{orderId}")
     @Secured({ADMIN})
@@ -203,6 +206,31 @@ public class StoreController {
             return ResponseEntity.status(HttpStatus.OK).body(paymentList);
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Not found payment list");
+        }
+    }
+
+    @GetMapping("/{id}/transactions")
+    @Secured({ADMIN, STORE})
+    @Operation(summary = "Get payment list by store id")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Success", content =
+                    {@Content(mediaType = "application/json", schema =
+                    @Schema(implementation = Page.class))}),
+            @ApiResponse(responseCode = "400", description = "Fail", content =
+                    {@Content(mediaType = "text/plain", schema = @Schema(implementation = String.class))}),
+    })
+    public ResponseEntity<?> getTransactionListByStoreId(@PathVariable(value = "id") Long storeId,
+                                                     @RequestParam(defaultValue = "") String search,
+                                                     @RequestParam(defaultValue = "0") Optional<Integer> page,
+                                                     @RequestParam(defaultValue = "id,desc") String sort,
+                                                     @RequestParam(defaultValue = "10") Optional<Integer> limit)
+            throws MethodArgumentTypeMismatchException {
+        Page<TransactionOrderDTO> transactionList = transactionOrderService.getTransactionListByStoreId(true, storeId,
+                search, sort, page.orElse(0), limit.orElse(10));
+        if (!transactionList.getContent().isEmpty()) {
+            return ResponseEntity.status(HttpStatus.OK).body(transactionList);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Not found transaction list");
         }
     }
 

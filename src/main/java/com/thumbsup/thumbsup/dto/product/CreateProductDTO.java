@@ -30,7 +30,7 @@ public class CreateProductDTO implements Serializable {
     @Size(min = 2, max = 255, message = "The length of product's name is from 2 to 255 characters")
     private String productName;
 
-    @Range(min = 0, max = 100000000, message = "Original price must be a positive number")
+    @Range(min = 1, max = 100000000, message = "Original price must be a positive number")
     private BigDecimal originalPrice;
 
     private BigDecimal salePrice;
@@ -44,7 +44,7 @@ public class CreateProductDTO implements Serializable {
     @Range(min = 0, max = 100, message = "Weight must be between 0 and 100 kg")
     private BigDecimal weight;
 
-    @Range(min = 0, max = 100000000, message = "Quantity price must be a positive number")
+    @Range(min = 0, max = 100000000, message = "Quantity must be a positive number")
     private Integer quantity;
 
     @NotNull(message = "Description is required!")

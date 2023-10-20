@@ -1,14 +1,16 @@
 package com.thumbsup.thumbsup.controller;
 
+import com.thumbsup.thumbsup.dto.ads.AdvertisementDTO;
 import com.thumbsup.thumbsup.dto.order.OrderDTO;
+import com.thumbsup.thumbsup.dto.payment.PaymentAccountDTO;
 import com.thumbsup.thumbsup.dto.product.ProductDTO;
+import com.thumbsup.thumbsup.dto.request.RequestDTO;
 import com.thumbsup.thumbsup.dto.store.CreateStoreDTO;
 import com.thumbsup.thumbsup.dto.store.StoreDTO;
 import com.thumbsup.thumbsup.dto.store.StoreExtraDTO;
 import com.thumbsup.thumbsup.dto.store.UpdateStoreDTO;
-import com.thumbsup.thumbsup.service.interfaces.IOrderService;
-import com.thumbsup.thumbsup.service.interfaces.IProductService;
-import com.thumbsup.thumbsup.service.interfaces.IStoreService;
+import com.thumbsup.thumbsup.dto.transaction.TransactionOrderDTO;
+import com.thumbsup.thumbsup.service.interfaces.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -27,6 +29,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
+import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -48,7 +51,15 @@ public class StoreController {
 
     private final IStoreService storeService;
 
+    private final IRequestService requestService;
+
     private final IProductService productService;
+
+    private final IAdvertisementService advertisementService;
+
+    private final IPaymentAccountService paymentAccountService;
+
+    private final ITransactionOrderService transactionOrderService;
 
     @GetMapping("/{id}/orders/{orderId}")
     @Secured({ADMIN})
@@ -175,6 +186,104 @@ public class StoreController {
             return ResponseEntity.status(HttpStatus.OK).body(productList);
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Not found product list");
+        }
+    }
+
+    @GetMapping("/{id}/payments")
+    @Secured({ADMIN, STORE})
+    @Operation(summary = "Get payment list by store id")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Success", content =
+                    {@Content(mediaType = "application/json", schema =
+                    @Schema(implementation = Page.class))}),
+            @ApiResponse(responseCode = "400", description = "Fail", content =
+                    {@Content(mediaType = "text/plain", schema = @Schema(implementation = String.class))}),
+    })
+    public ResponseEntity<?> getPaymentListByStoreId(@PathVariable(value = "id") Long storeId,
+                                                     @RequestParam(defaultValue = "") String search,
+                                                     @RequestParam(defaultValue = "0") Optional<Integer> page,
+                                                     @RequestParam(defaultValue = "id,desc") String sort,
+                                                     @RequestParam(defaultValue = "10") Optional<Integer> limit)
+            throws MethodArgumentTypeMismatchException {
+        Page<PaymentAccountDTO> paymentList = paymentAccountService.getPaymentListByStoreId(true, storeId, search, sort, page.orElse(0), limit.orElse(10));
+        if (!paymentList.getContent().isEmpty()) {
+            return ResponseEntity.status(HttpStatus.OK).body(paymentList);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Not found payment list");
+        }
+    }
+
+    @GetMapping("/{id}/transactions")
+    @Secured({ADMIN, STORE})
+    @Operation(summary = "Get payment list by store id")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Success", content =
+                    {@Content(mediaType = "application/json", schema =
+                    @Schema(implementation = Page.class))}),
+            @ApiResponse(responseCode = "400", description = "Fail", content =
+                    {@Content(mediaType = "text/plain", schema = @Schema(implementation = String.class))}),
+    })
+    public ResponseEntity<?> getTransactionListByStoreId(@PathVariable(value = "id") Long storeId,
+                                                     @RequestParam(defaultValue = "") String search,
+                                                     @RequestParam(defaultValue = "0") Optional<Integer> page,
+                                                     @RequestParam(defaultValue = "id,desc") String sort,
+                                                     @RequestParam(defaultValue = "10") Optional<Integer> limit)
+            throws MethodArgumentTypeMismatchException {
+        Page<TransactionOrderDTO> transactionList = transactionOrderService.getTransactionListByStoreId(true, storeId,
+                search, sort, page.orElse(0), limit.orElse(10));
+        if (!transactionList.getContent().isEmpty()) {
+            return ResponseEntity.status(HttpStatus.OK).body(transactionList);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Not found transaction list");
+        }
+    }
+
+    @GetMapping("/{id}/advertisements")
+    @Secured({ADMIN, STORE})
+    @Operation(summary = "Get advertisements list by store id")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Success", content =
+                    {@Content(mediaType = "application/json", schema =
+                    @Schema(implementation = Page.class))}),
+            @ApiResponse(responseCode = "400", description = "Fail", content =
+                    {@Content(mediaType = "text/plain", schema = @Schema(implementation = String.class))}),
+    })
+    public ResponseEntity<?> getAdvertisementsListByStoreId(@PathVariable(value = "id") Long storeId,
+                                                     @RequestParam(defaultValue = "") String search,
+                                                     @RequestParam(defaultValue = "0") Optional<Integer> page,
+                                                     @RequestParam(defaultValue = "id,desc") String sort,
+                                                     @RequestParam(defaultValue = "10") Optional<Integer> limit)
+            throws MethodArgumentTypeMismatchException {
+        Page<AdvertisementDTO> adsList = advertisementService.getAdvertisementListByStoreId(true, storeId,
+                LocalDateTime.now(), search, sort, page.orElse(0), limit.orElse(10));
+        if (!adsList.getContent().isEmpty()) {
+            return ResponseEntity.status(HttpStatus.OK).body(adsList);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Not found advertisements list");
+        }
+    }
+
+    @GetMapping("/{id}/requests")
+    @Secured({ADMIN, STORE})
+    @Operation(summary = "Get request list by store id")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Success", content =
+                    {@Content(mediaType = "application/json", schema =
+                    @Schema(implementation = Page.class))}),
+            @ApiResponse(responseCode = "400", description = "Fail", content =
+                    {@Content(mediaType = "text/plain", schema = @Schema(implementation = String.class))}),
+    })
+    public ResponseEntity<?> getRequestListByStoreId(@PathVariable(value = "id") Long storeId,
+                                                     @RequestParam(defaultValue = "") String search,
+                                                     @RequestParam(defaultValue = "0") Optional<Integer> page,
+                                                     @RequestParam(defaultValue = "id,desc") String sort,
+                                                     @RequestParam(defaultValue = "10") Optional<Integer> limit)
+            throws MethodArgumentTypeMismatchException {
+        Page<RequestDTO> requestList = requestService.getRequestListByStoreId(true, storeId, search, sort, page.orElse(0), limit.orElse(10));
+        if (!requestList.getContent().isEmpty()) {
+            return ResponseEntity.status(HttpStatus.OK).body(requestList);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Not found request list");
         }
     }
 

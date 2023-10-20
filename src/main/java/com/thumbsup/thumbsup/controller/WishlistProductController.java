@@ -54,7 +54,7 @@ public class WishlistProductController {
         }
     }
 
-    @PutMapping("")
+    @PostMapping("")
     @Secured({CUSTOMER})
     @Operation(summary = "Updating product wishlist")
     @ApiResponses(value = {

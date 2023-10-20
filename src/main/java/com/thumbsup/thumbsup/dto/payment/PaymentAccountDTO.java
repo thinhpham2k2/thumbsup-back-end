@@ -22,4 +22,5 @@ public class PaymentAccountDTO implements Serializable {
     private Boolean status;
     private Long storeId;
     private String storeName;
+    private String storeLogo;
 }

@@ -1,7 +1,6 @@
 package com.thumbsup.thumbsup.service;
 
 import com.thumbsup.thumbsup.dto.state.StateDTO;
-import com.thumbsup.thumbsup.entity.Brand;
 import com.thumbsup.thumbsup.entity.State;
 import com.thumbsup.thumbsup.mapper.StateMapper;
 import com.thumbsup.thumbsup.repository.StateRepository;
@@ -33,12 +32,12 @@ public class StateService implements IStateService {
         if (limit < 1) throw new InvalidParameterException("Page size must not be less than one!");
 
         List<Sort.Order> order = new ArrayList<>();
-        Set<String> sourceFieldList = pagingService.getAllFields(Brand.class);
+        Set<String> sourceFieldList = pagingService.getAllFields(State.class);
         String[] subSort = sort.split(",");
         if (pagingService.checkPropertPresent(sourceFieldList, subSort[0])) {
             order.add(new Sort.Order(pagingService.getSortDirection(subSort[1]), subSort[0]));
         } else {
-            throw new InvalidParameterException(subSort[0] + " is not a propertied of Brand");
+            throw new InvalidParameterException(subSort[0] + " is not a propertied of State");
         }
 
         Pageable pageable = PageRequest.of(page, limit).withSort(Sort.by(order));

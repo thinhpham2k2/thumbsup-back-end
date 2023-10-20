@@ -1,5 +1,6 @@
 package com.thumbsup.thumbsup.controller;
 
+import com.thumbsup.thumbsup.dto.ads.AdvertisementDTO;
 import com.thumbsup.thumbsup.dto.order.OrderDTO;
 import com.thumbsup.thumbsup.dto.payment.PaymentAccountDTO;
 import com.thumbsup.thumbsup.dto.product.ProductDTO;
@@ -28,6 +29,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
+import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -52,6 +54,8 @@ public class StoreController {
     private final IRequestService requestService;
 
     private final IProductService productService;
+
+    private final IAdvertisementService advertisementService;
 
     private final IPaymentAccountService paymentAccountService;
 
@@ -231,6 +235,31 @@ public class StoreController {
             return ResponseEntity.status(HttpStatus.OK).body(transactionList);
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Not found transaction list");
+        }
+    }
+
+    @GetMapping("/{id}/advertisements")
+    @Secured({ADMIN, STORE})
+    @Operation(summary = "Get advertisements list by store id")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Success", content =
+                    {@Content(mediaType = "application/json", schema =
+                    @Schema(implementation = Page.class))}),
+            @ApiResponse(responseCode = "400", description = "Fail", content =
+                    {@Content(mediaType = "text/plain", schema = @Schema(implementation = String.class))}),
+    })
+    public ResponseEntity<?> getAdvertisementsListByStoreId(@PathVariable(value = "id") Long storeId,
+                                                     @RequestParam(defaultValue = "") String search,
+                                                     @RequestParam(defaultValue = "0") Optional<Integer> page,
+                                                     @RequestParam(defaultValue = "id,desc") String sort,
+                                                     @RequestParam(defaultValue = "10") Optional<Integer> limit)
+            throws MethodArgumentTypeMismatchException {
+        Page<AdvertisementDTO> adsList = advertisementService.getAdvertisementListByStoreId(true, storeId,
+                LocalDateTime.now(), search, sort, page.orElse(0), limit.orElse(10));
+        if (!adsList.getContent().isEmpty()) {
+            return ResponseEntity.status(HttpStatus.OK).body(adsList);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Not found advertisements list");
         }
     }
 

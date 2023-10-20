@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface AdvertisementRepository extends JpaRepository<Advertisement, Long> {
@@ -22,4 +23,15 @@ public interface AdvertisementRepository extends JpaRepository<Advertisement, Lo
             "OR a.adsName LIKE %?4% " +
             "OR a.description LIKE %?4%)")
     Page<Advertisement> getAdvertisementList(boolean status, LocalDateTime dateNow, List<Long> storeIds, String search, Pageable pageable);
+
+    @Query("SELECT a FROM Advertisement a " +
+            "WHERE a.status = ?1 " +
+            "AND ?2 BETWEEN a.dateCreated AND a.dateExpired " +
+            "AND a.store.id = ?3 " +
+            "AND (a.store.storeName LIKE %?4% " +
+            "OR a.adsName LIKE %?4% " +
+            "OR a.description LIKE %?4%)")
+    Page<Advertisement> getAdvertisementListByStoreId(boolean status, LocalDateTime dateNow, long storeId, String search, Pageable pageable);
+
+    Optional<Advertisement> findByIdAndStatus(long id, boolean status);
 }

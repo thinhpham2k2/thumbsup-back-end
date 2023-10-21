@@ -1,5 +1,6 @@
 package com.thumbsup.thumbsup.controller;
 
+import com.thumbsup.thumbsup.dto.state.CreateStateDTO;
 import com.thumbsup.thumbsup.dto.state.StateDTO;
 import com.thumbsup.thumbsup.service.interfaces.IStateService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -14,6 +15,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
@@ -75,5 +77,20 @@ public class StateController {
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Not found state");
         }
+    }
+
+    @PostMapping("")
+    @Secured({ADMIN, STORE})
+    @Operation(summary = "Create state for order")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Created", content =
+                    {@Content(mediaType = "text/plain", schema = @Schema(implementation = String.class))}),
+            @ApiResponse(responseCode = "400", description = "Fail", content =
+                    {@Content(mediaType = "text/plain", schema = @Schema(implementation = String.class))}),
+    })
+    public ResponseEntity<?> createStateForOrder(@RequestBody @Validated CreateStateDTO create)
+            throws MethodArgumentTypeMismatchException {
+        stateService.createStateDetail(create);
+        return ResponseEntity.status(HttpStatus.CREATED).body("Create success");
     }
 }

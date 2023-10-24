@@ -33,7 +33,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import java.io.IOException;
-import java.security.GeneralSecurityException;
 
 @RestController
 @RequiredArgsConstructor
@@ -77,7 +76,7 @@ public class AuthenticationController {
                     {@Content(mediaType = "text/plain", schema = @Schema(implementation = String.class))}),
     })
     public ResponseEntity<?> loginAdminAccountWithGoogle(@RequestBody GoogleTokenDTO token)
-            throws MethodArgumentTypeMismatchException, GeneralSecurityException, IOException {
+            throws MethodArgumentTypeMismatchException, IOException {
         return ResponseEntity.status(HttpStatus.OK).body(googleService.loginWithGoogle(token, "Admin"));
     }
 
@@ -125,7 +124,7 @@ public class AuthenticationController {
                     {@Content(mediaType = "text/plain", schema = @Schema(implementation = String.class))}),
     })
     public ResponseEntity<?> loginStoreAccountWithGoogle(@RequestBody GoogleTokenDTO token)
-            throws MethodArgumentTypeMismatchException, GeneralSecurityException, IOException {
+            throws MethodArgumentTypeMismatchException, IOException {
         return ResponseEntity.status(HttpStatus.OK).body(googleService.loginWithGoogle(token, "Store"));
     }
 

@@ -29,7 +29,9 @@ import java.security.InvalidParameterException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -50,7 +52,7 @@ public class GoogleService implements IGoogleService {
     private final CustomerRepository customerRepository;
 
     @Override
-    public JwtResponseDTO loginWithGoogle(GoogleTokenDTO googleToken, String role) throws GeneralSecurityException, IOException {
+    public JwtResponseDTO loginWithGoogle(GoogleTokenDTO googleToken, String role) throws IOException {
         Payload payload = verifyGoogleIdToken(googleToken);
         if (payload.getEmailVerified()) {
             JwtResponseDTO jwtResponseDTO;
@@ -71,10 +73,7 @@ public class GoogleService implements IGoogleService {
                             user.setStore(store.get());
                             user.setRole("Store");
                         } else {
-                            Customer cus = customerRepository.save(new Customer(null, email + dateTimeString,
-                                    "", email, email, "", "", LocalDate.now(), "", true,
-                                    true, cityRepository.findFirstByStatus(true), null, null,
-                                    null, null));
+                            Customer cus = customerRepository.save(new Customer(null, email + dateTimeString, "", email, email, "", "", LocalDate.now(), "", true, true, cityRepository.findFirstByStatus(true), null, null, null, null));
                             user.setCustomer(cus);
                             user.setRole("Customer");
                         }
@@ -90,11 +89,7 @@ public class GoogleService implements IGoogleService {
                             user.setStore(store.get());
                             user.setRole("Store");
                         } else {
-                            Store st = storeRepository.save(new Store(null, email + dateTimeString, "",
-                                    email, email, "", "", "", "", BigDecimal.ZERO, LocalDate.now(),
-                                    null, null, "", true, true,
-                                    cityRepository.findFirstByStatus(true), null, null, null,
-                                    null, null, null));
+                            Store st = storeRepository.save(new Store(null, email + dateTimeString, "", email, email, "", "", "", "", BigDecimal.ZERO, LocalDate.now(), null, null, "", true, true, cityRepository.findFirstByStatus(true), null, null, null, null, null, null));
                             user.setStore(st);
                             user.setRole("Customer");
                         }
@@ -120,12 +115,13 @@ public class GoogleService implements IGoogleService {
     }
 
     @Override
-    public Payload verifyGoogleIdToken(GoogleTokenDTO googleToken) throws GeneralSecurityException, IOException {
-        GoogleIdTokenVerifier verifier = new GoogleIdTokenVerifier.Builder(new NetHttpTransport(), GsonFactory.getDefaultInstance())
-                .setAudience(Collections.singletonList(googleToken.getClientId()))
-                .build();
-        GoogleIdToken idToken = verifier.verify(googleToken.getIdToken());
-        if (idToken != null) {
+    public Payload verifyGoogleIdToken(GoogleTokenDTO googleToken) throws IOException {
+        GoogleIdTokenVerifier verifier = new GoogleIdTokenVerifier.Builder(new NetHttpTransport(),
+                GsonFactory.getDefaultInstance()).setAudience(Collections.singletonList(googleToken.getClientId())).build();
+        GoogleIdToken idToken = GoogleIdToken.parse(GsonFactory.getDefaultInstance(), googleToken.getIdToken());
+        if (idToken.verifyIssuer(Arrays.asList("accounts.google.com", "https://accounts.google.com")) &&
+                (idToken.verifyAudience(List.of(googleToken.getClientId()))) &&
+                idToken.verifyTime(verifier.getClock().currentTimeMillis(), verifier.getAcceptableTimeSkewSeconds())) {
             return idToken.getPayload();
         } else {
             throw new InvalidParameterException("Invalid token");

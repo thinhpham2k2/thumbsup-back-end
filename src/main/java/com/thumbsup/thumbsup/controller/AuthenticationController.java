@@ -172,7 +172,7 @@ public class AuthenticationController {
                     {@Content(mediaType = "text/plain", schema = @Schema(implementation = String.class))}),
     })
     public ResponseEntity<?> loginMobileAccountWithGoogle(@RequestBody GoogleTokenDTO token)
-            throws MethodArgumentTypeMismatchException, GeneralSecurityException, IOException {
+            throws MethodArgumentTypeMismatchException, IOException {
         return ResponseEntity.status(HttpStatus.OK).body(googleService.loginWithGoogle(token, "Mobile"));
     }
 

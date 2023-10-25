@@ -123,7 +123,7 @@ public class GoogleService implements IGoogleService {
                 idToken.verifyTime(verifier.getClock().currentTimeMillis(), verifier.getAcceptableTimeSkewSeconds())) {
             return idToken.getPayload();
         } else {
-            throw new InvalidParameterException("Invalid token");
+            throw new InvalidParameterException("Invalid token or JWT token expiration");
         }
     }
 }

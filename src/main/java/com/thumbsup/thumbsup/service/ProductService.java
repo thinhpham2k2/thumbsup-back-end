@@ -51,7 +51,7 @@ public class ProductService implements IProductService {
     @Override
     public ProductExtraDTO createProduct(CreateProductDTO create) {
         Product product = ProductMapper.INSTANCE.createToEntity(create);
-
+        product = productRepository.save(product);
         boolean isCover = true;
         for (MultipartFile image : create.getImageList()) {
             try {
@@ -62,7 +62,7 @@ public class ProductService implements IProductService {
             }
         }
 
-        return entityToExtra(productRepository.save(product));
+        return entityToExtra(product);
     }
 
     @Override

@@ -17,7 +17,7 @@ public interface IProductService {
 
     ProductExtraDTO getProductById(boolean status, long productId);
 
-    ProductExtraDTO createProduct(CreateProductDTO create);
+    void createProduct(CreateProductDTO create);
 
     ProductExtraDTO updateProduct(UpdateProductDTO update, Long id);
 

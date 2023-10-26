@@ -60,17 +60,17 @@ public class ProductController {
                                             @RequestParam(defaultValue = "id,desc") String sort,
                                             @RequestParam(defaultValue = "10") Optional<Integer> limit,
                                             @RequestParam(defaultValue = "")
-                                                @Parameter(description = "<b>Filter by store ID<b>")
-                                                List<Long> storeIds,
+                                            @Parameter(description = "<b>Filter by store ID<b>")
+                                            List<Long> storeIds,
                                             @RequestParam(defaultValue = "")
-                                                @Parameter(description = "<b>Filter by category ID<b>")
-                                                List<Long> categoryIds,
+                                            @Parameter(description = "<b>Filter by category ID<b>")
+                                            List<Long> categoryIds,
                                             @RequestParam(defaultValue = "")
-                                                @Parameter(description = "<b>Filter by brand ID<b>")
-                                                List<Long> brandIds,
+                                            @Parameter(description = "<b>Filter by brand ID<b>")
+                                            List<Long> brandIds,
                                             @RequestParam(defaultValue = "")
-                                                @Parameter(description = "<b>Filter by country ID<b>")
-                                                List<Long> countryIds)
+                                            @Parameter(description = "<b>Filter by country ID<b>")
+                                            List<Long> countryIds)
             throws MethodArgumentTypeMismatchException {
         Page<ProductDTO> productList = productService.getProductList(true, storeIds, categoryIds, brandIds, countryIds, search, sort, page.orElse(0), limit.orElse(10));
         if (!productList.getContent().isEmpty()) {
@@ -129,19 +129,14 @@ public class ProductController {
     @Operation(summary = "Create product")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Created", content =
-                    {@Content(mediaType = "application/json", schema =
-                    @Schema(implementation = ProductExtraDTO.class))}),
+                    {@Content(mediaType = "text/plain", schema = @Schema(implementation = String.class))}),
             @ApiResponse(responseCode = "400", description = "Fail", content =
                     {@Content(mediaType = "text/plain", schema = @Schema(implementation = String.class))}),
     })
     public ResponseEntity<?> createProduct(@ModelAttribute @Validated CreateProductDTO create)
             throws MethodArgumentTypeMismatchException {
-        ProductExtraDTO product = productService.createProduct(create);
-        if (product != null) {
-            return ResponseEntity.status(HttpStatus.CREATED).body(product);
-        } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Create fail");
-        }
+        productService.createProduct(create);
+        return ResponseEntity.status(HttpStatus.CREATED).body("Create success");
     }
 
     @PutMapping("/{id}")
@@ -155,7 +150,7 @@ public class ProductController {
                     {@Content(mediaType = "text/plain", schema = @Schema(implementation = String.class))}),
     })
     public ResponseEntity<?> updateProduct(@PathVariable(value = "id") Long id,
-                                         @ModelAttribute @Validated UpdateProductDTO update)
+                                           @ModelAttribute @Validated UpdateProductDTO update)
             throws MethodArgumentTypeMismatchException {
         ProductExtraDTO product = productService.updateProduct(update, id);
         if (product != null) {

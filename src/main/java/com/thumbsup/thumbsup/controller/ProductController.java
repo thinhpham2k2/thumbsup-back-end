@@ -152,12 +152,8 @@ public class ProductController {
     public ResponseEntity<?> updateProduct(@PathVariable(value = "id") Long id,
                                            @ModelAttribute @Validated UpdateProductDTO update)
             throws MethodArgumentTypeMismatchException {
-        ProductExtraDTO product = productService.updateProduct(update, id);
-        if (product != null) {
-            return ResponseEntity.status(HttpStatus.OK).body(product);
-        } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Update fail");
-        }
+        productService.updateProduct(update, id);
+        return ResponseEntity.status(HttpStatus.OK).body("Update success");
     }
 
     @DeleteMapping("/{id}")

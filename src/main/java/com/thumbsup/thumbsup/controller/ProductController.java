@@ -143,17 +143,17 @@ public class ProductController {
     @Secured({ADMIN, STORE})
     @Operation(summary = "Update product")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Success", content =
+            @ApiResponse(responseCode = "204", description = "No Content", content =
                     {@Content(mediaType = "application/json", schema =
                     @Schema(implementation = ProductExtraDTO.class))}),
             @ApiResponse(responseCode = "400", description = "Fail", content =
                     {@Content(mediaType = "text/plain", schema = @Schema(implementation = String.class))}),
     })
     public ResponseEntity<?> updateProduct(@PathVariable(value = "id") Long id,
-                                           @ModelAttribute @Validated UpdateProductDTO update)
+                                           @RequestBody @Validated UpdateProductDTO update)
             throws MethodArgumentTypeMismatchException {
         productService.updateProduct(update, id);
-        return ResponseEntity.status(HttpStatus.OK).body("Update success");
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Update success");
     }
 
     @DeleteMapping("/{id}")

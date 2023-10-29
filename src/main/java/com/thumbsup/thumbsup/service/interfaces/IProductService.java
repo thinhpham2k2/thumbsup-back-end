@@ -19,7 +19,7 @@ public interface IProductService {
 
     void createProduct(CreateProductDTO create);
 
-    ProductExtraDTO updateProduct(UpdateProductDTO update, Long id);
+    void updateProduct(UpdateProductDTO update, Long id);
 
     void deleteProduct(Long id);
 

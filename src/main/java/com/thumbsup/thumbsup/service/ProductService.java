@@ -65,11 +65,10 @@ public class ProductService implements IProductService {
     }
 
     @Override
-    public ProductExtraDTO updateProduct(UpdateProductDTO update, Long id) {
+    public void updateProduct(UpdateProductDTO update, Long id) {
         Optional<Product> product = productRepository.getProductByStatusAndId(true, id);
         if (product.isPresent()){
-            Product pro = ProductMapper.INSTANCE.updateToEntity(update, product.get());
-            return entityToExtra(productRepository.save(pro));
+            productRepository.save(ProductMapper.INSTANCE.updateToEntity(update, product.get()));
         } else {
             throw new InvalidParameterException("Not found product");
         }

@@ -82,14 +82,13 @@ public class OrderService implements IOrderService {
                 BigDecimal amount;
                 if (isPaid) {
                     amount = order.getAmount().multiply(new BigDecimal("0.95"));
-                } else {
-                    amount = order.getAmount().multiply(new BigDecimal("-0.05"));
-                }
-                transactionOrderRepository.save(new TransactionOrder(null, token, amount, LocalDateTime.now(),
-                        true, true, order, store));
 
-                store.setBalance(store.getBalance().add(amount));
-                storeRepository.save(store);
+                    transactionOrderRepository.save(new TransactionOrder(null, token, amount, LocalDateTime.now(),
+                            true, true, order, store));
+
+                    store.setBalance(store.getBalance().add(amount));
+                    storeRepository.save(store);
+                }
             } catch (Exception e) {
                 throw new InvalidParameterException("Create order fail");
             }

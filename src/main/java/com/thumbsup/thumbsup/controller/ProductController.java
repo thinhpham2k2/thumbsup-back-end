@@ -144,8 +144,7 @@ public class ProductController {
     @Operation(summary = "Update product")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "204", description = "No Content", content =
-                    {@Content(mediaType = "application/json", schema =
-                    @Schema(implementation = ProductExtraDTO.class))}),
+                    {@Content(mediaType = "text/plain", schema = @Schema(implementation = String.class))}),
             @ApiResponse(responseCode = "400", description = "Fail", content =
                     {@Content(mediaType = "text/plain", schema = @Schema(implementation = String.class))}),
     })

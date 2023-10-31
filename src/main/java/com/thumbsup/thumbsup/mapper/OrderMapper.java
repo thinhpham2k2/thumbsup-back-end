@@ -21,6 +21,8 @@ public interface OrderMapper {
 
     @Mapping(target = "customerId", source = "customer.id")
     @Mapping(target = "customerName", source = "customer.fullName")
+    @Mapping(target = "storeId", source = "orderDetailList", qualifiedByName = "mapStoreId")
+    @Mapping(target = "storeName", source = "orderDetailList", qualifiedByName = "mapStoreName")
     @Mapping(target = "stateCurrent", source = "stateDetailList", qualifiedByName = "mapStateCurrent")
     @Mapping(target = "orderDetailList", source = "orderDetailList", qualifiedByName = "mapOrderDetail")
     @Mapping(target = "stateDetailList", source = "stateDetailList", qualifiedByName = "mapStateDetail")
@@ -40,6 +42,16 @@ public interface OrderMapper {
         Customer customer = new Customer();
         customer.setId(id);
         return customer;
+    }
+
+    @Named("mapStoreId")
+    default Long mapStoreId(List<OrderDetail> orderDetailList) {
+        return orderDetailList.stream().findFirst().map(d -> d.getProduct().getStore().getId()).orElse(0L);
+    }
+
+    @Named("mapStoreName")
+    default String mapStoreName(List<OrderDetail> orderDetailList) {
+        return orderDetailList.stream().findFirst().map(d -> d.getProduct().getStore().getStoreName()).orElse("Store");
     }
 
     @Named("mapOrderDetail")

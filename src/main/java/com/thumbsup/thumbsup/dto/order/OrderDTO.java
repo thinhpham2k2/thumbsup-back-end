@@ -21,6 +21,8 @@ public class OrderDTO implements Serializable {
     private LocalDateTime dateCreated;
     private Long customerId;
     private String customerName;
+    private Long storeId;
+    private String storeName;
     private Boolean state;
     private Boolean status;
     private String stateCurrent;

@@ -62,7 +62,7 @@ public class StoreController {
     private final ITransactionOrderService transactionOrderService;
 
     @GetMapping("/{id}/orders/{orderId}")
-    @Secured({ADMIN})
+    @Secured({STORE})
     @Operation(summary = "Get order detail by id for store")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Success", content =

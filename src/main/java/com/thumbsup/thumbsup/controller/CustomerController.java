@@ -46,7 +46,7 @@ public class CustomerController {
     private final ICustomerService customerService;
 
     @GetMapping("/{id}/orders/{orderId}")
-    @Secured({ADMIN})
+    @Secured({CUSTOMER})
     @Operation(summary = "Get order detail by id for customer")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Success", content =

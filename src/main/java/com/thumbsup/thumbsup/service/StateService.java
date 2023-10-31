@@ -42,9 +42,11 @@ public class StateService implements IStateService {
                     -> s.getStatus().equals(true)).map(State::getId).max(Comparator.naturalOrder());
             if (stateId.isPresent()) {
                 if (stateId.get() < create.getStateId()) {
-                    StateDetail stateDetail = new StateDetail(null, LocalDateTime.now(), true,
-                            stateRepository.findByIdAndStatus(create.getStateId(), true).orElse(null), order.get());
-                    stateDetailRepository.save(stateDetail);
+                    for (long i = stateId.get() + 1; i <= create.getStateId(); i++) {
+                        StateDetail stateDetail = new StateDetail(null, LocalDateTime.now(), true,
+                                stateRepository.findByIdAndStatus(i, true).orElse(null), order.get());
+                        stateDetailRepository.save(stateDetail);
+                    }
                 } else {
                     throw new InvalidParameterException("Invalid state because the order has already gone through this state");
                 }

@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -17,7 +18,7 @@ public interface StoreRepository extends JpaRepository<Store, Long> {
 
     Optional<Store> findStoreByEmailAndStatus(String email, boolean status);
 
-    Optional<Store> findStoreByIdAndStatus(long storeId, boolean status);
+    Optional<Store> findStoreByStatusAndId(boolean status, long storeId);
 
     @Query("SELECT s FROM Store s " +
             "WHERE s.status = ?1 " +
@@ -30,4 +31,11 @@ public interface StoreRepository extends JpaRepository<Store, Long> {
             "OR s.address LIKE %?3% " +
             "OR s.description LIKE %?3%)")
     Page<Store> getStoreList(boolean status, List<Long> cityIds, String search, Pageable pageable);
+
+    Long countAllByStatus(Boolean status);
+
+    @Query("SELECT s.balance FROM Store s " +
+            "WHERE s.status = ?1 " +
+            "AND s.id = ?2")
+    BigDecimal getBalanceByStoreId(Boolean status, Long storeId);
 }

@@ -39,7 +39,7 @@ public class PaymentAccountService implements IPaymentAccountService {
 
     @Override
     public PaymentAccountDTO createPayment(CreatePaymentAccountDTO create) {
-        Optional<Store> store = storeRepository.findStoreByIdAndStatus(create.getStoreId(), true);
+        Optional<Store> store = storeRepository.findStoreByStatusAndId(true, create.getStoreId());
         if (store.isPresent()) {
             store.get().setBalance(store.get().getBalance().add(create.getAmount()));
             storeRepository.save(store.get());

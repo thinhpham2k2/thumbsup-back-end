@@ -1,6 +1,8 @@
 package com.thumbsup.thumbsup.controller;
 
 import com.thumbsup.thumbsup.dto.ads.AdvertisementDTO;
+import com.thumbsup.thumbsup.dto.chart.SaleDTO;
+import com.thumbsup.thumbsup.dto.chart.TitleDTO;
 import com.thumbsup.thumbsup.dto.order.OrderDTO;
 import com.thumbsup.thumbsup.dto.payment.PaymentAccountDTO;
 import com.thumbsup.thumbsup.dto.product.ProductDTO;
@@ -29,6 +31,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
@@ -50,6 +53,8 @@ public class StoreController {
     private final IOrderService orderService;
 
     private final IStoreService storeService;
+
+    private final IChartService chartService;
 
     private final IRequestService requestService;
 
@@ -98,11 +103,11 @@ public class StoreController {
                                                  @RequestParam(defaultValue = "10") Optional<Integer> limit,
                                                  @PathVariable(value = "id") Long storeId,
                                                  @RequestParam(defaultValue = "")
-                                                    @Parameter(description = "<b>Filter by customer ID<b>")
-                                                    List<Long> customerIds,
+                                                 @Parameter(description = "<b>Filter by customer ID<b>")
+                                                 List<Long> customerIds,
                                                  @RequestParam(defaultValue = "")
-                                                    @Parameter(description = "<b>Filter by state ID<b>")
-                                                    List<Long> stateIds)
+                                                 @Parameter(description = "<b>Filter by state ID<b>")
+                                                 List<Long> stateIds)
             throws MethodArgumentTypeMismatchException {
         Page<OrderDTO> orderList = orderService.getOrderList(true, customerIds, stateIds, Collections.singletonList(storeId), search, sort,
                 page.orElse(0), limit.orElse(10));
@@ -224,10 +229,10 @@ public class StoreController {
                     {@Content(mediaType = "text/plain", schema = @Schema(implementation = String.class))}),
     })
     public ResponseEntity<?> getTransactionListByStoreId(@PathVariable(value = "id") Long storeId,
-                                                     @RequestParam(defaultValue = "") String search,
-                                                     @RequestParam(defaultValue = "0") Optional<Integer> page,
-                                                     @RequestParam(defaultValue = "id,desc") String sort,
-                                                     @RequestParam(defaultValue = "10") Optional<Integer> limit)
+                                                         @RequestParam(defaultValue = "") String search,
+                                                         @RequestParam(defaultValue = "0") Optional<Integer> page,
+                                                         @RequestParam(defaultValue = "id,desc") String sort,
+                                                         @RequestParam(defaultValue = "10") Optional<Integer> limit)
             throws MethodArgumentTypeMismatchException {
         Page<TransactionOrderDTO> transactionList = transactionOrderService.getTransactionListByStoreId(true, storeId,
                 search, sort, page.orElse(0), limit.orElse(10));
@@ -249,10 +254,10 @@ public class StoreController {
                     {@Content(mediaType = "text/plain", schema = @Schema(implementation = String.class))}),
     })
     public ResponseEntity<?> getAdvertisementsListByStoreId(@PathVariable(value = "id") Long storeId,
-                                                     @RequestParam(defaultValue = "") String search,
-                                                     @RequestParam(defaultValue = "0") Optional<Integer> page,
-                                                     @RequestParam(defaultValue = "id,desc") String sort,
-                                                     @RequestParam(defaultValue = "10") Optional<Integer> limit)
+                                                            @RequestParam(defaultValue = "") String search,
+                                                            @RequestParam(defaultValue = "0") Optional<Integer> page,
+                                                            @RequestParam(defaultValue = "id,desc") String sort,
+                                                            @RequestParam(defaultValue = "10") Optional<Integer> limit)
             throws MethodArgumentTypeMismatchException {
         Page<AdvertisementDTO> adsList = advertisementService.getAdvertisementListByStoreId(true, storeId,
                 LocalDateTime.now(), search, sort, page.orElse(0), limit.orElse(10));
@@ -285,6 +290,45 @@ public class StoreController {
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Not found request list");
         }
+    }
+
+    @GetMapping("/{id}/sales")
+    @Secured({ADMIN, STORE})
+    @Operation(summary = "Get sale chart by store id")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Success", content =
+                    {@Content(mediaType = "application/json", schema =
+                    @Schema(implementation = SaleDTO.class))}),
+            @ApiResponse(responseCode = "400", description = "Fail", content =
+                    {@Content(mediaType = "text/plain", schema = @Schema(implementation = String.class))}),
+    })
+    public ResponseEntity<?> getSaleChartByStoreId(@PathVariable(value = "id") Long storeId,
+                                                   @RequestParam(required = false,
+                                                           defaultValue = "#{T(java.time.LocalDate).now().minusDays(7)}")
+                                                   LocalDate from,
+                                                   @RequestParam(required = false,
+                                                           defaultValue = "#{T(java.time.LocalDate).now()}")
+                                                       LocalDate to,
+                                                   @RequestParam(defaultValue = "") String sort)
+            throws MethodArgumentTypeMismatchException {
+        List<SaleDTO> result = chartService.getSaleByStoreId(sort, storeId, from.atStartOfDay(), to.atStartOfDay());
+        return ResponseEntity.status(HttpStatus.OK).body(result);
+    }
+
+    @GetMapping("/{id}/titles")
+    @Secured({ADMIN, STORE})
+    @Operation(summary = "Get title chart by store id")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Success", content =
+                    {@Content(mediaType = "application/json", schema =
+                    @Schema(implementation = TitleDTO.class))}),
+            @ApiResponse(responseCode = "400", description = "Fail", content =
+                    {@Content(mediaType = "text/plain", schema = @Schema(implementation = String.class))}),
+    })
+    public ResponseEntity<?> getTitleChartByStoreId(@PathVariable(value = "id") Long storeId)
+            throws MethodArgumentTypeMismatchException {
+        TitleDTO result = chartService.getTitleByStoreId(storeId);
+        return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
     @PostMapping(value = "", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)

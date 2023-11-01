@@ -143,7 +143,7 @@ public class ProductService implements IProductService {
         List<Sort.Order> order = new ArrayList<>();
 
         String userName = Common.userName;
-        Optional<Store> store = storeRepository.findStoreByIdAndStatus(storeId, true);
+        Optional<Store> store = storeRepository.findStoreByStatusAndId(true, storeId);
         if (store.isPresent()) {
             if (Common.role.equals("Store")) {
                 Optional<Store> storeOptional = storeRepository.findStoreByUserNameAndStatus(userName, true);

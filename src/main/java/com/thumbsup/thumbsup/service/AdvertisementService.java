@@ -49,7 +49,7 @@ public class AdvertisementService implements IAdvertisementService {
 
     @Override
     public AdvertisementDTO createAdvertisement(CreateAdvertisementDTO create) {
-        Optional<Store> store = storeRepository.findStoreByIdAndStatus(create.getStoreId(), true);
+        Optional<Store> store = storeRepository.findStoreByStatusAndId(true, create.getStoreId());
         if (store.isPresent()) {
             BigDecimal balance = store.get().getBalance().subtract(create.getPrice());
             if(balance.compareTo(new BigDecimal("0")) >= 0){

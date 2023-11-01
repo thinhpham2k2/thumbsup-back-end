@@ -34,4 +34,11 @@ public interface AdvertisementRepository extends JpaRepository<Advertisement, Lo
     Page<Advertisement> getAdvertisementListByStoreId(boolean status, LocalDateTime dateNow, long storeId, String search, Pageable pageable);
 
     Optional<Advertisement> findByIdAndStatus(long id, boolean status);
+
+    Optional<Advertisement> findFirstByStatusAndDateExpiredAfter(Boolean status, LocalDateTime dateExpired);
+
+    @Query("SELECT SUM(a.clickCount) FROM Advertisement a " +
+            "WHERE a.status = ?1 " +
+            "AND a.store.id = ?2")
+    Long countClickAdsByStoreId(Boolean status, Long storeId);
 }

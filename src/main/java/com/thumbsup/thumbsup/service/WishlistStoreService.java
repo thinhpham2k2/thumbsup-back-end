@@ -41,7 +41,7 @@ public class WishlistStoreService implements IWishlistStoreService {
 
     @Override
     public WishlistStoreDTO updateWishlistStore(UpdateWishlistStoreDTO update) {
-        Optional<Store> store = storeRepository.findStoreByIdAndStatus(update.getStoreId(), true);
+        Optional<Store> store = storeRepository.findStoreByStatusAndId(true, update.getStoreId());
         if (store.isPresent()) {
             Optional<Customer> customer = customerRepository.findCustomerByIdAndStatus(update.getCustomerId(), true);
             if (customer.isPresent()) {

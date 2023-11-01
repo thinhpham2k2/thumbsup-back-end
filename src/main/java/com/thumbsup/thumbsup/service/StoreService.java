@@ -86,7 +86,7 @@ public class StoreService implements IStoreService {
 
     @Override
     public StoreExtraDTO updateStore(UpdateStoreDTO update, Long id) {
-        Optional<Store> store = storeRepository.findStoreByIdAndStatus(id, true);
+        Optional<Store> store = storeRepository.findStoreByStatusAndId(true, id);
         if (store.isPresent()) {
 
             //Validate Image
@@ -134,7 +134,7 @@ public class StoreService implements IStoreService {
 
     @Override
     public void deleteStore(Long id) {
-        Optional<Store> store = storeRepository.findStoreByIdAndStatus(id, true);
+        Optional<Store> store = storeRepository.findStoreByStatusAndId(true, id);
         if (store.isPresent()) {
             store.get().setStatus(false);
             storeRepository.save(store.get());
@@ -193,7 +193,7 @@ public class StoreService implements IStoreService {
 
     @Override
     public StoreExtraDTO getStoreById(boolean status, long storeId) {
-        Optional<Store> store = storeRepository.findStoreByIdAndStatus(storeId, status);
+        Optional<Store> store = storeRepository.findStoreByStatusAndId(status, storeId);
         return store.map(this::entityToExtra).orElse(null);
     }
 

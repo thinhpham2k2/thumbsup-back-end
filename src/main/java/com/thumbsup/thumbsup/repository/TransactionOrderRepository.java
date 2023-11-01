@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,4 +29,8 @@ public interface TransactionOrderRepository extends JpaRepository<TransactionOrd
     Page<TransactionOrder> getTransactionListByStoreId(boolean status, long storeId, String search, Pageable pageable);
 
     Optional<TransactionOrder> findByIdAndStatus(long id, boolean status);
+
+    List<TransactionOrder> findAllByStatusAndDateCreatedBetween(Boolean status, LocalDateTime from, LocalDateTime to);
+
+    List<TransactionOrder> findAllByStatusAndStore_IdAndDateCreatedBetween(Boolean status, Long storeId, LocalDateTime dateCreated, LocalDateTime dateCreated2);
 }

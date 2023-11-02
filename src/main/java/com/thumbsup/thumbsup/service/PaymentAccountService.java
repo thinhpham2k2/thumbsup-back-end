@@ -11,7 +11,6 @@ import com.thumbsup.thumbsup.service.interfaces.IPagingService;
 import com.thumbsup.thumbsup.service.interfaces.IPaymentAccountService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.hibernate.sql.ast.tree.expression.Collation;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 

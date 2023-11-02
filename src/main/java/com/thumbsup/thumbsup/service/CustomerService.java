@@ -12,6 +12,7 @@ import com.thumbsup.thumbsup.service.interfaces.IFileService;
 import com.thumbsup.thumbsup.service.interfaces.IPagingService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.sql.ast.tree.expression.Collation;
 import org.springframework.data.domain.*;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -127,7 +128,8 @@ public class CustomerService implements ICustomerService {
         }
 
         Pageable pageable = PageRequest.of(page, limit).withSort(Sort.by(order));
-        Page<Customer> pageResult = customerRepository.getCustomerList(status, cityIds, search, pageable);
+        Page<Customer> pageResult = customerRepository.getCustomerList
+                (status, cityIds, search, pageable, new Collation("utf8mb4_0900_ai_ci"));
 
         return new PageImpl<>(pageResult.getContent().stream()
                 .map(CustomerMapper.INSTANCE::toDTO)

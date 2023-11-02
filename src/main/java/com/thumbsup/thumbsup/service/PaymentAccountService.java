@@ -11,6 +11,7 @@ import com.thumbsup.thumbsup.service.interfaces.IPagingService;
 import com.thumbsup.thumbsup.service.interfaces.IPaymentAccountService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.sql.ast.tree.expression.Collation;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
@@ -66,7 +67,8 @@ public class PaymentAccountService implements IPaymentAccountService {
         }
 
         Pageable pageable = PageRequest.of(page, limit).withSort(Sort.by(order));
-        Page<PaymentAccount> pageResult = paymentAccountRepository.getPaymentList(status, storeIds, search, pageable);
+        Page<PaymentAccount> pageResult = paymentAccountRepository.getPaymentList
+                (status, storeIds, search, pageable, new Collation("utf8mb4_0900_ai_ci"));
 
         return new PageImpl<>(pageResult.getContent().stream()
                 .map(PaymentAccountMapper.INSTANCE::toDTO)
@@ -89,7 +91,8 @@ public class PaymentAccountService implements IPaymentAccountService {
         }
 
         Pageable pageable = PageRequest.of(page, limit).withSort(Sort.by(order));
-        Page<PaymentAccount> pageResult = paymentAccountRepository.getPaymentListByStoreId(status, storeId, search, pageable);
+        Page<PaymentAccount> pageResult = paymentAccountRepository.getPaymentListByStoreId
+                (status, storeId, search, pageable, new Collation("utf8mb4_0900_ai_ci"));
 
         return new PageImpl<>(pageResult.getContent().stream()
                 .map(PaymentAccountMapper.INSTANCE::toDTO)

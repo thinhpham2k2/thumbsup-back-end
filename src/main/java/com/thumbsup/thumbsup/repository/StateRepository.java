@@ -1,6 +1,7 @@
 package com.thumbsup.thumbsup.repository;
 
 import com.thumbsup.thumbsup.entity.State;
+import org.hibernate.sql.ast.tree.expression.Collation;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -16,7 +17,7 @@ public interface StateRepository extends JpaRepository<State, Long> {
             "WHERE s.status = ?1 " +
             "AND (s.state LIKE %?2% " +
             "OR s.description LIKE %?2%)")
-    Page<State> getStatesByStatus(boolean status, String search, Pageable pageable);
+    Page<State> getStatesByStatus(boolean status, String search, Pageable pageable, Collation collation);
 
     Optional<State> findByIdAndStatus(long id, boolean status);
 

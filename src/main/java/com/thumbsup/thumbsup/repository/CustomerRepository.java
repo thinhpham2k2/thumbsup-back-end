@@ -1,6 +1,7 @@
 package com.thumbsup.thumbsup.repository;
 
 import com.thumbsup.thumbsup.entity.Customer;
+import org.hibernate.sql.ast.tree.expression.Collation;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -29,7 +30,7 @@ public interface CustomerRepository extends JpaRepository<Customer, Long> {
             "OR c.avatar LIKE %?3% " +
             "OR c.address LIKE %?3% " +
             "OR c.phone LIKE %?3%)")
-    Page<Customer> getCustomerList(boolean status, List<Long> cityIds, String search, Pageable pageable);
+    Page<Customer> getCustomerList(boolean status, List<Long> cityIds, String search, Pageable pageable, Collation collation);
 
     Long countAllByStatus(Boolean status);
 }

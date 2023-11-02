@@ -1,6 +1,7 @@
 package com.thumbsup.thumbsup.repository;
 
 import com.thumbsup.thumbsup.entity.Order;
+import org.hibernate.sql.ast.tree.expression.Collation;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -21,9 +22,10 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
             "AND (:#{#storeIds.size()} = 0 OR (SELECT MAX(d.product.store.id) FROM OrderDetail d WHERE d.order = o) IN ?4) " +
             "AND (o.customer.fullName LIKE %?5% " +
             "OR o.customer.email LIKE %?5% " +
-            "OR o.customer.city.cityName LIKE %?5%)" +
-            "GROUP BY o")
-    Page<Order> getOrderList(boolean status, List<Long> customerIds, List<Long> stateIds, List<Long> storeIds, String search, Pageable pageable);
+            "OR o.customer.city.cityName LIKE %?5%)")
+    Page<Order> getOrderList
+            (boolean status, List<Long> customerIds, List<Long> stateIds, List<Long> storeIds,
+             String search, Pageable pageable, Collation collation);
 
     Optional<Order> findByIdAndStatus(long id, boolean status);
 

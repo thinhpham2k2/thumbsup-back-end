@@ -1,7 +1,6 @@
 package com.thumbsup.thumbsup.repository;
 
 import com.thumbsup.thumbsup.entity.Admin;
-import org.hibernate.sql.ast.tree.expression.Collation;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -25,5 +24,5 @@ public interface AdminRepository extends JpaRepository<Admin, Long> {
             "OR a.phone LIKE %?2% " +
             "OR a.email LIKE %?2% " +
             "OR a.userName LIKE %?2%)")
-    Page<Admin> getAdminList(boolean status, String search, Pageable pageable, Collation collation);
+    Page<Admin> getAdminList(boolean status, String search, Pageable pageable);
 }

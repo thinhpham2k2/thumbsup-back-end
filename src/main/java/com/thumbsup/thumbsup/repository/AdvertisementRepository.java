@@ -1,7 +1,6 @@
 package com.thumbsup.thumbsup.repository;
 
 import com.thumbsup.thumbsup.entity.Advertisement;
-import org.hibernate.sql.ast.tree.expression.Collation;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -24,7 +23,7 @@ public interface AdvertisementRepository extends JpaRepository<Advertisement, Lo
             "OR a.adsName LIKE %?4% " +
             "OR a.description LIKE %?4%)")
     Page<Advertisement> getAdvertisementList
-            (boolean status, LocalDateTime dateNow, List<Long> storeIds, String search, Pageable pageable, Collation collation);
+            (boolean status, LocalDateTime dateNow, List<Long> storeIds, String search, Pageable pageable);
 
     @Query("SELECT a FROM Advertisement a " +
             "WHERE a.status = ?1 " +
@@ -34,7 +33,7 @@ public interface AdvertisementRepository extends JpaRepository<Advertisement, Lo
             "OR a.adsName LIKE %?4% " +
             "OR a.description LIKE %?4%)")
     Page<Advertisement> getAdvertisementListByStoreId
-            (boolean status, LocalDateTime dateNow, long storeId, String search, Pageable pageable, Collation collation);
+            (boolean status, LocalDateTime dateNow, long storeId, String search, Pageable pageable);
 
     Optional<Advertisement> findByIdAndStatus(long id, boolean status);
 

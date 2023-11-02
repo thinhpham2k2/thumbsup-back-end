@@ -8,7 +8,6 @@ import com.thumbsup.thumbsup.service.interfaces.IAdminService;
 import com.thumbsup.thumbsup.service.interfaces.IPagingService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.hibernate.sql.ast.tree.expression.Collation;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
@@ -49,7 +48,7 @@ public class AdminService implements IAdminService {
         }
 
         Pageable pageable = PageRequest.of(page, limit).withSort(Sort.by(order));
-        Page<Admin> pageResult = adminRepository.getAdminList(status, search, pageable, new Collation("utf8mb4_0900_ai_ci"));
+        Page<Admin> pageResult = adminRepository.getAdminList(status, search, pageable);
 
         return new PageImpl<>(pageResult.getContent().stream()
                 .map(AdminMapper.INSTANCE::toDTO)

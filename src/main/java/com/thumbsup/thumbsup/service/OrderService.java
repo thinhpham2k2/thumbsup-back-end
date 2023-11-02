@@ -11,7 +11,6 @@ import com.thumbsup.thumbsup.service.interfaces.IOrderService;
 import com.thumbsup.thumbsup.service.interfaces.IPagingService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.hibernate.sql.ast.tree.expression.Collation;
 import org.springframework.data.domain.*;
 import org.springframework.data.jpa.domain.JpaSort;
 import org.springframework.stereotype.Service;
@@ -132,7 +131,7 @@ public class OrderService implements IOrderService {
 
         Pageable pageable = PageRequest.of(page, limit).withSort(Sort.by(order));
         Page<Order> pageResult = orderRepository.getOrderList
-                (status, customerIds, stateIds, storeIds, search, pageable, new Collation("utf8mb4_0900_ai_ci"));
+                (status, customerIds, stateIds, storeIds, search, pageable);
 
         return new PageImpl<>(pageResult.getContent().stream()
                 .map(OrderMapper.INSTANCE::toDTO)

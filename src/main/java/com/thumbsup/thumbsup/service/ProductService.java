@@ -16,7 +16,6 @@ import com.thumbsup.thumbsup.service.interfaces.IPagingService;
 import com.thumbsup.thumbsup.service.interfaces.IProductService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.hibernate.sql.ast.tree.expression.Collation;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -119,7 +118,7 @@ public class ProductService implements IProductService {
 
         Pageable pageable = PageRequest.of(page, limit).withSort(Sort.by(order));
         Page<Product> pageResult = productRepository.getProductList
-                (status, storeIds, cateIds, brandIds, countryIds, search, pageable, new Collation("utf8mb4_0900_ai_ci"));
+                (status, storeIds, cateIds, brandIds, countryIds, search, pageable);
 
         if (Common.role.equals("Customer")) {
             Optional<Customer> customer = customerRepository.findCustomerByUserNameAndStatus(userName, true);
@@ -165,7 +164,7 @@ public class ProductService implements IProductService {
 
         Pageable pageable = PageRequest.of(page, limit).withSort(Sort.by(order));
         Page<Product> pageResult = productRepository.getProductListByStoreId
-                (status, storeId, cateIds, brandIds, countryIds, search, pageable, new Collation("utf8mb4_0900_ai_ci"));
+                (status, storeId, cateIds, brandIds, countryIds, search, pageable);
 
         return new PageImpl<>(pageResult.getContent().stream()
                 .map(ProductMapper.INSTANCE::toDTO)

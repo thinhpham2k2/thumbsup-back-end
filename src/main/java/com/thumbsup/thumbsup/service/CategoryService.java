@@ -8,7 +8,6 @@ import com.thumbsup.thumbsup.service.interfaces.ICategoryService;
 import com.thumbsup.thumbsup.service.interfaces.IPagingService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.hibernate.sql.ast.tree.expression.Collation;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
@@ -43,7 +42,7 @@ public class CategoryService implements ICategoryService {
 
         Pageable pageable = PageRequest.of(page, limit).withSort(Sort.by(order));
         Page<Category> pageResult = categoryRepository.getCategoriesByStatus
-                (status, search, pageable, new Collation("utf8mb4_0900_ai_ci"));
+                (status, search, pageable);
 
         return new PageImpl<>(pageResult.getContent().stream()
                 .map(CategoryMapper.INSTANCE::toDTO)

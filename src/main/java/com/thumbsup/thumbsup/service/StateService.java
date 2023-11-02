@@ -13,7 +13,6 @@ import com.thumbsup.thumbsup.service.interfaces.IPagingService;
 import com.thumbsup.thumbsup.service.interfaces.IStateService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.hibernate.sql.ast.tree.expression.Collation;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
@@ -76,7 +75,7 @@ public class StateService implements IStateService {
         }
 
         Pageable pageable = PageRequest.of(page, limit).withSort(Sort.by(order));
-        Page<State> pageResult = stateRepository.getStatesByStatus(status, search, pageable, new Collation("utf8mb4_0900_ai_ci"));
+        Page<State> pageResult = stateRepository.getStatesByStatus(status, search, pageable);
 
         return new PageImpl<>(pageResult.getContent().stream()
                 .map(StateMapper.INSTANCE::toDTO)

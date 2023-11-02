@@ -13,6 +13,7 @@ import com.thumbsup.thumbsup.service.interfaces.IPagingService;
 import com.thumbsup.thumbsup.service.interfaces.IReviewService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.sql.ast.tree.expression.Collation;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
@@ -66,7 +67,8 @@ public class ReviewService implements IReviewService {
     @Override
     public Page<ReviewDTO> getReviewListByProductId(boolean status, Long productId, String search, String sort, int page, int limit) {
         Pageable pageable = getPageable(sort, page, limit);
-        Page<Review> pageResult = reviewRepository.getReviewListByProductId(status, productId, search, pageable);
+        Page<Review> pageResult = reviewRepository.getReviewListByProductId
+                (status, productId, search, pageable, new Collation("utf8mb4_0900_ai_ci"));
 
         if (Common.role.equals("Customer")) {
             List<ReviewDTO> reviewList = pageResult.stream().filter(r -> r.getState().equals(true)).map(ReviewMapper.INSTANCE::toDTO).toList();

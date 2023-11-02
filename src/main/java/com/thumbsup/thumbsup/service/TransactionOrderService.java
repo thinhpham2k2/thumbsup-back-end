@@ -8,6 +8,7 @@ import com.thumbsup.thumbsup.service.interfaces.IPagingService;
 import com.thumbsup.thumbsup.service.interfaces.ITransactionOrderService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.sql.ast.tree.expression.Collation;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
@@ -42,7 +43,8 @@ public class TransactionOrderService implements ITransactionOrderService {
         }
 
         Pageable pageable = PageRequest.of(page, limit).withSort(Sort.by(order));
-        Page<TransactionOrder> pageResult = transactionOrderRepository.getTransactionList(status, storeIds, search, pageable);
+        Page<TransactionOrder> pageResult = transactionOrderRepository.getTransactionList
+                (status, storeIds, search, pageable, new Collation("utf8mb4_0900_ai_ci"));
 
         return new PageImpl<>(pageResult.getContent().stream()
                 .map(TransactionOrderMapper.INSTANCE::toDTO)
@@ -65,7 +67,8 @@ public class TransactionOrderService implements ITransactionOrderService {
         }
 
         Pageable pageable = PageRequest.of(page, limit).withSort(Sort.by(order));
-        Page<TransactionOrder> pageResult = transactionOrderRepository.getTransactionListByStoreId(status, storeId, search, pageable);
+        Page<TransactionOrder> pageResult = transactionOrderRepository.getTransactionListByStoreId
+                (status, storeId, search, pageable, new Collation("utf8mb4_0900_ai_ci"));
 
         return new PageImpl<>(pageResult.getContent().stream()
                 .map(TransactionOrderMapper.INSTANCE::toDTO)

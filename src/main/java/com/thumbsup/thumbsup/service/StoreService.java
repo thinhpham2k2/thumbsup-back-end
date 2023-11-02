@@ -185,7 +185,7 @@ public class StoreService implements IStoreService {
         }
 
         Pageable pageable = PageRequest.of(page, limit).withSort(Sort.by(order));
-        Page<Store> pageResult = storeRepository.getStoreList(status, cityIds, search, pageable, new Collation("utf8mb4_0900_ai_ci"));
+        Page<Store> pageResult = storeRepository.getStoreList(status, cityIds, search, pageable);
 
         return new PageImpl<>(pageResult.getContent().stream()
                 .map(StoreMapper.INSTANCE::toDTO)

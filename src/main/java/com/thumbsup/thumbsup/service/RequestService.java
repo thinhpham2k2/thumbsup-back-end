@@ -79,7 +79,7 @@ public class RequestService implements IRequestService {
 
         Pageable pageable = PageRequest.of(page, limit).withSort(Sort.by(order));
         Page<Request> pageResult = requestRepository.getRequestList
-                (status, storeIds, search, pageable, new Collation("utf8mb4_0900_ai_ci"));
+                (status, storeIds, search, pageable);
 
         return new PageImpl<>(pageResult.getContent().stream()
                 .map(RequestMapper.INSTANCE::toDTO)
@@ -103,7 +103,7 @@ public class RequestService implements IRequestService {
 
         Pageable pageable = PageRequest.of(page, limit).withSort(Sort.by(order));
         Page<Request> pageResult = requestRepository.getRequestListByStoreId
-                (status, storeId, search, pageable, new Collation("utf8mb4_0900_ai_ci"));
+                (status, storeId, search, pageable);
 
         return new PageImpl<>(pageResult.getContent().stream()
                 .map(RequestMapper.INSTANCE::toDTO)

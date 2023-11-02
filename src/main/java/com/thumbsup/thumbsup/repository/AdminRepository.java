@@ -25,5 +25,5 @@ public interface AdminRepository extends JpaRepository<Admin, Long> {
             "OR a.phone LIKE %?2% " +
             "OR a.email LIKE %?2% " +
             "OR a.userName LIKE %?2%)")
-    Page<Admin> getAdminList(boolean status, String search, Pageable pageable, Collation collation);
+    Page<Admin> getAdminList(boolean status, String search, Pageable pageable);
 }

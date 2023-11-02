@@ -31,7 +31,7 @@ public interface StoreRepository extends JpaRepository<Store, Long> {
             "OR s.phone LIKE %?3% " +
             "OR s.address LIKE %?3% " +
             "OR s.description LIKE %?3%)")
-    Page<Store> getStoreList(boolean status, List<Long> cityIds, String search, Pageable pageable, Collation collation);
+    Page<Store> getStoreList(boolean status, List<Long> cityIds, String search, Pageable pageable);
 
     Long countAllByStatus(Boolean status);
 

@@ -68,7 +68,7 @@ public class PaymentAccountService implements IPaymentAccountService {
 
         Pageable pageable = PageRequest.of(page, limit).withSort(Sort.by(order));
         Page<PaymentAccount> pageResult = paymentAccountRepository.getPaymentList
-                (status, storeIds, search, pageable, new Collation("utf8mb4_0900_ai_ci"));
+                (status, storeIds, search, pageable);
 
         return new PageImpl<>(pageResult.getContent().stream()
                 .map(PaymentAccountMapper.INSTANCE::toDTO)
@@ -92,7 +92,7 @@ public class PaymentAccountService implements IPaymentAccountService {
 
         Pageable pageable = PageRequest.of(page, limit).withSort(Sort.by(order));
         Page<PaymentAccount> pageResult = paymentAccountRepository.getPaymentListByStoreId
-                (status, storeId, search, pageable, new Collation("utf8mb4_0900_ai_ci"));
+                (status, storeId, search, pageable);
 
         return new PageImpl<>(pageResult.getContent().stream()
                 .map(PaymentAccountMapper.INSTANCE::toDTO)

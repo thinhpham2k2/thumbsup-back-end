@@ -21,7 +21,7 @@ public interface TransactionOrderRepository extends JpaRepository<TransactionOrd
             "AND (t.store.storeName LIKE %?3% " +
             "OR t.zpTransToken LIKE %?3%)")
     Page<TransactionOrder> getTransactionList
-            (boolean status, List<Long> storeIds, String search, Pageable pageable, Collation collation);
+            (boolean status, List<Long> storeIds, String search, Pageable pageable);
 
     @Query("SELECT t FROM TransactionOrder t " +
             "WHERE t.status = ?1 " +
@@ -29,7 +29,7 @@ public interface TransactionOrderRepository extends JpaRepository<TransactionOrd
             "AND (t.store.storeName LIKE %?3% " +
             "OR t.zpTransToken LIKE %?3%)")
     Page<TransactionOrder> getTransactionListByStoreId
-            (boolean status, long storeId, String search, Pageable pageable, Collation collation);
+            (boolean status, long storeId, String search, Pageable pageable);
 
     Optional<TransactionOrder> findByIdAndStatus(long id, boolean status);
 

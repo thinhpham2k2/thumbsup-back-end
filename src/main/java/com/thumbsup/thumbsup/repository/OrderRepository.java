@@ -25,7 +25,7 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
             "OR o.customer.city.cityName LIKE %?5%)")
     Page<Order> getOrderList
             (boolean status, List<Long> customerIds, List<Long> stateIds, List<Long> storeIds,
-             String search, Pageable pageable, Collation collation);
+             String search, Pageable pageable);
 
     Optional<Order> findByIdAndStatus(long id, boolean status);
 

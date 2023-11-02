@@ -42,7 +42,7 @@ public class BrandService implements IBrandService {
         }
 
         Pageable pageable = PageRequest.of(page, limit).withSort(Sort.by(order));
-        Page<Brand> pageResult = brandRepository.getBrandsByStatus(status, search, pageable, new Collation("utf8mb4_0900_ai_ci"));
+        Page<Brand> pageResult = brandRepository.getBrandsByStatus(status, search, pageable);
 
         return new PageImpl<>(pageResult.getContent().stream()
                 .map(BrandMapper.INSTANCE::toDTO)

@@ -132,7 +132,7 @@ public class OrderService implements IOrderService {
 
         Pageable pageable = PageRequest.of(page, limit).withSort(Sort.by(order));
         Page<Order> pageResult = orderRepository.getOrderList
-                (status, customerIds, stateIds, storeIds, search, pageable, new Collation("utf8mb4_0900_ai_ci"));
+                (status, customerIds, stateIds, storeIds, search, pageable);
 
         return new PageImpl<>(pageResult.getContent().stream()
                 .map(OrderMapper.INSTANCE::toDTO)

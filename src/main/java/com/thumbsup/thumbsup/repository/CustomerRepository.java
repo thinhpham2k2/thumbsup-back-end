@@ -30,7 +30,7 @@ public interface CustomerRepository extends JpaRepository<Customer, Long> {
             "OR c.avatar LIKE %?3% " +
             "OR c.address LIKE %?3% " +
             "OR c.phone LIKE %?3%)")
-    Page<Customer> getCustomerList(boolean status, List<Long> cityIds, String search, Pageable pageable, Collation collation);
+    Page<Customer> getCustomerList(boolean status, List<Long> cityIds, String search, Pageable pageable);
 
     Long countAllByStatus(Boolean status);
 }

@@ -68,7 +68,7 @@ public class ReviewService implements IReviewService {
     public Page<ReviewDTO> getReviewListByProductId(boolean status, Long productId, String search, String sort, int page, int limit) {
         Pageable pageable = getPageable(sort, page, limit);
         Page<Review> pageResult = reviewRepository.getReviewListByProductId
-                (status, productId, search, pageable, new Collation("utf8mb4_0900_ai_ci"));
+                (status, productId, search, pageable);
 
         if (Common.role.equals("Customer")) {
             List<ReviewDTO> reviewList = pageResult.stream().filter(r -> r.getState().equals(true)).map(ReviewMapper.INSTANCE::toDTO).toList();

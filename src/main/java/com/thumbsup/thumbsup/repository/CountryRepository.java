@@ -16,7 +16,7 @@ public interface CountryRepository extends JpaRepository<Country, Long> {
     @Query("SELECT c FROM Country c " +
             "WHERE c.status = ?1 " +
             "AND c.country LIKE %?2%")
-    Page<Country> getCountriesByStatus(boolean status, String search, Pageable pageable, Collation collation);
+    Page<Country> getCountriesByStatus(boolean status, String search, Pageable pageable);
 
     Optional<Country> findByIdAndStatus(long id, boolean status);
 }

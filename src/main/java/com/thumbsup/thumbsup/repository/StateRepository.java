@@ -17,7 +17,7 @@ public interface StateRepository extends JpaRepository<State, Long> {
             "WHERE s.status = ?1 " +
             "AND (s.state LIKE %?2% " +
             "OR s.description LIKE %?2%)")
-    Page<State> getStatesByStatus(boolean status, String search, Pageable pageable, Collation collation);
+    Page<State> getStatesByStatus(boolean status, String search, Pageable pageable);
 
     Optional<State> findByIdAndStatus(long id, boolean status);
 

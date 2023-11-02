@@ -49,7 +49,7 @@ public class AdminService implements IAdminService {
         }
 
         Pageable pageable = PageRequest.of(page, limit).withSort(Sort.by(order));
-        Page<Admin> pageResult = adminRepository.getAdminList(status, search, pageable, new Collation("utf8mb4_0900_ai_ci"));
+        Page<Admin> pageResult = adminRepository.getAdminList(status, search, pageable);
 
         return new PageImpl<>(pageResult.getContent().stream()
                 .map(AdminMapper.INSTANCE::toDTO)

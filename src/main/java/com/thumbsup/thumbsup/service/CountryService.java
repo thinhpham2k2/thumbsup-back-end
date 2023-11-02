@@ -42,7 +42,7 @@ public class CountryService implements ICountryService {
         }
 
         Pageable pageable = PageRequest.of(page, limit).withSort(Sort.by(order));
-        Page<Country> pageResult = countryRepository.getCountriesByStatus(status, search, pageable, new Collation("utf8mb4_0900_ai_ci"));
+        Page<Country> pageResult = countryRepository.getCountriesByStatus(status, search, pageable);
 
         return new PageImpl<>(pageResult.getContent().stream()
                 .map(CountryMapper.INSTANCE::toDTO)

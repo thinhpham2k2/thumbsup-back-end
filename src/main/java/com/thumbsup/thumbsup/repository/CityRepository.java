@@ -16,7 +16,7 @@ public interface CityRepository extends JpaRepository<City, Long> {
     @Query("SELECT c FROM City c " +
             "WHERE c.status = ?1 " +
             "AND c.cityName LIKE %?2%")
-    Page<City> getCitiesByStatus(boolean status, String search, Pageable pageable, Collation collation);
+    Page<City> getCitiesByStatus(boolean status, String search, Pageable pageable);
 
     Optional<City> findByIdAndStatus(long id, boolean status);
 

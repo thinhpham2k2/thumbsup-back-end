@@ -89,7 +89,7 @@ public class AdvertisementService implements IAdvertisementService {
 
         Pageable pageable = PageRequest.of(page, limit).withSort(Sort.by(order));
         Page<Advertisement> pageResult = advertisementRepository.getAdvertisementListByStoreId(status, dateNow, storeId,
-                search, pageable, new Collation("utf8mb4_0900_ai_ci"));
+                search, pageable);
 
         return new PageImpl<>(pageResult.getContent().stream()
                 .map(AdvertisementMapper.INSTANCE::toDTO)
@@ -114,7 +114,7 @@ public class AdvertisementService implements IAdvertisementService {
 
         Pageable pageable = PageRequest.of(page, limit).withSort(Sort.by(order));
         Page<Advertisement> pageResult = advertisementRepository.getAdvertisementList
-                (status, dateNow, storeIds, search, pageable, new Collation("utf8mb4_0900_ai_ci"));
+                (status, dateNow, storeIds, search, pageable);
 
         String userName = Common.userName;
 
@@ -162,7 +162,7 @@ public class AdvertisementService implements IAdvertisementService {
 
         Pageable pageable = PageRequest.of(page, limit).withSort(Sort.by(order));
         Page<Advertisement> pageResult = advertisementRepository.getAdvertisementList
-                (status, dateNow, storeIds, search, pageable, new Collation("utf8mb4_0900_ai_ci"));
+                (status, dateNow, storeIds, search, pageable);
 
         return new PageImpl<>(pageResult.getContent().stream()
                 .map(AdvertisementMapper.INSTANCE::toDTO)

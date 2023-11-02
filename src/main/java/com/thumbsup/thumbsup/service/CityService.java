@@ -42,7 +42,7 @@ public class CityService implements ICityService {
         }
 
         Pageable pageable = PageRequest.of(page, limit).withSort(Sort.by(order));
-        Page<City> pageResult = cityRepository.getCitiesByStatus(status, search, pageable, new Collation("utf8mb4_0900_ai_ci"));
+        Page<City> pageResult = cityRepository.getCitiesByStatus(status, search, pageable);
 
         return new PageImpl<>(pageResult.getContent().stream()
                 .map(CityMapper.INSTANCE::toDTO)

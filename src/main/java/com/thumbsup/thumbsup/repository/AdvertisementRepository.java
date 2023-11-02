@@ -24,7 +24,7 @@ public interface AdvertisementRepository extends JpaRepository<Advertisement, Lo
             "OR a.adsName LIKE %?4% " +
             "OR a.description LIKE %?4%)")
     Page<Advertisement> getAdvertisementList
-            (boolean status, LocalDateTime dateNow, List<Long> storeIds, String search, Pageable pageable, Collation collation);
+            (boolean status, LocalDateTime dateNow, List<Long> storeIds, String search, Pageable pageable);
 
     @Query("SELECT a FROM Advertisement a " +
             "WHERE a.status = ?1 " +
@@ -34,7 +34,7 @@ public interface AdvertisementRepository extends JpaRepository<Advertisement, Lo
             "OR a.adsName LIKE %?4% " +
             "OR a.description LIKE %?4%)")
     Page<Advertisement> getAdvertisementListByStoreId
-            (boolean status, LocalDateTime dateNow, long storeId, String search, Pageable pageable, Collation collation);
+            (boolean status, LocalDateTime dateNow, long storeId, String search, Pageable pageable);
 
     Optional<Advertisement> findByIdAndStatus(long id, boolean status);
 

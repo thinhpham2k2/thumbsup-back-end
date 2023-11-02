@@ -31,7 +31,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
             "OR p.description LIKE %?6%)")
     Page<Product> getProductList
             (boolean status, List<Long> storeIds, List<Long> cateIds, List<Long> brandIds, List<Long> countryIds,
-             String search, Pageable pageable, Collation collation);
+             String search, Pageable pageable);
 
     @Query("SELECT p FROM Product p " +
             "WHERE p.status = ?1 " +
@@ -46,5 +46,5 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
             "OR p.description LIKE %?6%)")
     Page<Product> getProductListByStoreId
             (boolean status, long storeId, List<Long> cateIds, List<Long> brandIds, List<Long> countryIds,
-             String search, Pageable pageable, Collation collation);
+             String search, Pageable pageable);
 }

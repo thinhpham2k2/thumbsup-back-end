@@ -76,7 +76,7 @@ public class StateService implements IStateService {
         }
 
         Pageable pageable = PageRequest.of(page, limit).withSort(Sort.by(order));
-        Page<State> pageResult = stateRepository.getStatesByStatus(status, search, pageable, new Collation("utf8mb4_0900_ai_ci"));
+        Page<State> pageResult = stateRepository.getStatesByStatus(status, search, pageable);
 
         return new PageImpl<>(pageResult.getContent().stream()
                 .map(StateMapper.INSTANCE::toDTO)

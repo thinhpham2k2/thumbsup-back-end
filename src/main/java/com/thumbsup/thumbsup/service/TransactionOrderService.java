@@ -44,7 +44,7 @@ public class TransactionOrderService implements ITransactionOrderService {
 
         Pageable pageable = PageRequest.of(page, limit).withSort(Sort.by(order));
         Page<TransactionOrder> pageResult = transactionOrderRepository.getTransactionList
-                (status, storeIds, search, pageable, new Collation("utf8mb4_0900_ai_ci"));
+                (status, storeIds, search, pageable);
 
         return new PageImpl<>(pageResult.getContent().stream()
                 .map(TransactionOrderMapper.INSTANCE::toDTO)
@@ -68,7 +68,7 @@ public class TransactionOrderService implements ITransactionOrderService {
 
         Pageable pageable = PageRequest.of(page, limit).withSort(Sort.by(order));
         Page<TransactionOrder> pageResult = transactionOrderRepository.getTransactionListByStoreId
-                (status, storeId, search, pageable, new Collation("utf8mb4_0900_ai_ci"));
+                (status, storeId, search, pageable);
 
         return new PageImpl<>(pageResult.getContent().stream()
                 .map(TransactionOrderMapper.INSTANCE::toDTO)

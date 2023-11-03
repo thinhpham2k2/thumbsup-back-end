@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,10 +28,11 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
             "OR p.brand.brand LIKE %?6% " +
             "OR p.country.country LIKE %?6% " +
             "OR p.productName LIKE %?6% " +
-            "OR p.description LIKE %?6%)")
+            "OR p.description LIKE %?6%)" +
+            "AND p.salePrice BETWEEN ?7 AND ?8")
     Page<Product> getProductList
             (boolean status, List<Long> storeIds, List<Long> cateIds, List<Long> brandIds, List<Long> countryIds,
-             String search, Pageable pageable);
+             String search, BigDecimal priceStart, BigDecimal priceEnd, Pageable pageable);
 
     @Query("SELECT p FROM Product p " +
             "WHERE p.status = ?1 " +

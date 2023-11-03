@@ -25,6 +25,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -56,6 +57,8 @@ public class ProductController {
                     {@Content(mediaType = "text/plain", schema = @Schema(implementation = String.class))}),
     })
     public ResponseEntity<?> getProductList(@RequestParam(defaultValue = "") String search,
+                                            @RequestParam(defaultValue = "0") BigDecimal priceStart,
+                                            @RequestParam(defaultValue = "1000000000") BigDecimal priceEnd,
                                             @RequestParam(defaultValue = "0") Optional<Integer> page,
                                             @RequestParam(defaultValue = "id,desc") String sort,
                                             @RequestParam(defaultValue = "10") Optional<Integer> limit,
@@ -72,7 +75,9 @@ public class ProductController {
                                             @Parameter(description = "<b>Filter by country ID<b>")
                                             List<Long> countryIds)
             throws MethodArgumentTypeMismatchException {
-        Page<ProductDTO> productList = productService.getProductList(true, storeIds, categoryIds, brandIds, countryIds, search, sort, page.orElse(0), limit.orElse(10));
+        Page<ProductDTO> productList = productService.getProductList
+                (true, storeIds, categoryIds, brandIds, countryIds, search, priceStart, priceEnd,
+                        sort, page.orElse(0), limit.orElse(10));
         if (!productList.getContent().isEmpty()) {
             return ResponseEntity.status(HttpStatus.OK).body(productList);
         } else {

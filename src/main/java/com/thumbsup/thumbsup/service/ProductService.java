@@ -20,6 +20,7 @@ import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.math.BigDecimal;
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.List;
@@ -100,7 +101,9 @@ public class ProductService implements IProductService {
 
     @Override
     public Page<ProductDTO> getProductList(boolean status, List<Long> storeIds, List<Long> cateIds, List<Long> brandIds,
-                                           List<Long> countryIds, String search, String sort, int page, int limit) {
+                                           List<Long> countryIds, String search, BigDecimal priceStart, BigDecimal priceEnd,
+                                           String sort, int page, int limit) {
+        if(priceStart.compareTo(priceEnd) > 0) throw new InvalidParameterException("Price start and price end are invalid!");
         if (page < 0) throw new InvalidParameterException("Page number must not be less than zero!");
         if (limit < 1) throw new InvalidParameterException("Page size must not be less than one!");
 
@@ -118,7 +121,7 @@ public class ProductService implements IProductService {
 
         Pageable pageable = PageRequest.of(page, limit).withSort(Sort.by(order));
         Page<Product> pageResult = productRepository.getProductList
-                (status, storeIds, cateIds, brandIds, countryIds, search, pageable);
+                (status, storeIds, cateIds, brandIds, countryIds, search, priceStart, priceEnd, pageable);
 
         if (Common.role.equals("Customer")) {
             Optional<Customer> customer = customerRepository.findCustomerByUserNameAndStatus(userName, true);
